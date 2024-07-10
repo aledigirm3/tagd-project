@@ -1,0 +1,795 @@
+Column1;Column2;Column3;Column4;Column5;Column6;Column7;Column8;Column9;Column10;Column11;Column12;Column13;Column14;Column15;Column152;Column16;Column162;Column163;Column164;Column17;Column18;Column19;Column20;Column21;Column22;Column23;Column24;Column25;Column26;Column27;Column28;Column29;Column30;Column31;Column32;Column33;Column34;Column35;Column36;Column37;Column38;Column39;Column40;Column41;Column42;Column43
+userid;dbid;toplevel;queryid;query;plans;total_plan_time;min_plan_time;max_plan_time;mean_plan_time;stddev_plan_time;calls;total_exec_time;min_exec_time;max_exec_time;adj_mean_exec_time;mean_exec_time;D_CPU;D_DISK;CPU / DISK;stddev_exec_time;rows;shared_blks_hit;shared_blks_read;shared_blks_dirtied;shared_blks_written;local_blks_hit;local_blks_read;local_blks_dirtied;local_blks_written;temp_blks_read;temp_blks_written;blk_read_time;blk_write_time;temp_blk_read_time;temp_blk_write_time;wal_records;wal_fpi;wal_bytes;jit_functions;jit_generation_time;jit_inlining_count;jit_inlining_time;jit_optimization_count;jit_optimization_time;jit_emission_count;jit_emission_time
+10;16419;True;-7384719638763031193;create view revenue0 (supplier_no, total_revenue) as select l_suppkey, sum(l_extendedprice * (1 - l_discount)) from lineitem where l_shipdate >= '1997-09-01'::date and l_shipdate < '1997-09-01'::date + interval '3' month group by l_suppkey;0;0;0;0;0;0;1;0.404966;0.404966;0.404966;;0.404966;;;;0;0;75;29;20;0;0;0;0;0;0;0;0.075283;0;0;0;41;0;5576;0;0;0;0;0;0;0;0
+10;16419;True;-5588736558067837117;"SELECT
+   s_suppkey,
+   s_name,
+   s_address,
+   s_phone,
+   total_revenue
+FROM
+   supplier,
+   revenue0
+WHERE
+   s_suppkey = supplier_no
+   AND total_revenue = (
+      SELECT
+         MAX(total_revenue)
+      FROM
+         revenue0
+   )
+ORDER BY
+   s_suppkey";0;0;0;0;0;0;1;2597.538858;2597.538858;2597.538858;;2597.538858;;;;0;1;1;269862;0;19;0;0;0;0;108;240;465.58194;0.166946;0.148371;2.714452;0;0;0;40;2.407991;1;38.840232;1;184.685215;1;137.295707
+10;16419;True;-3825640688184167069;SELECT * FROM pg_stat_database;0;0;0;0;0;0;1;0.036940999999999995;0.036940999999999995;0.036940999999999995;;0.036940999999999995;;;;0;5;1;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0
+10;16419;True;-7918896027415792288;"SELECT
+   SUM(l_extendedprice* ($10 - l_discount)) AS revenue
+FROM
+   lineitem,
+   part
+WHERE
+   (
+      p_partkey = l_partkey
+      AND p_brand = $1
+      AND p_container IN ($11, $12, $13, $14)
+      AND l_quantity >= $2
+      AND l_quantity <= $3 + $15
+      AND p_size BETWEEN $16 AND $17
+      AND l_shipmode IN ($18, $19)
+      AND l_shipinstruct = $20
+   )
+   OR
+   (
+      p_partkey = l_partkey
+      AND p_brand = $4
+      AND p_container IN ($21, $22, $23, $24)
+      AND l_quantity >= $5
+      AND l_quantity <= $6 + $25
+      AND p_size BETWEEN $26 AND $27
+      AND l_shipmode IN ($28, $29)
+      AND l_shipinstruct = $30
+   )
+   OR
+   (
+      p_partkey = l_partkey
+      AND p_brand = $7
+      AND p_container IN ($31, $32, $33, $34)
+      AND l_quantity >= $8
+      AND l_quantity <= $9 + $35
+      AND p_size BETWEEN $36 AND $37
+      AND l_shipmode IN ($38, $39)
+      AND l_shipinstruct = $40
+   )";0;0;0;0;0;0;17;3597.503984000001;150.243041;292.132245;210.3419132;211.61788141176473;89.73169491;120.6102183;0.743980868;39.56603126230286;17;66643;619392;0;0;0;0;0;0;0;0;2050.373711;0;0;0;0;0;0;0;0;0;0;0;0;0;0
+10;16419;True;1345865735253463468;SELECT * FROM pg_stat_user_tables;0;0;0;0;0;0;1;0.158693;0.158693;0.158693;;0.158693;;;;0;8;15;5;0;0;0;0;0;0;0;0;0.018131;0;0;0;0;0;0;0;0;0;0;0;0;0;0
+10;16419;True;3545412574037053608;SET DateStyle=ISO;0;0;0;0;0;0;1;0.00617;0.00617;0.00617;;0.00617;;;;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0
+10;16419;True;-6911109443227572258;SELECT * FROM pg_stat_bgwriter;0;0;0;0;0;0;1;0.00401;0.00401;0.00401;;0.00401;;;;0;1;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0
+10;16419;True;-141619989335985508;SELECT * FROM pg_stat_archiver;0;0;0;0;0;0;1;0.0061600000000000005;0.0061600000000000005;0.0061600000000000005;;0.0061600000000000005;;;;0;1;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0
+10;16419;True;-2355785423562344795;create view revenue0 (supplier_no, total_revenue) as select l_suppkey, sum(l_extendedprice * (1 - l_discount)) from lineitem where l_shipdate >= '1994-12-01'::date and l_shipdate < '1994-12-01'::date + interval '3' month group by l_suppkey;0;0;0;0;0;0;1;0.427136;0.427136;0.427136;;0.427136;;;;0;0;75;29;20;0;0;0;0;0;0;0;0.075383;0;0;0;43;0;5696;0;0;0;0;0;0;0;0
+10;16419;True;5507524655037232109;select o_orderpriority, count(*) as order_count from orders where o_orderdate >= $1::date and o_orderdate < $2::date + interval $3 month and exists ( select * from lineitem where l_orderkey = o_orderkey and l_commitdate < l_receiptdate ) group by o_orderpriority order by o_orderpriority;0;0;0;0;0;0;18;10110.207803999998;479.678431;994.1864929999999;539.77143;561.6782113333334;286.0948363;253.6765937;1.12779359;110.08933296689119;90;6259740;2825312;0;0;0;0;0;0;4624;4642;4566.178686;0;7.117182;60.77454199999999;0;0;0;32;1.383426;0;0;2;0.934535;2;11.903508
+10;16419;True;-66186846925468933;create view revenue0 (supplier_no, total_revenue) as select l_suppkey, sum(l_extendedprice * (1 - l_discount)) from lineitem where l_shipdate >= '1995-07-01'::date and l_shipdate < '1995-07-01'::date + interval '3' month group by l_suppkey;0;0;0;0;0;0;1;0.453283;0.453283;0.453283;;0.453283;;;;0;0;75;29;20;0;0;0;0;0;0;0;0.08014;0;0;0;43;0;5697;0;0;0;0;0;0;0;0
+10;16419;True;7674290743847894833;create view revenue0 (supplier_no, total_revenue) as select l_suppkey, sum(l_extendedprice * (1 - l_discount)) from lineitem where l_shipdate >= '1996-05-01'::date and l_shipdate < '1996-05-01'::date + interval '3' month group by l_suppkey;0;0;0;0;0;0;1;0.481778;0.481778;0.481778;;0.481778;;;;0;0;75;29;20;0;0;0;0;0;0;0;0.086731;0;0;0;42;0;5653;0;0;0;0;0;0;0;0
+10;16419;True;3916515019762028860;SELECT     tmp.TABLE_CAT,     tmp.TABLE_SCHEM,     tmp.TABLE_NAME,     tmp.NON_UNIQUE,     tmp.INDEX_QUALIFIER,     tmp.INDEX_NAME,     tmp.TYPE,     tmp.ORDINAL_POSITION,     trim(both $1 from pg_catalog.pg_get_indexdef(tmp.CI_OID, tmp.ORDINAL_POSITION, $2)) AS COLUMN_NAME,   CASE tmp.AM_NAME     WHEN $3 THEN CASE tmp.I_INDOPTION[tmp.ORDINAL_POSITION - $4] & $5::smallint       WHEN $6 THEN $7       ELSE $8     END     ELSE $9   END AS ASC_OR_DESC,     tmp.CARDINALITY,     tmp.PAGES,     tmp.FILTER_CONDITION FROM (SELECT $10 AS TABLE_CAT, n.nspname AS TABLE_SCHEM,   ct.relname AS TABLE_NAME, NOT i.indisunique AS NON_UNIQUE,   $11 AS INDEX_QUALIFIER, ci.relname AS INDEX_NAME,   CASE i.indisclustered     WHEN $12 THEN $13    ELSE CASE am.amname       WHEN $14 THEN $15      ELSE $16    END   END AS TYPE,   (information_schema._pg_expandarray(i.indkey)).n AS ORDINAL_POSITION,   ci.reltuples AS CARDINALITY,   ci.relpages AS PAGES,   pg_catalog.pg_get_expr(i.indpred, i.indrelid) AS FILTER_CONDITION,   ci.oid AS CI_OID,   i.indoption AS I_INDOPTION,   am.amname AS AM_NAME FROM pg_catalog.pg_class ct   JOIN pg_catalog.pg_namespace n ON (ct.relnamespace = n.oid)   JOIN pg_catalog.pg_index i ON (ct.oid = i.indrelid)   JOIN pg_catalog.pg_class ci ON (ci.oid = i.indexrelid)   JOIN pg_catalog.pg_am am ON (ci.relam = am.oid) WHERE $17  AND n.nspname = $18 AND ct.relname = $19) AS tmp ORDER BY NON_UNIQUE, TYPE, INDEX_NAME, ORDINAL_POSITION;0;0;0;0;0;0;8;1.2597450000000001;0.116351;0.253265;;0.15746812500000001;;;;0.044255139999319584;37;601;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0
+10;16419;True;4525708794229873910;create view revenue0 (supplier_no, total_revenue) as select l_suppkey, sum(l_extendedprice * (1 - l_discount)) from lineitem where l_shipdate >= '1997-10-01'::date and l_shipdate < '1997-10-01'::date + interval '3' month group by l_suppkey;0;0;0;0;0;0;1;0.446526;0.446526;0.446526;;0.446526;;;;0;0;75;29;20;0;0;0;0;0;0;0;0.094092;0;0;0;41;0;5574;0;0;0;0;0;0;0;0
+10;16419;True;8262333582107024914;"SELECT
+   s_suppkey,
+   s_name,
+   s_address,
+   s_phone,
+   total_revenue
+FROM
+   supplier,
+   revenue0
+WHERE
+   s_suppkey = supplier_no
+   AND total_revenue = (
+      SELECT
+         MAX(total_revenue)
+      FROM
+         revenue0
+   )
+ORDER BY
+   s_suppkey";0;0;0;0;0;0;1;2476.061332;2476.061332;2476.061332;;2476.061332;;;;0;1;1;269732;0;12;0;0;0;0;108;242;459.386821;0.10008;0.146221;2.819136;0;0;0;40;2.143851;1;39.693343;1;179.436445;1;126.865743
+10;16419;True;2441368605364275007;"SELECT
+   p_brand,
+   p_type,
+   p_size,
+   COUNT(DISTINCT ps_suppkey) AS supplier_cnt
+FROM
+   partsupp,
+   part
+WHERE
+   p_partkey = ps_partkey
+   AND p_brand <> $1
+   AND p_type NOT LIKE $2
+   AND p_size IN ($3, $4, $5, $6, $7, $8, $9, $10)
+   AND ps_suppkey NOT IN
+   (
+      SELECT
+         s_suppkey
+      FROM
+         supplier
+      WHERE
+         s_comment LIKE $11
+   )
+GROUP BY
+   p_brand,
+   p_type,
+   p_size
+ORDER BY
+   supplier_cnt DESC,
+   p_brand,
+   p_type,
+   p_size";0;0;0;0;0;0;17;15870.820582;866.495143;1006.0859630000001;933.2159651;933.5776812941176;916.9211302;16.29483482;56.27066124;32.495098030021424;416263;561;221493;0;0;0;0;0;0;25712;25797;277.012192;0;25.310154;164.30278600000003;0;0;0;0;0;0;0;0;0;0;0
+10;16419;True;2247467723989480173;SELECT setting FROM pg_catalog.pg_settings WHERE name=$1;0;0;0;0;0;0;1;0.511311;0.511311;0.511311;;0.511311;;;;0;1;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0
+10;16419;True;-1663381721478587022;create view revenue0 (supplier_no, total_revenue) as select l_suppkey, sum(l_extendedprice * (1 - l_discount)) from lineitem where l_shipdate >= '1997-05-01'::date and l_shipdate < '1997-05-01'::date + interval '3' month group by l_suppkey;0;0;0;0;0;0;1;0.808088;0.808088;0.808088;;0.808088;;;;0;0;76;32;23;0;0;0;0;0;0;0;0.396296;0;0;0;44;21;114110;0;0;0;0;0;0;0;0
+10;16419;True;-5297255363152740514;"SELECT
+    s_acctbal,
+    s_name,
+    n_name,
+    p_partkey,
+    p_mfgr,
+    s_address,
+    s_phone,
+    s_comment
+ FROM
+    part,
+    supplier,
+    partsupp,
+    nation,
+    region
+ WHERE
+    p_partkey = ps_partkey
+    AND s_suppkey = ps_suppkey
+    AND p_size = $1
+    AND p_type LIKE $2
+    AND s_nationkey = n_nationkey
+    AND n_regionkey = r_regionkey
+    AND r_name = $3
+    AND ps_supplycost =
+    (
+       SELECT
+          MIN(ps_supplycost)
+       FROM
+          partsupp,
+          supplier,
+          nation,
+          region
+       WHERE
+          p_partkey = ps_partkey
+          AND s_suppkey = ps_suppkey
+          AND s_nationkey = n_nationkey
+          AND n_regionkey = r_regionkey
+          AND r_name = $4
+    )
+ ORDER BY
+    s_acctbal DESC,
+    n_name,
+    s_name,
+    p_partkey LIMIT $5";0;0;0;0;0;0;18;17229.681259;735.4776159999999;3087.683998;837.9074778;957.2045143888887;411.772558;426.1349198;0.96629621;518.8597667001103;1800;3462328;3540701;0;7;0;0;0;0;303398;303595;7670.285646;0.14291;318.036316;1317.6916749999998;0;0;0;0;0;0;0;0;0;0;0
+10;16419;True;3781436902142609259;create view revenue0 (supplier_no, total_revenue) as select l_suppkey, sum(l_extendedprice * (1 - l_discount)) from lineitem where l_shipdate >= '1997-08-01'::date and l_shipdate < '1997-08-01'::date + interval '3' month group by l_suppkey;0;0;0;0;0;0;1;0.440289;0.440289;0.440289;;0.440289;;;;0;0;75;29;20;0;0;0;0;0;0;0;0.079732;0;0;0;41;0;5575;0;0;0;0;0;0;0;0
+10;16419;True;931303454371000975;"SELECT
+            roles.oid as id, roles.rolname as name,
+            roles.rolsuper as is_superuser,
+            CASE WHEN roles.rolsuper THEN $1 ELSE roles.rolcreaterole END as
+            can_create_role,
+            CASE WHEN roles.rolsuper THEN $2
+            ELSE roles.rolcreatedb END as can_create_db,
+            CASE WHEN $3=ANY(ARRAY(WITH RECURSIVE cte AS (
+            SELECT pg_roles.oid,pg_roles.rolname FROM pg_roles
+                WHERE pg_roles.oid = roles.oid
+            UNION ALL
+            SELECT m.roleid,pgr.rolname FROM cte cte_1
+                JOIN pg_auth_members m ON m.member = cte_1.oid
+                JOIN pg_roles pgr ON pgr.oid = m.roleid)
+            SELECT rolname  FROM cte)) THEN $4
+            ELSE $5 END as can_signal_backend
+        FROM
+            pg_catalog.pg_roles as roles
+        WHERE
+            rolname = current_user";0;0;0;0;0;0;1;0.046091;0.046091;0.046091;;0.046091;;;;0;1;3;1;0;0;0;0;0;0;0;0;0.00471;0;0;0;0;0;0;0;0;0;0;0;0;0;0
+10;16419;True;5848681576227864375;"SELECT n.nspname, r.relname
+FROM pg_catalog.pg_class r
+    LEFT JOIN pg_catalog.pg_namespace n ON (r.relnamespace = n.oid)
+WHERE r.oid = $1";0;0;0;0;0;0;1;0.02863;0.02863;0.02863;;0.02863;;;;0;1;4;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0
+10;16419;True;-7117852275930091600;"SELECT
+   s_suppkey,
+   s_name,
+   s_address,
+   s_phone,
+   total_revenue
+FROM
+   supplier,
+   revenue0
+WHERE
+   s_suppkey = supplier_no
+   AND total_revenue = (
+      SELECT
+         MAX(total_revenue)
+      FROM
+         revenue0
+   )
+ORDER BY
+   s_suppkey";0;0;0;0;0;0;1;2353.703023;2353.703023;2353.703023;;2353.703023;;;;0;1;1;267488;0;13;0;0;0;0;108;244;377.038607;0.10485;0.166321;3.293204;0;0;0;40;2.24045;1;35.809616;1;174.537631;1;127.700663
+10;16419;True;-3088299803543020730;"SELECT
+    db.oid as did, db.datname, db.datallowconn,
+    pg_encoding_to_char(db.encoding) AS serverencoding,
+    has_database_privilege(db.oid, $1) as cancreate,
+    datistemplate
+FROM
+    pg_catalog.pg_database db
+WHERE db.datname = current_database()";0;0;0;0;0;0;1;0.00754;0.00754;0.00754;;0.00754;;;;0;1;1;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0
+10;16419;True;-1076756456863122580;select n_name, sum(l_extendedprice * ($4 - l_discount)) as revenue from customer, orders, lineitem, supplier, nation, region where c_custkey = o_custkey and l_orderkey = o_orderkey and l_suppkey = s_suppkey and c_nationkey = s_nationkey and s_nationkey = n_nationkey and n_regionkey = r_regionkey and r_name = $1 and o_orderdate >= $2::date and o_orderdate < $3::date + interval $5 year group by n_name order by revenue desc;0;0;0;0;0;0;18;43340.161189000006;1808.045296;4849.130784;2292.686569;2407.7867327222216;1006.629767;1286.056802;0.782725744;628.7692235876442;90;18344276;12696520;0;1;0;0;0;0;0;0;23149.005979;0.016462;0;0;0;0;0;0;0;0;0;0;0;0;0
+10;16419;True;-4554835823379561409;SELECT * FROM pg_stat_user_indexes;0;0;0;0;0;0;1;0.150342;0.150342;0.150342;;0.150342;;;;0;31;113;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0
+10;16419;True;-5746629022654674271;select c_custkey, c_name, sum(l_extendedprice * ($3 - l_discount)) as revenue, c_acctbal, n_name, c_address, c_phone, c_comment from customer, orders, lineitem, nation where c_custkey = o_custkey and l_orderkey = o_orderkey and o_orderdate >= $1::date and o_orderdate < $2::date + interval $4 month and l_returnflag = $5 and c_nationkey = n_nationkey group by c_custkey, c_name, c_acctbal, c_phone, n_name, c_address, c_comment order by revenue desc limit $6;0;0;0;0;0;0;17;16448.691651;862.842272;1036.7821239999998;969.937817;967.5700971176469;718.3929778;251.5448392;2.855924137;47.286052696892334;340;5908127;2831318;0;0;0;0;0;0;86124;86322;4276.262266;0;85.36547999999999;536.6995009999999;0;0;0;324;12.321314000000001;0;0;9;6.544001;9;141.93559199999999
+10;16419;True;-8858739670521730174;"SELECT
+   s_name,
+   COUNT(*) AS numwait
+FROM
+   supplier,
+   lineitem l1,
+   orders,
+   nation
+WHERE
+   s_suppkey = l1.l_suppkey
+   AND o_orderkey = l1.l_orderkey
+   AND o_orderstatus = $2
+   AND l1.l_receiptdate > l1.l_commitdate
+   AND EXISTS
+   (
+      SELECT
+         *
+      FROM
+         lineitem l2
+      WHERE
+         l2.l_orderkey = l1.l_orderkey
+         AND l2.l_suppkey <> l1.l_suppkey
+   )
+   AND NOT EXISTS
+   (
+      SELECT
+         *
+      FROM
+         lineitem l3
+      WHERE
+         l3.l_orderkey = l1.l_orderkey
+         AND l3.l_suppkey <> l1.l_suppkey
+         AND l3.l_receiptdate > l3.l_commitdate
+   )
+   AND s_nationkey = n_nationkey
+   AND n_name = $1
+GROUP BY
+   s_name
+ORDER BY
+   numwait DESC,
+   s_name LIMIT $3";0;0;0;0;0;0;17;44895.060729;2167.3945080000003;3044.373793;2645.552829;2640.8859252352945;1467.645377;1177.907451;1.245976817;218.70799819940606;1700;19618242;12259341;0;9;0;0;0;0;0;0;20024.311231;0.115443;0;0;0;0;0;646;21.214391999999997;0;0;17;16.506228999999998;17;201.79890799999998
+10;16419;True;869822027128330879;"SELECT
+   s_suppkey,
+   s_name,
+   s_address,
+   s_phone,
+   total_revenue
+FROM
+   supplier,
+   revenue0
+WHERE
+   s_suppkey = supplier_no
+   AND total_revenue = (
+      SELECT
+         MAX(total_revenue)
+      FROM
+         revenue0
+   )
+ORDER BY
+   s_suppkey";0;0;0;0;0;0;1;2286.510992;2286.510992;2286.510992;;2286.510992;;;;0;1;1;267872;0;13;0;0;0;0;108;244;395.868499;0.089552;0.141932;1.905051;0;0;0;40;2.112802;1;35.054909;1;168.251881;1;117.894622
+10;16419;True;-5153988161771283057;"SELECT
+   s_suppkey,
+   s_name,
+   s_address,
+   s_phone,
+   total_revenue
+FROM
+   supplier,
+   revenue0
+WHERE
+   s_suppkey = supplier_no
+   AND total_revenue = (
+      SELECT
+         MAX(total_revenue)
+      FROM
+         revenue0
+   )
+ORDER BY
+   s_suppkey";0;0;0;0;0;0;1;2424.890163;2424.890163;2424.890163;;2424.890163;;;;0;1;1;267978;0;13;0;0;0;0;106;244;381.78476;0.095812;0.154856;2.578329;0;0;0;40;2.516571;1;41.46523;1;177.33024;1;124.825638
+10;16419;True;3307223188059133500;SHOW ALL;0;0;0;0;0;0;1;0.182443;0.182443;0.182443;;0.182443;;;;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0
+10;16419;True;4452344162736673220;SELECT * FROM pg_stat_database_conflicts;0;0;0;0;0;0;1;0.007220000000000001;0.007220000000000001;0.007220000000000001;;0.007220000000000001;;;;0;4;1;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0
+10;16419;True;4106913820061969125;SELECT * FROM pg_statio_user_tables;0;0;0;0;0;0;1;0.33646499999999996;0.33646499999999996;0.33646499999999996;;0.33646499999999996;;;;0;8;109;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0
+10;16419;True;7719402811077081697;SET client_encoding='utf-8';0;0;0;0;0;0;1;0.00148;0.00148;0.00148;;0.00148;;;;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0
+10;16419;True;3365982590372224235;select pg_stat_statements_reset();0;0;0;0;0;0;1;0.046138;0.046138;0.046138;;0.046138;;;;0;1;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0
+10;16419;True;-2083891731315078379;"SELECT
+   ps_partkey,
+   SUM(ps_supplycost * ps_availqty) AS VALUE
+FROM
+   partsupp,
+   supplier,
+   nation
+WHERE
+   ps_suppkey = s_suppkey
+   AND s_nationkey = n_nationkey
+   AND n_name = $1
+GROUP BY
+   ps_partkey
+HAVING
+   SUM(ps_supplycost * ps_availqty) > (
+   SELECT
+      SUM(ps_supplycost * ps_availqty) * $2
+   FROM
+      partsupp, supplier, nation
+   WHERE
+      ps_suppkey = s_suppkey
+      AND s_nationkey = n_nationkey
+      AND n_name = $3 )
+   ORDER BY
+      VALUE DESC";0;0;0;0;0;0;17;4546.275178000001;241.15782;302.505965;266.8407595;267.4279516470588;150.4367885;116.403971;1.292368183;17.504144761761065;34398;957136;1277626;0;0;0;0;0;0;3126;5870;1978.867507;0;4.000732;31.884387;0;0;0;0;0;0;0;0;0;0;0
+10;16419;True;-1540851199369180844;SELECT set_config($1,$2,$3) FROM pg_settings WHERE name = $4;0;0;0;0;0;0;1;0.537787;0.537787;0.537787;;0.537787;;;;0;1;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0
+10;16419;True;2999103544079323559;SELECT $1::text AS PKTABLE_CAT, pkn.nspname AS PKTABLE_SCHEM, pkc.relname AS PKTABLE_NAME, pka.attname AS PKCOLUMN_NAME, $2::text AS FKTABLE_CAT, fkn.nspname AS FKTABLE_SCHEM, fkc.relname AS FKTABLE_NAME, fka.attname AS FKCOLUMN_NAME, pos.n AS KEY_SEQ, CASE con.confupdtype  WHEN $3 THEN $4 WHEN $5 THEN $6 WHEN $7 THEN $8 WHEN $9 THEN $10 WHEN $11 THEN $12 WHEN $13 THEN $14 ELSE $15 END AS UPDATE_RULE, CASE con.confdeltype  WHEN $16 THEN $17 WHEN $18 THEN $19 WHEN $20 THEN $21 WHEN $22 THEN $23 WHEN $24 THEN $25 WHEN $26 THEN $27 ELSE $28 END AS DELETE_RULE, con.conname AS FK_NAME, pkic.relname AS PK_NAME, CASE  WHEN con.condeferrable AND con.condeferred THEN $29 WHEN con.condeferrable THEN $30 ELSE $31 END AS DEFERRABILITY  FROM  pg_catalog.pg_namespace pkn, pg_catalog.pg_class pkc, pg_catalog.pg_attribute pka,  pg_catalog.pg_namespace fkn, pg_catalog.pg_class fkc, pg_catalog.pg_attribute fka,  pg_catalog.pg_constraint con,  pg_catalog.generate_series($32, $33) pos(n),  pg_catalog.pg_class pkic WHERE pkn.oid = pkc.relnamespace AND pkc.oid = pka.attrelid AND pka.attnum = con.confkey[pos.n] AND con.confrelid = pkc.oid  AND fkn.oid = fkc.relnamespace AND fkc.oid = fka.attrelid AND fka.attnum = con.conkey[pos.n] AND con.conrelid = fkc.oid  AND con.contype = $34 AND (pkic.relkind = $35 OR pkic.relkind = $36) AND pkic.oid = con.conindid  AND fkn.nspname = $37 AND fkc.relname = $38 ORDER BY pkn.nspname,pkc.relname, con.conname,pos.n;0;0;0;0;0;0;8;0.631483;0.015693;0.143525;;0.078935375;;;;0.04599980225483991;9;263;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0
+10;16419;True;-6434401716891661490;DROP VIEW revenue0;0;0;0;0;0;0;17;6.3489869999999975;0.246291;1.182813;0.3279922;0.37346982352941177;0.202640376;0.125351824;1.616573024;0.21786187221757117;0;1485;508;86;0;0;0;0;0;0;0;2.1309810000000002;0;0;0;252;0;13840;0;0;0;0;0;0;0;0
+10;16419;True;-944946639373099149;select sum(l_extendedprice * l_discount) as revenue from lineitem where l_shipdate >= $1::date and l_shipdate < $2::date + interval $6 year and l_discount between $3::decimal - $7 and $4::decimal + $8 and l_quantity < $5;0;0;0;0;0;0;18;33952.071531;1381.0536149999998;3011.784995;1847.452058;1886.2261961666666;1562.56359;284.8884681;5.484825694;488.40223089582315;18;18354;3906029;0;0;0;0;0;0;0;0;5127.992425;0;0;0;0;0;0;144;10.316789;0;0;18;4.818522;18;87.952525
+10;16419;True;-6320109354217978904;create view revenue0 (supplier_no, total_revenue) as select l_suppkey, sum(l_extendedprice * (1 - l_discount)) from lineitem where l_shipdate >= '1994-08-01'::date and l_shipdate < '1994-08-01'::date + interval '3' month group by l_suppkey;0;0;0;0;0;0;2;0.9519690000000001;0.461976;0.489993;;0.47598450000000003;;;;0.014008500000000021;0;152;68;41;0;0;0;0;0;0;0;0.17048200000000002;0;0;0;84;1;11324;0;0;0;0;0;0;0;0
+10;16419;True;-488484303752125440;create view revenue0 (supplier_no, total_revenue) as select l_suppkey, sum(l_extendedprice * (1 - l_discount)) from lineitem where l_shipdate >= '1997-06-01'::date and l_shipdate < '1997-06-01'::date + interval '3' month group by l_suppkey;0;0;0;0;0;0;1;0.46403;0.46403;0.46403;;0.46403;;;;0;0;75;29;20;0;0;0;0;0;0;0;0.07637;0;0;0;43;20;111991;0;0;0;0;0;0;0;0
+10;16419;True;7048027824919541148;"SELECT
+   nation,
+   o_year,
+   SUM(amount) AS sum_profit
+FROM
+   (
+      SELECT
+         n_name AS nation,
+         EXTRACT($2
+      FROM
+         o_orderdate) AS o_year,
+         l_extendedprice * ($3 - l_discount) - ps_supplycost * l_quantity AS amount
+      FROM
+         part,
+         supplier,
+         lineitem,
+         partsupp,
+         orders,
+         nation
+      WHERE
+         s_suppkey = l_suppkey
+         AND ps_suppkey = l_suppkey
+         AND ps_partkey = l_partkey
+         AND p_partkey = l_partkey
+         AND o_orderkey = l_orderkey
+         AND s_nationkey = n_nationkey
+         AND p_name LIKE $1
+   )
+   AS profit
+GROUP BY
+   nation,
+   o_year
+ORDER BY
+   nation,
+   o_year DESC";0;0;0;0;0;0;18;95107.67805799999;3905.1146449999997;8470.385583000001;5170.761114;5283.75989211111;3037.169737;2133.591377;1.42350113;1237.2965325817336;3150;21555908;20510629;0;1;0;0;0;0;318398;318994;38404.634760999994;0.01003;365.04329500000006;1754.5229519999998;0;0;0;447;13.682607999999998;1;12.563085;9;144.90443499999998;9;227.38722700000005
+10;16419;True;-67647327559944357;select l_shipmode, sum(case when o_orderpriority = $5 or o_orderpriority = $6 then $7 else $8 end) as high_line_count, sum(case when o_orderpriority <> $9 and o_orderpriority <> $10 then $11 else $12 end) as low_line_count from orders, lineitem where o_orderkey = l_orderkey and l_shipmode in ($1, $2) and l_commitdate < l_receiptdate and l_shipdate < l_commitdate and l_receiptdate >= $3::date and l_receiptdate < $4::date + interval $13 year group by l_shipmode order by l_shipmode;0;0;0;0;0;0;17;39214.47781099999;2112.6607700000004;2679.248301;2294.837916;2306.733988882352;1918.052553;376.7853626;5.090570769;198.97898539527276;34;3497995;4456989;0;0;0;0;0;0;4816;4833;6405.351165;0;5.017294000000001;31.573369000000003;0;0;0;304;15.734562;0;0;17;9.254850999999999;17;156.8836
+10;16419;True;-2885330479908940062;SELECT version();0;0;0;0;0;0;2;0.00575;0.00202;0.00373;;0.002875;;;;0.0008549999999999999;2;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0
+10;16419;True;-2067395470802284988;"SELECT
+   s_suppkey,
+   s_name,
+   s_address,
+   s_phone,
+   total_revenue
+FROM
+   supplier,
+   revenue0
+WHERE
+   s_suppkey = supplier_no
+   AND total_revenue = (
+      SELECT
+         MAX(total_revenue)
+      FROM
+         revenue0
+   )
+ORDER BY
+   s_suppkey";0;0;0;0;0;0;1;2436.337645;2436.337645;2436.337645;;2436.337645;;;;0;1;1;268926;0;13;0;0;0;0;106;242;387.987515;0.102501;0.172235;2.632817;0;0;0;40;2.327261;1;36.12222;1;172.01308;1;133.974799
+10;16419;True;-7027082182780151533;"SELECT
+   s_suppkey,
+   s_name,
+   s_address,
+   s_phone,
+   total_revenue
+FROM
+   supplier,
+   revenue0
+WHERE
+   s_suppkey = supplier_no
+   AND total_revenue = (
+      SELECT
+         MAX(total_revenue)
+      FROM
+         revenue0
+   )
+ORDER BY
+   s_suppkey";0;0;0;0;0;0;1;2504.048253;2504.048253;2504.048253;;2504.048253;;;;0;1;1;269732;0;13;0;0;0;0;108;242;402.99828;0.10621;0.240494;2.842708;0;0;0;40;2.241019;1;39.216931;1;180.687969;1;149.663716
+10;16419;True;9077646515210761923;create view revenue0 (supplier_no, total_revenue) as select l_suppkey, sum(l_extendedprice * (1 - l_discount)) from lineitem where l_shipdate >= '1996-09-01'::date and l_shipdate < '1996-09-01'::date + interval '3' month group by l_suppkey;0;0;0;0;0;0;1;0.493127;0.493127;0.493127;;0.493127;;;;0;0;75;29;20;0;0;0;0;0;0;0;0.09086;0;0;0;41;0;5573;0;0;0;0;0;0;0;0
+10;16419;True;4124983557046791190;SELECT * FROM (SELECT n.nspname,c.relname,a.attname,a.atttypid,a.attnotnull OR (t.typtype = $1 AND t.typnotnull) AS attnotnull,a.atttypmod,a.attlen,t.typtypmod,row_number() OVER (PARTITION BY a.attrelid ORDER BY a.attnum) AS attnum, nullif(a.attidentity, $2) as attidentity,nullif(a.attgenerated, $3) as attgenerated,pg_catalog.pg_get_expr(def.adbin, def.adrelid) AS adsrc,dsc.description,t.typbasetype,t.typtype  FROM pg_catalog.pg_namespace n  JOIN pg_catalog.pg_class c ON (c.relnamespace = n.oid)  JOIN pg_catalog.pg_attribute a ON (a.attrelid=c.oid)  JOIN pg_catalog.pg_type t ON (a.atttypid = t.oid)  LEFT JOIN pg_catalog.pg_attrdef def ON (a.attrelid=def.adrelid AND a.attnum = def.adnum)  LEFT JOIN pg_catalog.pg_description dsc ON (c.oid=dsc.objoid AND a.attnum = dsc.objsubid)  LEFT JOIN pg_catalog.pg_class dc ON (dc.oid=dsc.classoid AND dc.relname=$4)  LEFT JOIN pg_catalog.pg_namespace dn ON (dc.relnamespace=dn.oid AND dn.nspname=$5)  WHERE c.relkind in ($6,$7,$8,$9,$10) and a.attnum > $11 AND NOT a.attisdropped  AND n.nspname LIKE $12 AND c.relname LIKE $13) c WHERE $14  ORDER BY nspname,c.relname,attnum;0;0;0;0;0;0;8;0.45737999999999995;0.040977;0.082984;;0.057172499999999994;;;;0.0135563810159644;61;264;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0
+10;16419;True;6248390178589040492;create view revenue0 (supplier_no, total_revenue) as select l_suppkey, sum(l_extendedprice * (1 - l_discount)) from lineitem where l_shipdate >= '1993-04-01'::date and l_shipdate < '1993-04-01'::date + interval '3' month group by l_suppkey;0;0;0;0;0;0;1;0.509555;0.509555;0.509555;;0.509555;;;;0;0;75;29;20;0;0;0;0;0;0;0;0.077692;0;0;0;43;20;118639;0;0;0;0;0;0;0;0
+10;16419;True;-2728808345421986887;"SELECT
+   s_suppkey,
+   s_name,
+   s_address,
+   s_phone,
+   total_revenue
+FROM
+   supplier,
+   revenue0
+WHERE
+   s_suppkey = supplier_no
+   AND total_revenue = (
+      SELECT
+         MAX(total_revenue)
+      FROM
+         revenue0
+   )
+ORDER BY
+   s_suppkey";0;0;0;0;0;0;1;2395.161201;2395.161201;2395.161201;;2395.161201;;;;0;1;1;267978;0;17;0;0;0;0;106;244;429.626093;0.205046;0.143817;2.778182;0;0;0;40;2.000763;1;35.24287;1;173.753686;1;118.650622
+10;16419;True;-9223317314218100470;"SELECT
+   supp_nation,
+   cust_nation,
+   l_year,
+   SUM(volume) AS revenue
+FROM
+   (
+      SELECT
+         n1.n_name AS supp_nation,
+         n2.n_name AS cust_nation,
+         EXTRACT($5
+      FROM
+         l_shipdate) AS l_year,
+         l_extendedprice * ($6 - l_discount) AS volume
+      FROM
+         supplier,
+         lineitem,
+         orders,
+         customer,
+         nation n1,
+         nation n2
+      WHERE
+         s_suppkey = l_suppkey
+         AND o_orderkey = l_orderkey
+         AND c_custkey = o_custkey
+         AND s_nationkey = n1.n_nationkey
+         AND c_nationkey = n2.n_nationkey
+         AND
+         (
+            (n1.n_name = $1 AND n2.n_name = $2)
+            OR
+            (n1.n_name = $3 AND n2.n_name = $4)
+         )
+         AND l_shipdate BETWEEN DATE $7 AND DATE $8
+   )
+   AS shipping
+GROUP BY
+   supp_nation,
+   cust_nation,
+   l_year
+ORDER BY
+   supp_nation,
+   cust_nation,
+   l_year";0;0;0;0;0;0;18;53089.876191;2642.4239639999996;3227.0951609999997;2951.272317;2949.4375661666663;1074.382613;1876.889704;0.572427144;124.45703515173606;72;3708332;19464781;0;1;0;0;0;0;60014;60014;33783.998553;0.016111;67.167509;531.259814;0;0;0;0;0;0;0;0;0;0;0
+10;16419;True;-6358513674592029986;create view revenue0 (supplier_no, total_revenue) as select l_suppkey, sum(l_extendedprice * (1 - l_discount)) from lineitem where l_shipdate >= '1995-01-01'::date and l_shipdate < '1995-01-01'::date + interval '3' month group by l_suppkey;0;0;0;0;0;0;2;7.524154;0.50124;7.022914;;3.762077;;;;3.260837;0;220;101;41;0;0;0;0;0;0;0;6.378113;0;0;0;86;20;109836;0;0;0;0;0;0;0;0
+10;16419;True;4647070297903581691;SELECT oid, pg_catalog.format_type(oid, $2) AS typname FROM pg_catalog.pg_type WHERE oid = ANY($1) ORDER BY oid;0;0;0;0;0;0;1;0.016572999999999997;0.016572999999999997;0.016572999999999997;;0.016572999999999997;;;;0;1;3;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0
+10;16419;True;211946178977378488;"SELECT
+   s_suppkey,
+   s_name,
+   s_address,
+   s_phone,
+   total_revenue
+FROM
+   supplier,
+   revenue0
+WHERE
+   s_suppkey = supplier_no
+   AND total_revenue = (
+      SELECT
+         MAX(total_revenue)
+      FROM
+         revenue0
+   )
+ORDER BY
+   s_suppkey";0;0;0;0;0;0;1;2485.0049360000003;2485.0049360000003;2485.0049360000003;;2485.0049360000003;;;;0;1;1;269882;0;16;0;0;0;0;110;246;423.851377;0.143655;0.153138;2.555985;0;0;0;40;2.414429;1;40.894878;1;185.324022;1;127.518376
+10;16419;True;8994470303385999087;select s_name, s_address from supplier, nation where s_suppkey in ( select ps_suppkey from partsupp where ps_partkey in ( select p_partkey from part where p_name like $1 ) and ps_availqty > ( select $5 * sum(l_quantity) from lineitem where l_partkey = ps_partkey and l_suppkey = ps_suppkey and l_shipdate >= $2::date and l_shipdate < $3::date + interval $6 year ) ) and s_nationkey = n_nationkey and n_name = $4 order by s_name;0;0;0;0;0;0;17;22046.248664000002;1104.6070320000001;1681.674486;1283.99781;1296.8381567058823;454.1428367;829.8549731;0.547255667;128.50811008442358;6112;4730432;6940942;0;0;0;0;0;0;0;0;14107.534542;0;0;0;0;0;0;0;0;0;0;0;0;0;0
+10;16419;True;2064869707185898531;COMMIT;0;0;0;0;0;0;1;0.00085;0.00085;0.00085;;0.00085;;;;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0
+10;16419;True;8337740243580573530;SET client_min_messages=notice;0;0;0;0;0;0;1;0.00138;0.00138;0.00138;;0.00138;;;;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0
+10;16419;True;-5542939930010199807;"SELECT
+   s_suppkey,
+   s_name,
+   s_address,
+   s_phone,
+   total_revenue
+FROM
+   supplier,
+   revenue0
+WHERE
+   s_suppkey = supplier_no
+   AND total_revenue = (
+      SELECT
+         MAX(total_revenue)
+      FROM
+         revenue0
+   )
+ORDER BY
+   s_suppkey";0;0;0;0;0;0;1;2249.906079;2249.906079;2249.906079;;2249.906079;;;;0;1;1;267590;0;11;0;0;0;0;106;242;347.942805;0.07339;0.149042;2.113897;0;0;0;40;2.153332;1;34.061376;1;174.980009;1;119.227181
+10;16419;True;7832612780343467667;create view revenue0 (supplier_no, total_revenue) as select l_suppkey, sum(l_extendedprice * (1 - l_discount)) from lineitem where l_shipdate >= '1995-06-01'::date and l_shipdate < '1995-06-01'::date + interval '3' month group by l_suppkey;0;0;0;0;0;0;1;0.477566;0.477566;0.477566;;0.477566;;;;0;0;76;29;20;0;0;0;0;0;0;0;0.082719;0;0;0;43;0;5781;0;0;0;0;0;0;0;0
+10;16419;True;-1230386279905109600;SET application_name = 'tpch';0;0;0;0;0;0;3;0.019671;0.002301;0.01482;;0.006557;;;;0.005843707555995594;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0
+10;16419;True;-1796743056771589294;SELECT * FROM pg_statio_user_indexes;0;0;0;0;0;0;1;0.146432;0.146432;0.146432;;0.146432;;;;0;31;113;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0
+10;16419;True;6650430479887907887;BEGIN;0;0;0;0;0;0;68;0.035511;0.00032;0.00195;;0.000522220588235294;;;;0.00027419957553428736;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0
+10;16419;True;5812696535754339910;create view revenue0 (supplier_no, total_revenue) as select l_suppkey, sum(l_extendedprice * (1 - l_discount)) from lineitem where l_shipdate >= '1996-07-01'::date and l_shipdate < '1996-07-01'::date + interval '3' month group by l_suppkey;0;0;0;0;0;0;1;0.427008;0.427008;0.427008;;0.427008;;;;0;0;75;29;20;0;0;0;0;0;0;0;0.075711;0;0;0;41;0;5573;0;0;0;0;0;0;0;0
+10;16419;True;1500919254599543373;"SELECT
+   SUM(l_extendedprice) / $3 AS avg_yearly
+FROM
+   lineitem,
+   part
+WHERE
+   p_partkey = l_partkey
+   AND p_brand = $1
+   AND p_container = $2
+   AND l_quantity < (
+   SELECT
+      $4 * AVG(l_quantity)
+   FROM
+      lineitem
+   WHERE
+      l_partkey = p_partkey )";0;0;0;0;0;0;17;25616.182886000002;1396.0892959999999;1616.3095;1506.918939;1506.8342874117648;1225.425826;281.4931132;4.353306595;60.957081938167384;17;6822266;3970460;0;0;0;0;0;0;0;0;4785.382924;0;0;0;0;0;0;425;16.513774;0;0;17;12.114084;17;190.848065
+10;16419;True;6086961418802792255;select $3 * sum(case when p_type like $4 then l_extendedprice * ($5 - l_discount) else $6 end) / sum(l_extendedprice * ($7 - l_discount)) as promo_revenue from lineitem, part where l_partkey = p_partkey and l_shipdate >= $1::date and l_shipdate < $2::date + interval $8 month;0;0;0;0;0;0;17;11170.052436;600.004208;698.763951;658.0856185;657.061908;515.8205717;142.2650468;3.625771638;25.174106286681237;17;0;1547418;0;0;0;0;0;0;0;0;2418.505795;0;0;0;0;0;0;305;15.327687;0;0;17;8.498846;17;133.03162
+10;16419;True;1182468792634287427;"SELECT
+   s_suppkey,
+   s_name,
+   s_address,
+   s_phone,
+   total_revenue
+FROM
+   supplier,
+   revenue0
+WHERE
+   s_suppkey = supplier_no
+   AND total_revenue = (
+      SELECT
+         MAX(total_revenue)
+      FROM
+         revenue0
+   )
+ORDER BY
+   s_suppkey";0;0;0;0;0;0;1;2586.2649119999996;2586.2649119999996;2586.2649119999996;;2586.2649119999996;;;;0;1;1;269274;0;16;0;0;0;0;106;242;452.649274;0.118904;0.152492;2.521659;0;0;0;40;2.403895;1;41.635982;1;177.32784;1;128.164824
+10;16419;True;-3103436647566899960;"SELECT
+   s_suppkey,
+   s_name,
+   s_address,
+   s_phone,
+   total_revenue
+FROM
+   supplier,
+   revenue0
+WHERE
+   s_suppkey = supplier_no
+   AND total_revenue = (
+      SELECT
+         MAX(total_revenue)
+      FROM
+         revenue0
+   )
+ORDER BY
+   s_suppkey";0;0;0;0;0;0;1;2476.904399;2476.904399;2476.904399;;2476.904399;;;;0;1;1;269408;0;16;0;0;0;0;108;240;456.896706;0.133968;0.155748;2.521143;0;0;0;40;2.367272;1;41.842488;1;177.74128;1;123.09148
+10;16419;True;-8625656335671309029;"SELECT
+   s_suppkey,
+   s_name,
+   s_address,
+   s_phone,
+   total_revenue
+FROM
+   supplier,
+   revenue0
+WHERE
+   s_suppkey = supplier_no
+   AND total_revenue = (
+      SELECT
+         MAX(total_revenue)
+      FROM
+         revenue0
+   )
+ORDER BY
+   s_suppkey";0;0;0;0;0;0;1;2372.169467;2372.169467;2372.169467;;2372.169467;;;;0;1;1;269746;0;13;0;0;0;0;108;242;381.316005;0.115213;0.168252;2.773098;0;0;0;40;2.843257;1;37.510367;1;169.29533;1;123.702741
+10;16419;True;4560789258604147685;SET SESSION CHARACTERISTICS AS TRANSACTION ISOLATION LEVEL SERIALIZABLE;0;0;0;0;0;0;1;0.001831;0.001831;0.001831;;0.001831;;;;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0
+10;16419;True;-4290669992150437401;"SELECT
+   o_year,
+   SUM(
+   CASE
+      WHEN
+         nation = $1
+      THEN
+         volume
+      ELSE
+         $4
+   END
+) / SUM(volume) AS mkt_share
+FROM
+   (
+      SELECT
+         EXTRACT($5
+      FROM
+         o_orderdate) AS o_year,
+         l_extendedprice * ($6 - l_discount) AS volume,
+         n2.n_name AS nation
+      FROM
+         part,
+         supplier,
+         lineitem,
+         orders,
+         customer,
+         nation n1,
+         nation n2,
+         region
+      WHERE
+         p_partkey = l_partkey
+         AND s_suppkey = l_suppkey
+         AND l_orderkey = o_orderkey
+         AND o_custkey = c_custkey
+         AND c_nationkey = n1.n_nationkey
+         AND n1.n_regionkey = r_regionkey
+         AND r_name = $2
+         AND s_nationkey = n2.n_nationkey
+         AND o_orderdate BETWEEN DATE $7 AND DATE $8
+         AND p_type = $3
+   )
+   AS all_nations
+GROUP BY
+   o_year
+ORDER BY
+   o_year";0;0;0;0;0;0;18;85125.72765;4055.286566;5048.224894999999;4751.388512;4729.207091666667;2747.997751;2003.390761;1.371673367;232.11014360593202;36;58946109;21133077;0;0;0;0;0;0;0;0;36061.033697;0;0;0;0;0;0;0;0;0;0;0;0;0;0
+10;16419;True;-4903595237513634451;"SELECT
+   c_count,
+   COUNT(*) AS custdist
+FROM
+   (
+      SELECT
+         c_custkey,
+         COUNT(o_orderkey) AS c_count
+      FROM
+         customer
+         LEFT OUTER JOIN
+            orders
+            ON c_custkey = o_custkey
+            AND o_comment NOT LIKE $1
+      GROUP BY
+         c_custkey
+   )
+   AS c_orders
+GROUP BY
+   c_count
+ORDER BY
+   custdist DESC,
+   c_count DESC";0;0;0;0;0;0;17;40945.685072;2147.063866;2537.520717;2417.406699;2408.569710117647;2364.753994;52.65270565;44.91229775;125.05438026456429;697;115135;786038;0;0;0;0;0;0;117511;194924;895.095996;0;125.265818;1031.397786;0;0;0;459;22.427061000000005;0;0;17;10.732174;17;162.850541
+10;16419;True;-4570799927402708811;SET extra_float_digits = 3;0;0;0;0;0;0;3;0.014270999999999999;0.00452;0.005011;;0.004757;;;;0.000200810026310109;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0
+10;16419;True;8157756291020652851;"SELECT
+   s_suppkey,
+   s_name,
+   s_address,
+   s_phone,
+   total_revenue
+FROM
+   supplier,
+   revenue0
+WHERE
+   s_suppkey = supplier_no
+   AND total_revenue = (
+      SELECT
+         MAX(total_revenue)
+      FROM
+         revenue0
+   )
+ORDER BY
+   s_suppkey";0;0;0;0;0;0;1;2435.9292649999998;2435.9292649999998;2435.9292649999998;;2435.9292649999998;;;;0;1;1;269900;0;13;0;0;0;0;108;242;411.200789;0.107853;0.162031;2.623069;0;0;0;40;2.050614;1;60.301508;1;170.227;1;120.915742
+10;16419;True;5143700829170453064;select l_returnflag, l_linestatus, sum(l_quantity) as sum_qty, sum(l_extendedprice) as sum_base_price, sum(l_extendedprice * ($2 - l_discount)) as sum_disc_price, sum(l_extendedprice * ($3 - l_discount) * ($4 + l_tax)) as sum_charge, avg(l_quantity) as avg_qty, avg(l_extendedprice) as avg_price, avg(l_discount) as avg_disc, count(*) as count_order from lineitem where l_shipdate <= date $5 - concat($1,$6)::interval group by l_returnflag, l_linestatus order by l_returnflag, l_linestatus;0;0;0;0;0;0;19;212144.54327;10639.142969;12063.869324000001;11143.61947;11165.502277368421;10900.78616;242.8333126;44.88999487;423.8790124301338;76;120125;4153355;0;0;0;0;0;0;0;0;4613.832939000002;0;0;0;0;0;0;228;18.996116999999998;9;131.385942;19;778.966446;19;684.2663650000001
+10;16419;True;8726246850004608196;"SELECT
+   s_suppkey,
+   s_name,
+   s_address,
+   s_phone,
+   total_revenue
+FROM
+   supplier,
+   revenue0
+WHERE
+   s_suppkey = supplier_no
+   AND total_revenue = (
+      SELECT
+         MAX(total_revenue)
+      FROM
+         revenue0
+   )
+ORDER BY
+   s_suppkey";0;0;0;0;0;0;1;2441.1283780000003;2441.1283780000003;2441.1283780000003;;2441.1283780000003;;;;0;1;1;269826;0;16;0;0;0;0;106;240;401.911507;0.141101;0.18544;2.376729;0;0;0;40;2.098723;1;36.351894;1;173.616217;1;129.139137
+10;16419;True;6865091933239955883;select l_orderkey, sum(l_extendedprice * ($4 - l_discount)) as revenue, o_orderdate, o_shippriority from customer, orders, lineitem where c_mktsegment = $1 and c_custkey = o_custkey and l_orderkey = o_orderkey and o_orderdate < $2::date and l_shipdate > $3::date group by l_orderkey, o_orderdate, o_shippriority order by revenue desc, o_orderdate limit $5;0;0;0;0;0;0;18;25327.016979000004;1239.7091639999999;1772.0625420000001;1394.70283;1407.0564988333335;1029.000196;365.7026336;2.813762061;110.8541737660236;180;17939914;4490322;0;0;0;0;0;0;4727;4745;6582.6474039999985;0;4.5673840000000006;30.398449;0;0;0;540;24.102418999999998;0;0;18;10.44716;18;216.619134
+10;16419;True;1644537659814440947;"SELECT
+   s_suppkey,
+   s_name,
+   s_address,
+   s_phone,
+   total_revenue
+FROM
+   supplier,
+   revenue0
+WHERE
+   s_suppkey = supplier_no
+   AND total_revenue = (
+      SELECT
+         MAX(total_revenue)
+      FROM
+         revenue0
+   )
+ORDER BY
+   s_suppkey";0;0;0;0;0;0;1;2384.422317;2384.422317;2384.422317;;2384.422317;;;;0;1;1;268874;0;13;0;0;0;0;110;242;391.013897;0.104402;0.160962;2.431439;0;0;0;40;2.197841;1;35.48629;1;175.662742;1;122.169003
+10;16419;True;5591784696012235849;"SELECT
+             gss_authenticated, encrypted
+        FROM
+            pg_catalog.pg_stat_gssapi
+        WHERE pid = pg_backend_pid()";0;0;0;0;0;0;1;0.04167;0.04167;0.04167;;0.04167;;;;0;1;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0
+10;16419;True;3007824077230373907;SELECT $1 AS TABLE_CAT, n.nspname AS TABLE_SCHEM, c.relname AS TABLE_NAME,  CASE n.nspname ~ $2 OR n.nspname = $3  WHEN $4 THEN CASE  WHEN n.nspname = $5 OR n.nspname = $6 THEN CASE c.relkind   WHEN $7 THEN $8   WHEN $9 THEN $10   WHEN $11 THEN $12   ELSE $13   END  WHEN n.nspname = $14 THEN CASE c.relkind   WHEN $15 THEN $16   WHEN $17 THEN $18   ELSE $19   END  ELSE CASE c.relkind   WHEN $20 THEN $21   WHEN $22 THEN $23   WHEN $24 THEN $25   WHEN $26 THEN $27   WHEN $28 THEN $29   ELSE $30   END  END  WHEN $31 THEN CASE c.relkind  WHEN $32 THEN $33  WHEN $34 THEN $35  WHEN $36 THEN $37  WHEN $38 then $39  WHEN $40 THEN $41  WHEN $42 THEN $43  WHEN $44 THEN $45  WHEN $46 THEN $47  WHEN $48 THEN $49  ELSE $50  END  ELSE $51  END  AS TABLE_TYPE, d.description AS REMARKS,  $52 as TYPE_CAT, $53 as TYPE_SCHEM, $54 as TYPE_NAME, $55 AS SELF_REFERENCING_COL_NAME, $56 AS REF_GENERATION  FROM pg_catalog.pg_namespace n, pg_catalog.pg_class c  LEFT JOIN pg_catalog.pg_description d ON (c.oid = d.objoid AND d.objsubid = $57  and d.classoid = $58::regclass)  WHERE c.relnamespace = n.oid  AND n.nspname LIKE $59 AND ($60  OR ( c.relkind = $61 AND n.nspname !~ $62 AND n.nspname <> $63 ) )  ORDER BY TABLE_TYPE,TABLE_SCHEM,TABLE_NAME;0;0;0;0;0;0;1;0.105169;0.105169;0.105169;;0.105169;;;;0;8;37;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0
+10;16419;True;3056798788834760739;select current_schema();0;0;0;0;0;0;1;0.014202999999999999;0.014202999999999999;0.014202999999999999;;0.014202999999999999;;;;0;1;3;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0
+10;16419;True;7999106350079389291;"SELECT
+   c_name,
+   c_custkey,
+   o_orderkey,
+   o_orderdate,
+   o_totalprice,
+   SUM(l_quantity)
+FROM
+   customer,
+   orders,
+   lineitem
+WHERE
+   o_orderkey IN
+   (
+      SELECT
+         l_orderkey
+      FROM
+         lineitem
+      GROUP BY
+         l_orderkey
+      HAVING
+         SUM(l_quantity) > $1
+   )
+   AND c_custkey = o_custkey
+   AND o_orderkey = l_orderkey
+GROUP BY
+   c_name,
+   c_custkey,
+   o_orderkey,
+   o_orderdate,
+   o_totalprice
+ORDER BY
+   o_totalprice DESC,
+   o_orderdate LIMIT $2";0;0;0;0;0;0;17;60165.260509;3355.601357;3713.11814;3539.769401;3539.1329711176472;3138.489845;401.2795557;7.821205443;103.90465311884432;313;230784;5141915;0;54;0;0;0;0;0;0;6820.9048999999995;0.8475469999999999;0;0;0;0;0;646;22.042809000000002;17;160.26634700000002;17;1991.173979;17;1498.6248990000001
+10;16419;True;7831680126514616008;"SELECT
+   s_suppkey,
+   s_name,
+   s_address,
+   s_phone,
+   total_revenue
+FROM
+   supplier,
+   revenue0
+WHERE
+   s_suppkey = supplier_no
+   AND total_revenue = (
+      SELECT
+         MAX(total_revenue)
+      FROM
+         revenue0
+   )
+ORDER BY
+   s_suppkey";0;0;0;0;0;0;1;2452.2634719999996;2452.2634719999996;2452.2634719999996;;2452.2634719999996;;;;0;1;1;269064;0;16;0;0;0;0;106;242;392.606395;0.161919;0.159197;2.489981;0;0;0;40;2.67737;1;41.984593;1;186.507095;1;134.598304
+10;16419;True;8607243722065703722;create view revenue0 (supplier_no, total_revenue) as select l_suppkey, sum(l_extendedprice * (1 - l_discount)) from lineitem where l_shipdate >= '1994-11-01'::date and l_shipdate < '1994-11-01'::date + interval '3' month group by l_suppkey;0;0;0;0;0;0;1;0.603725;0.603725;0.603725;;0.603725;;;;0;0;75;29;20;0;0;0;0;0;0;0;0.117196;0;0;0;43;0;5696;0;0;0;0;0;0;0;0
+10;16419;True;-8061068784043973666;select cntrycode, count(*) as numcust, sum(c_acctbal) as totacctbal from ( select substring(c_phone from $15 for $16) as cntrycode, c_acctbal from customer where substring(c_phone from $17 for $18) in ($1, $2, $3, $4, $5, $6, $7) and c_acctbal > ( select avg(c_acctbal) from customer where c_acctbal > $19 and substring(c_phone from $20 for $21) in ($8, $9, $10, $11, $12, $13, $14) ) and not exists ( select * from orders where o_custkey = c_custkey ) ) as custsale group by cntrycode order by cntrycode;0;0;0;0;0;0;17;4558.466292;227.742297;314.71880200000004;267.7336795;268.145076;244.4708408;23.26283871;10.50907174;32.86705606880632;119;1869233;317447;0;0;0;0;0;0;0;0;395.46825800000005;0;0;0;0;0;0;0;0;0;0;0;0;0;0
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;;;;;;;;;;;;;;;;;CPU intensive;56.27066124;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;;;;;;;;;;;;;;;;;Disk intensive;0.547255667;;;;;;;;;;;;;;;;;;;;;;;;;;;
