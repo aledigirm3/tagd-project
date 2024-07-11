@@ -1,0 +1,1571 @@
+"userid","dbid","toplevel","queryid","query","plans","total_plan_time","min_plan_time","max_plan_time","mean_plan_time","stddev_plan_time","calls","total_exec_time","min_exec_time","max_exec_time","mean_exec_time","stddev_exec_time","rows","shared_blks_hit","shared_blks_read","shared_blks_dirtied","shared_blks_written","local_blks_hit","local_blks_read","local_blks_dirtied","local_blks_written","temp_blks_read","temp_blks_written","blk_read_time","blk_write_time","temp_blk_read_time","temp_blk_write_time","wal_records","wal_fpi","wal_bytes","jit_functions","jit_generation_time","jit_inlining_count","jit_inlining_time","jit_optimization_count","jit_optimization_time","jit_emission_count","jit_emission_time"
+10,16419,True,"-7384719638763031193","create view revenue0 (supplier_no, total_revenue) as select l_suppkey, sum(l_extendedprice * (1 - l_discount)) from lineitem where l_shipdate >= '1997-09-01'::date and l_shipdate < '1997-09-01'::date + interval '3' month group by l_suppkey","0","0","0","0","0","0","2","1.344318","0.448001","0.896317","0.672159","0.22415800000000005","0","150","61","43","0","0","0","0","0","0","0","0.168579","0","0","0","85","21","113612","0","0","0","0","0","0","0","0"
+10,16419,True,"-1396302182840891799","SELECT
+   s_suppkey,
+   s_name,
+   s_address,
+   s_phone,
+   total_revenue
+FROM
+   supplier,
+   revenue0
+WHERE
+   s_suppkey = supplier_no
+   AND total_revenue = (
+      SELECT
+         MAX(total_revenue)
+      FROM
+         revenue0
+   )
+ORDER BY
+   s_suppkey","0","0","0","0","0","0","1","2193.9077079999997","2193.9077079999997","2193.9077079999997","2193.9077079999997","0","1","1","265840","0","11","0","0","0","0","104","240","365.752358","0.076741","0.140072","1.800529","0","0","0","40","1.956693","1","36.596678","1","167.80632","1","116.825773"
+10,16419,True,"-3825640688184167069","SELECT * FROM pg_stat_database","0","0","0","0","0","0","1","0.15997","0.15997","0.15997","0.15997","0","5","1","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0"
+10,16419,True,"1258397410244874875","SELECT
+   s_suppkey,
+   s_name,
+   s_address,
+   s_phone,
+   total_revenue
+FROM
+   supplier,
+   revenue0
+WHERE
+   s_suppkey = supplier_no
+   AND total_revenue = (
+      SELECT
+         MAX(total_revenue)
+      FROM
+         revenue0
+   )
+ORDER BY
+   s_suppkey","0","0","0","0","0","0","1","2229.025414","2229.025414","2229.025414","2229.025414","0","1","1","269274","0","16","0","0","0","0","106","242","365.591728","0.165154","0.131193","3.253014","0","0","0","40","2.148587","1","37.782235","1","170.62954","1","116.991309"
+10,16419,True,"-2354625808364637063","SELECT
+   s_suppkey,
+   s_name,
+   s_address,
+   s_phone,
+   total_revenue
+FROM
+   supplier,
+   revenue0
+WHERE
+   s_suppkey = supplier_no
+   AND total_revenue = (
+      SELECT
+         MAX(total_revenue)
+      FROM
+         revenue0
+   )
+ORDER BY
+   s_suppkey","0","0","0","0","0","0","1","2180.601824","2180.601824","2180.601824","2180.601824","0","1","1","269826","0","16","0","0","0","0","106","240","356.444069","0.115381","0.144423","1.650652","0","0","0","40","2.076924","1","33.998246","1","166.15506","1","117.773192"
+10,16419,True,"-7918896027415792288","SELECT
+   SUM(l_extendedprice* ($10 - l_discount)) AS revenue
+FROM
+   lineitem,
+   part
+WHERE
+   (
+      p_partkey = l_partkey
+      AND p_brand = $1
+      AND p_container IN ($11, $12, $13, $14)
+      AND l_quantity >= $2
+      AND l_quantity <= $3 + $15
+      AND p_size BETWEEN $16 AND $17
+      AND l_shipmode IN ($18, $19)
+      AND l_shipinstruct = $20
+   )
+   OR
+   (
+      p_partkey = l_partkey
+      AND p_brand = $4
+      AND p_container IN ($21, $22, $23, $24)
+      AND l_quantity >= $5
+      AND l_quantity <= $6 + $25
+      AND p_size BETWEEN $26 AND $27
+      AND l_shipmode IN ($28, $29)
+      AND l_shipinstruct = $30
+   )
+   OR
+   (
+      p_partkey = l_partkey
+      AND p_brand = $7
+      AND p_container IN ($31, $32, $33, $34)
+      AND l_quantity >= $8
+      AND l_quantity <= $9 + $35
+      AND p_size BETWEEN $36 AND $37
+      AND l_shipmode IN ($38, $39)
+      AND l_shipinstruct = $40
+   )","0","0","0","0","0","0","42","6408.938313000001","129.541382","219.629606","152.59376935714286","22.160947970299603","42","164426","1526827","0","0","0","0","0","0","0","0","3013.783553999999","0","0","0","0","0","0","0","0","0","0","0","0","0","0"
+10,16419,True,"1345865735253463468","SELECT * FROM pg_stat_user_tables","0","0","0","0","0","0","1","0.213391","0.213391","0.213391","0.213391","0","8","13","7","0","0","0","0","0","0","0","0","0.02556","0","0","0","0","0","0","0","0","0","0","0","0","0","0"
+10,16419,True,"5087137650805635265","SELECT
+   s_suppkey,
+   s_name,
+   s_address,
+   s_phone,
+   total_revenue
+FROM
+   supplier,
+   revenue0
+WHERE
+   s_suppkey = supplier_no
+   AND total_revenue = (
+      SELECT
+         MAX(total_revenue)
+      FROM
+         revenue0
+   )
+ORDER BY
+   s_suppkey","0","0","0","0","0","0","1","2193.289686","2193.289686","2193.289686","2193.289686","0","1","1","267872","0","14","0","0","0","0","108","244","364.131622","0.13064","0.222872","1.823062","0","0","0","40","2.022091","1","35.876563","1","166.431463","1","115.676032"
+10,16419,True,"3545412574037053608","SET DateStyle=ISO","0","0","0","0","0","0","2","0.02637","0.00682","0.01955","0.013185","0.006365000000000001","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0"
+10,16419,True,"8237426578645213958","SELECT
+   s_suppkey,
+   s_name,
+   s_address,
+   s_phone,
+   total_revenue
+FROM
+   supplier,
+   revenue0
+WHERE
+   s_suppkey = supplier_no
+   AND total_revenue = (
+      SELECT
+         MAX(total_revenue)
+      FROM
+         revenue0
+   )
+ORDER BY
+   s_suppkey","0","0","0","0","0","0","1","2185.46234","2185.46234","2185.46234","2185.46234","0","1","1","268122","0","16","0","0","0","0","102","240","355.396478","0.10503","0.153572","1.690358","0","0","0","40","1.946523","1","35.436508","1","173.040908","1","120.437402"
+10,16419,True,"-6911109443227572258","SELECT * FROM pg_stat_bgwriter","0","0","0","0","0","0","1","0.01563","0.01563","0.01563","0.01563","0","1","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0"
+10,16419,True,"7469291805419327047","SELECT
+   s_suppkey,
+   s_name,
+   s_address,
+   s_phone,
+   total_revenue
+FROM
+   supplier,
+   revenue0
+WHERE
+   s_suppkey = supplier_no
+   AND total_revenue = (
+      SELECT
+         MAX(total_revenue)
+      FROM
+         revenue0
+   )
+ORDER BY
+   s_suppkey","0","0","0","0","0","0","1","2284.477974","2284.477974","2284.477974","2284.477974","0","1","1","266650","0","16","0","0","0","0","102","236","372.207133","0.095262","0.139592","1.784989","0","0","0","40","2.299203","1","37.727183","1","167.928235","1","119.429206"
+10,16419,True,"-141619989335985508","SELECT * FROM pg_stat_archiver","0","0","0","0","0","0","1","0.01417","0.01417","0.01417","0.01417","0","1","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0"
+10,16419,True,"-1536536789362497048","SELECT
+   s_suppkey,
+   s_name,
+   s_address,
+   s_phone,
+   total_revenue
+FROM
+   supplier,
+   revenue0
+WHERE
+   s_suppkey = supplier_no
+   AND total_revenue = (
+      SELECT
+         MAX(total_revenue)
+      FROM
+         revenue0
+   )
+ORDER BY
+   s_suppkey","0","0","0","0","0","0","1","2193.510665","2193.510665","2193.510665","2193.510665","0","1","1","267590","0","11","0","0","0","0","106","242","362.425421","0.07489","0.136693","1.796404","0","0","0","40","2.015304","1","35.595072","1","165.91569","1","115.254064"
+10,16419,True,"-2355785423562344795","create view revenue0 (supplier_no, total_revenue) as select l_suppkey, sum(l_extendedprice * (1 - l_discount)) from lineitem where l_shipdate >= '1994-12-01'::date and l_shipdate < '1994-12-01'::date + interval '3' month group by l_suppkey","0","0","0","0","0","0","1","0.560683","0.560683","0.560683","0.560683","0","0","80","36","20","0","0","0","0","0","0","0","0.089832","0","0","0","42","0","5653","0","0","0","0","0","0","0","0"
+10,16419,True,"5507524655037232109","select o_orderpriority, count(*) as order_count from orders where o_orderdate >= $1::date and o_orderdate < $2::date + interval $3 month and exists ( select * from lineitem where l_orderkey = o_orderkey and l_commitdate < l_receiptdate ) group by o_orderpriority order by o_orderpriority","0","0","0","0","0","0","43","20814.825459000007","467.061102","544.017883","484.0657083488371","15.726022639294783","215","14926248","6742649","0","1","0","0","0","0","11027","11070","9201.783064","0.01206","10.527795000000003","73.425806","0","0","0","32","1.920319","0","0","2","0.804075","2","11.335714"
+10,16419,True,"-3291445816004953905","SELECT
+   s_suppkey,
+   s_name,
+   s_address,
+   s_phone,
+   total_revenue
+FROM
+   supplier,
+   revenue0
+WHERE
+   s_suppkey = supplier_no
+   AND total_revenue = (
+      SELECT
+         MAX(total_revenue)
+      FROM
+         revenue0
+   )
+ORDER BY
+   s_suppkey","0","0","0","0","0","0","1","2187.575485","2187.575485","2187.575485","2187.575485","0","1","1","269178","0","16","0","0","0","0","108","242","356.14728","0.102432","0.14785","1.65279","0","0","0","40","2.115205","1","35.64639","1","167.372361","1","120.129183"
+10,16419,True,"-66186846925468933","create view revenue0 (supplier_no, total_revenue) as select l_suppkey, sum(l_extendedprice * (1 - l_discount)) from lineitem where l_shipdate >= '1995-07-01'::date and l_shipdate < '1995-07-01'::date + interval '3' month group by l_suppkey","0","0","0","0","0","0","2","1.374039","0.518281","0.855758","0.6870195","0.1687385","0","150","58","40","0","0","0","0","0","0","0","0.454363","0","0","0","82","0","11158","0","0","0","0","0","0","0","0"
+10,16419,True,"-7071713095549745719","create view revenue0 (supplier_no, total_revenue) as select l_suppkey, sum(l_extendedprice * (1 - l_discount)) from lineitem where l_shipdate >= '1993-09-01'::date and l_shipdate < '1993-09-01'::date + interval '3' month group by l_suppkey","0","0","0","0","0","0","1","0.803859","0.803859","0.803859","0.803859","0","0","75","29","20","0","0","0","0","0","0","0","0.385363","0","0","0","42","0","5639","0","0","0","0","0","0","0","0"
+10,16419,True,"7674290743847894833","create view revenue0 (supplier_no, total_revenue) as select l_suppkey, sum(l_extendedprice * (1 - l_discount)) from lineitem where l_shipdate >= '1996-05-01'::date and l_shipdate < '1996-05-01'::date + interval '3' month group by l_suppkey","0","0","0","0","0","0","2","1.049413","0.503365","0.546048","0.5247065","0.021341500000000013","0","151","58","40","0","0","0","0","0","0","0","0.152991","0","0","0","85","0","11445","0","0","0","0","0","0","0","0"
+10,16419,True,"3916515019762028860","SELECT     tmp.TABLE_CAT,     tmp.TABLE_SCHEM,     tmp.TABLE_NAME,     tmp.NON_UNIQUE,     tmp.INDEX_QUALIFIER,     tmp.INDEX_NAME,     tmp.TYPE,     tmp.ORDINAL_POSITION,     trim(both $1 from pg_catalog.pg_get_indexdef(tmp.CI_OID, tmp.ORDINAL_POSITION, $2)) AS COLUMN_NAME,   CASE tmp.AM_NAME     WHEN $3 THEN CASE tmp.I_INDOPTION[tmp.ORDINAL_POSITION - $4] & $5::smallint       WHEN $6 THEN $7       ELSE $8     END     ELSE $9   END AS ASC_OR_DESC,     tmp.CARDINALITY,     tmp.PAGES,     tmp.FILTER_CONDITION FROM (SELECT $10 AS TABLE_CAT, n.nspname AS TABLE_SCHEM,   ct.relname AS TABLE_NAME, NOT i.indisunique AS NON_UNIQUE,   $11 AS INDEX_QUALIFIER, ci.relname AS INDEX_NAME,   CASE i.indisclustered     WHEN $12 THEN $13    ELSE CASE am.amname       WHEN $14 THEN $15      ELSE $16    END   END AS TYPE,   (information_schema._pg_expandarray(i.indkey)).n AS ORDINAL_POSITION,   ci.reltuples AS CARDINALITY,   ci.relpages AS PAGES,   pg_catalog.pg_get_expr(i.indpred, i.indrelid) AS FILTER_CONDITION,   ci.oid AS CI_OID,   i.indoption AS I_INDOPTION,   am.amname AS AM_NAME FROM pg_catalog.pg_class ct   JOIN pg_catalog.pg_namespace n ON (ct.relnamespace = n.oid)   JOIN pg_catalog.pg_index i ON (ct.oid = i.indrelid)   JOIN pg_catalog.pg_class ci ON (ci.oid = i.indexrelid)   JOIN pg_catalog.pg_am am ON (ci.relam = am.oid) WHERE $17  AND n.nspname = $18 AND ct.relname = $19) AS tmp ORDER BY NON_UNIQUE, TYPE, INDEX_NAME, ORDINAL_POSITION","0","0","0","0","0","0","8","1.371212","0.116402","0.280474","0.17140149999999998","0.05544236113749123","37","594","7","0","0","0","0","0","0","0","0","0.05481","0","0","0","0","0","0","0","0","0","0","0","0","0","0"
+10,16419,True,"-7262107334600686929","SELECT
+   s_suppkey,
+   s_name,
+   s_address,
+   s_phone,
+   total_revenue
+FROM
+   supplier,
+   revenue0
+WHERE
+   s_suppkey = supplier_no
+   AND total_revenue = (
+      SELECT
+         MAX(total_revenue)
+      FROM
+         revenue0
+   )
+ORDER BY
+   s_suppkey","0","0","0","0","0","0","1","2192.7587430000003","2192.7587430000003","2192.7587430000003","2192.7587430000003","0","1","1","268874","0","16","0","0","0","0","110","242","361.350084","0.104523","0.144742","1.814689","0","0","0","40","2.012483","1","34.959186","1","167.024827","1","117.01893"
+10,16419,True,"4525708794229873910","create view revenue0 (supplier_no, total_revenue) as select l_suppkey, sum(l_extendedprice * (1 - l_discount)) from lineitem where l_shipdate >= '1997-10-01'::date and l_shipdate < '1997-10-01'::date + interval '3' month group by l_suppkey","0","0","0","0","0","0","1","0.465611","0.465611","0.465611","0.465611","0","0","75","29","20","0","0","0","0","0","0","0","0.075241","0","0","0","43","0","5700","0","0","0","0","0","0","0","0"
+10,16419,True,"2441368605364275007","SELECT
+   p_brand,
+   p_type,
+   p_size,
+   COUNT(DISTINCT ps_suppkey) AS supplier_cnt
+FROM
+   partsupp,
+   part
+WHERE
+   p_partkey = ps_partkey
+   AND p_brand <> $1
+   AND p_type NOT LIKE $2
+   AND p_size IN ($3, $4, $5, $6, $7, $8, $9, $10)
+   AND ps_suppkey NOT IN
+   (
+      SELECT
+         s_suppkey
+      FROM
+         supplier
+      WHERE
+         s_comment LIKE $11
+   )
+GROUP BY
+   p_brand,
+   p_type,
+   p_size
+ORDER BY
+   supplier_cnt DESC,
+   p_brand,
+   p_type,
+   p_size","0","0","0","0","0","0","43","36849.46042699999","840.2883559999999","887.8799309999999","856.9641959767442","9.56921517046278","1054297","1419","560247","0","0","0","0","0","0","65228","65443","634.060959","0","55.768541000000006","404.24634500000013","0","0","0","0","0","0","0","0","0","0","0"
+10,16419,True,"2247467723989480173","SELECT setting FROM pg_catalog.pg_settings WHERE name=$1","0","0","0","0","0","0","1","0.506979","0.506979","0.506979","0.506979","0","1","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0"
+10,16419,True,"1004445762377852330","create view revenue0 (supplier_no, total_revenue) as select l_suppkey, sum(l_extendedprice * (1 - l_discount)) from lineitem where l_shipdate >= '1994-04-01'::date and l_shipdate < '1994-04-01'::date + interval '3' month group by l_suppkey","0","0","0","0","0","0","1","0.509456","0.509456","0.509456","0.509456","0","0","75","29","20","0","0","0","0","0","0","0","0.078641","0","0","0","43","0","5714","0","0","0","0","0","0","0","0"
+10,16419,True,"5587586507499561931","SELECT
+   s_suppkey,
+   s_name,
+   s_address,
+   s_phone,
+   total_revenue
+FROM
+   supplier,
+   revenue0
+WHERE
+   s_suppkey = supplier_no
+   AND total_revenue = (
+      SELECT
+         MAX(total_revenue)
+      FROM
+         revenue0
+   )
+ORDER BY
+   s_suppkey","0","0","0","0","0","0","1","2265.564022","2265.564022","2265.564022","2265.564022","0","1","1","270076","0","15","0","0","0","0","106","242","363.7712","0.098001","0.145311","1.765713","0","0","0","40","1.926386","1","58.766437","1","171.347177","1","120.650647"
+10,16419,True,"6115020604712096533","SELECT
+   s_suppkey,
+   s_name,
+   s_address,
+   s_phone,
+   total_revenue
+FROM
+   supplier,
+   revenue0
+WHERE
+   s_suppkey = supplier_no
+   AND total_revenue = (
+      SELECT
+         MAX(total_revenue)
+      FROM
+         revenue0
+   )
+ORDER BY
+   s_suppkey","0","0","0","0","0","0","1","2193.304469","2193.304469","2193.304469","2193.304469","0","1","1","269862","0","17","0","0","0","0","108","240","360.19584","0.102102","0.13988","1.757768","0","0","0","40","2.091712","1","35.99899","1","169.370652","1","115.950148"
+10,5,True,"931303454371000975","SELECT
+            roles.oid as id, roles.rolname as name,
+            roles.rolsuper as is_superuser,
+            CASE WHEN roles.rolsuper THEN $1 ELSE roles.rolcreaterole END as
+            can_create_role,
+            CASE WHEN roles.rolsuper THEN $2
+            ELSE roles.rolcreatedb END as can_create_db,
+            CASE WHEN $3=ANY(ARRAY(WITH RECURSIVE cte AS (
+            SELECT pg_roles.oid,pg_roles.rolname FROM pg_roles
+                WHERE pg_roles.oid = roles.oid
+            UNION ALL
+            SELECT m.roleid,pgr.rolname FROM cte cte_1
+                JOIN pg_auth_members m ON m.member = cte_1.oid
+                JOIN pg_roles pgr ON pgr.oid = m.roleid)
+            SELECT rolname  FROM cte)) THEN $4
+            ELSE $5 END as can_signal_backend
+        FROM
+            pg_catalog.pg_roles as roles
+        WHERE
+            rolname = current_user","0","0","0","0","0","0","1","0.07862000000000001","0.07862000000000001","0.07862000000000001","0.07862000000000001","0","1","3","1","0","0","0","0","0","0","0","0","0.02018","0","0","0","0","0","0","0","0","0","0","0","0","0","0"
+10,16419,True,"-1663381721478587022","create view revenue0 (supplier_no, total_revenue) as select l_suppkey, sum(l_extendedprice * (1 - l_discount)) from lineitem where l_shipdate >= '1997-05-01'::date and l_shipdate < '1997-05-01'::date + interval '3' month group by l_suppkey","0","0","0","0","0","0","2","1.299238","0.449179","0.850059","0.649619","0.20043999999999998","0","149","64","41","0","0","0","0","0","0","0","0.17932399999999998","0","0","0","83","20","114611","0","0","0","0","0","0","0","0"
+10,16419,True,"-5297255363152740514","SELECT
+    s_acctbal,
+    s_name,
+    n_name,
+    p_partkey,
+    p_mfgr,
+    s_address,
+    s_phone,
+    s_comment
+ FROM
+    part,
+    supplier,
+    partsupp,
+    nation,
+    region
+ WHERE
+    p_partkey = ps_partkey
+    AND s_suppkey = ps_suppkey
+    AND p_size = $1
+    AND p_type LIKE $2
+    AND s_nationkey = n_nationkey
+    AND n_regionkey = r_regionkey
+    AND r_name = $3
+    AND ps_supplycost =
+    (
+       SELECT
+          MIN(ps_supplycost)
+       FROM
+          partsupp,
+          supplier,
+          nation,
+          region
+       WHERE
+          p_partkey = ps_partkey
+          AND s_suppkey = ps_suppkey
+          AND s_nationkey = n_nationkey
+          AND n_regionkey = r_regionkey
+          AND r_name = $4
+    )
+ ORDER BY
+    s_acctbal DESC,
+    n_name,
+    s_name,
+    p_partkey LIMIT $5","0","0","0","0","0","0","43","31451.323001000008","680.001981","889.351074","731.4261163023256","47.10567602866334","4300","8603113","8461268","0","32","0","0","0","0","582926","583123","11576.447927999998","0.42705799999999994","589.8748910000002","3208.3090979999997","0","0","0","0","0","0","0","0","0","0","0"
+10,16419,True,"1922830786101812613","SELECT
+   s_suppkey,
+   s_name,
+   s_address,
+   s_phone,
+   total_revenue
+FROM
+   supplier,
+   revenue0
+WHERE
+   s_suppkey = supplier_no
+   AND total_revenue = (
+      SELECT
+         MAX(total_revenue)
+      FROM
+         revenue0
+   )
+ORDER BY
+   s_suppkey","0","0","0","0","0","0","1","2228.1843440000002","2228.1843440000002","2228.1843440000002","2228.1843440000002","0","1","1","267872","0","16","0","0","0","0","108","244","364.593246","0.109643","0.133901","1.688112","0","0","0","40","2.399813","1","40.381097","1","178.7312","1","118.401212"
+10,16419,True,"-5814953751801003654","SELECT
+   s_suppkey,
+   s_name,
+   s_address,
+   s_phone,
+   total_revenue
+FROM
+   supplier,
+   revenue0
+WHERE
+   s_suppkey = supplier_no
+   AND total_revenue = (
+      SELECT
+         MAX(total_revenue)
+      FROM
+         revenue0
+   )
+ORDER BY
+   s_suppkey","0","0","0","0","0","0","1","2232.526622","2232.526622","2232.526622","2232.526622","0","1","1","267978","0","10","0","0","0","0","106","244","364.932753","0.333679","0.130252","1.830527","0","0","0","40","1.984186","1","34.92268","1","166.901258","1","118.534789"
+10,16419,True,"-6734339306640854527","SELECT
+    nsp.oid,
+    nsp.nspname as name,
+    pg_catalog.has_schema_privilege(nsp.oid, $1) as can_create,
+    pg_catalog.has_schema_privilege(nsp.oid, $2) as has_usage,
+    des.description
+FROM
+    pg_catalog.pg_namespace nsp
+    LEFT OUTER JOIN pg_catalog.pg_description des ON
+        (des.objoid=nsp.oid AND des.classoid=$3::regclass)
+WHERE
+             nspname NOT LIKE $4 AND
+            NOT (
+(nsp.nspname = $5 AND EXISTS
+        (SELECT $6 FROM pg_catalog.pg_class WHERE relname = $7 AND
+            relnamespace = nsp.oid LIMIT $8)) OR
+    (nsp.nspname = $9 AND EXISTS
+        (SELECT $10 FROM pg_catalog.pg_class WHERE relname = $11 AND
+            relnamespace = nsp.oid LIMIT $12)) OR
+    (nsp.nspname = $13 AND EXISTS
+        (SELECT $14 FROM pg_catalog.pg_class WHERE relname = $15 AND
+            relnamespace = nsp.oid LIMIT $16))
+    )
+
+    
+ORDER BY nspname","0","0","0","0","0","0","1","0.186831","0.186831","0.186831","0.186831","0","1","9","3","0","0","0","0","0","0","0","0","0.104311","0","0","0","0","0","0","0","0","0","0","0","0","0","0"
+10,16419,True,"3781436902142609259","create view revenue0 (supplier_no, total_revenue) as select l_suppkey, sum(l_extendedprice * (1 - l_discount)) from lineitem where l_shipdate >= '1997-08-01'::date and l_shipdate < '1997-08-01'::date + interval '3' month group by l_suppkey","0","0","0","0","0","0","2","1.3815520000000001","0.482082","0.89947","0.6907760000000001","0.20869400000000002","0","150","58","40","0","0","0","0","0","0","0","0.160963","0","0","0","83","20","124431","0","0","0","0","0","0","0","0"
+10,16419,True,"-2673476126248047413","SELECT
+   s_suppkey,
+   s_name,
+   s_address,
+   s_phone,
+   total_revenue
+FROM
+   supplier,
+   revenue0
+WHERE
+   s_suppkey = supplier_no
+   AND total_revenue = (
+      SELECT
+         MAX(total_revenue)
+      FROM
+         revenue0
+   )
+ORDER BY
+   s_suppkey","0","0","0","0","0","0","1","2202.6895130000003","2202.6895130000003","2202.6895130000003","2202.6895130000003","0","1","1","269746","0","16","0","0","0","0","108","242","361.70921","0.131254","0.18234","2.387677","0","0","0","40","1.956981","1","33.648185","1","168.044629","1","119.761187"
+10,5,True,"-3088299803543020730","SELECT
+    db.oid as did, db.datname, db.datallowconn,
+    pg_encoding_to_char(db.encoding) AS serverencoding,
+    has_database_privilege(db.oid, $1) as cancreate,
+    datistemplate
+FROM
+    pg_catalog.pg_database db
+WHERE db.datname = current_database()","0","0","0","0","0","0","1","0.02916","0.02916","0.02916","0.02916","0","1","1","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0"
+10,16419,True,"-2322963460830589991","SELECT
+   s_suppkey,
+   s_name,
+   s_address,
+   s_phone,
+   total_revenue
+FROM
+   supplier,
+   revenue0
+WHERE
+   s_suppkey = supplier_no
+   AND total_revenue = (
+      SELECT
+         MAX(total_revenue)
+      FROM
+         revenue0
+   )
+ORDER BY
+   s_suppkey","0","0","0","0","0","0","1","2168.221944","2168.221944","2168.221944","2168.221944","0","1","1","269572","0","16","0","0","0","0","108","244","357.958296","0.104962","0.144131","1.850432","0","0","0","40","1.96991","1","34.815806","1","166.19939","1","116.173109"
+10,16419,True,"931303454371000975","SELECT
+            roles.oid as id, roles.rolname as name,
+            roles.rolsuper as is_superuser,
+            CASE WHEN roles.rolsuper THEN $1 ELSE roles.rolcreaterole END as
+            can_create_role,
+            CASE WHEN roles.rolsuper THEN $2
+            ELSE roles.rolcreatedb END as can_create_db,
+            CASE WHEN $3=ANY(ARRAY(WITH RECURSIVE cte AS (
+            SELECT pg_roles.oid,pg_roles.rolname FROM pg_roles
+                WHERE pg_roles.oid = roles.oid
+            UNION ALL
+            SELECT m.roleid,pgr.rolname FROM cte cte_1
+                JOIN pg_auth_members m ON m.member = cte_1.oid
+                JOIN pg_roles pgr ON pgr.oid = m.roleid)
+            SELECT rolname  FROM cte)) THEN $4
+            ELSE $5 END as can_signal_backend
+        FROM
+            pg_catalog.pg_roles as roles
+        WHERE
+            rolname = current_user","0","0","0","0","0","0","2","0.11708099999999999","0.042540999999999995","0.07454","0.058540499999999995","0.0159995","2","8","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0"
+10,16419,True,"5848681576227864375","SELECT n.nspname, r.relname
+FROM pg_catalog.pg_class r
+    LEFT JOIN pg_catalog.pg_namespace n ON (r.relnamespace = n.oid)
+WHERE r.oid = $1","0","0","0","0","0","0","1","0.01046","0.01046","0.01046","0.01046","0","1","4","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0"
+10,16419,True,"-3088299803543020730","SELECT
+    db.oid as did, db.datname, db.datallowconn,
+    pg_encoding_to_char(db.encoding) AS serverencoding,
+    has_database_privilege(db.oid, $1) as cancreate,
+    datistemplate
+FROM
+    pg_catalog.pg_database db
+WHERE db.datname = current_database()","0","0","0","0","0","0","2","0.014949999999999998","0.00709","0.007859999999999999","0.007474999999999999","0.0003849999999999993","2","2","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0"
+10,16419,True,"1549185845189586991","create view revenue0 (supplier_no, total_revenue) as select l_suppkey, sum(l_extendedprice * (1 - l_discount)) from lineitem where l_shipdate >= '1993-11-01'::date and l_shipdate < '1993-11-01'::date + interval '3' month group by l_suppkey","0","0","0","0","0","0","1","0.843821","0.843821","0.843821","0.843821","0","0","75","29","20","0","0","0","0","0","0","0","0.0864","0","0","0","41","20","101167","0","0","0","0","0","0","0","0"
+10,16419,True,"-1076756456863122580","select n_name, sum(l_extendedprice * ($4 - l_discount)) as revenue from customer, orders, lineitem, supplier, nation, region where c_custkey = o_custkey and l_orderkey = o_orderkey and l_suppkey = s_suppkey and c_nationkey = s_nationkey and s_nationkey = n_nationkey and n_regionkey = r_regionkey and r_name = $1 and o_orderdate >= $2::date and o_orderdate < $3::date + interval $5 year group by n_name order by revenue desc","0","0","0","0","0","0","43","88511.69760700001","1720.8877149999998","2704.525657","2058.4115722558136","179.52323133720998","215","57452891","30371356","0","11","0","0","0","0","0","0","44652.41798400001","0.072572","0","0","0","0","0","0","0","0","0","0","0","0","0"
+10,16419,True,"-5145196169189367384","SELECT
+   s_suppkey,
+   s_name,
+   s_address,
+   s_phone,
+   total_revenue
+FROM
+   supplier,
+   revenue0
+WHERE
+   s_suppkey = supplier_no
+   AND total_revenue = (
+      SELECT
+         MAX(total_revenue)
+      FROM
+         revenue0
+   )
+ORDER BY
+   s_suppkey","0","0","0","0","0","0","1","2212.1085869999997","2212.1085869999997","2212.1085869999997","2212.1085869999997","0","1","1","269882","0","16","0","0","0","0","110","246","366.28126","0.430178","0.128844","1.744016","0","0","0","40","2.213561","1","38.335178","1","167.158662","1","117.364711"
+10,16419,True,"-4554835823379561409","SELECT * FROM pg_stat_user_indexes","0","0","0","0","0","0","1","0.16714099999999998","0.16714099999999998","0.16714099999999998","0.16714099999999998","0","31","113","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0"
+10,16419,True,"3928562716391272690","SELECT
+    c.oid,
+    c.relname AS name,
+    description AS comment
+FROM pg_catalog.pg_class c
+LEFT OUTER JOIN pg_catalog.pg_description des ON (des.objoid=c.oid and des.objsubid=$1 AND des.classoid=$2::regclass)
+WHERE
+  c.relkind = $3
+    AND c.relnamespace = $4::oid
+ORDER BY
+    c.relname","0","0","0","0","0","0","1","0.06543","0.06543","0.06543","0.06543","0","2","18","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0"
+10,5,True,"-848981424258973678","SELECT
+    has_table_privilege(
+      $1, $2
+    ) has_priviledge
+WHERE EXISTS(
+    SELECT has_schema_privilege($3, $4)
+    WHERE EXISTS(
+        SELECT cl.oid FROM pg_catalog.pg_class cl
+        LEFT JOIN pg_catalog.pg_namespace ns ON ns.oid=relnamespace
+        WHERE relname=$5 AND nspname=$6
+    )
+)","0","0","0","0","0","0","1","0.00749","0.00749","0.00749","0.00749","0","0","2","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0"
+10,5,True,"8337740243580573530","SET client_min_messages=notice","0","0","0","0","0","0","1","0.00108","0.00108","0.00108","0.00108","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0"
+10,16419,True,"-111254879337884452","SELECT
+   s_suppkey,
+   s_name,
+   s_address,
+   s_phone,
+   total_revenue
+FROM
+   supplier,
+   revenue0
+WHERE
+   s_suppkey = supplier_no
+   AND total_revenue = (
+      SELECT
+         MAX(total_revenue)
+      FROM
+         revenue0
+   )
+ORDER BY
+   s_suppkey","0","0","0","0","0","0","1","2170.486262","2170.486262","2170.486262","2170.486262","0","1","1","268964","0","16","0","0","0","0","108","244","358.050744","0.125623","0.14738","1.747871","0","0","0","40","2.039217","1","33.948692","1","166.142894","1","121.942226"
+10,16419,True,"-5746629022654674271","select c_custkey, c_name, sum(l_extendedprice * ($3 - l_discount)) as revenue, c_acctbal, n_name, c_address, c_phone, c_comment from customer, orders, lineitem, nation where c_custkey = o_custkey and l_orderkey = o_orderkey and o_orderdate >= $1::date and o_orderdate < $2::date + interval $4 month and l_returnflag = $5 and c_nationkey = n_nationkey group by c_custkey, c_name, c_acctbal, c_phone, n_name, c_address, c_comment order by revenue desc limit $6","0","0","0","0","0","0","43","39093.921686","849.394662","969.4698520000001","909.1609694418605","28.24684724559129","860","14968147","7165449","0","1","0","0","0","0","223949","224470","9737.146114","0.018391","213.73962699999998","1407.323975","0","0","0","324","11.502505000000001","0","0","9","4.878999","9","129.344462"
+10,16419,True,"8803296712037532423","SELECT
+   s_suppkey,
+   s_name,
+   s_address,
+   s_phone,
+   total_revenue
+FROM
+   supplier,
+   revenue0
+WHERE
+   s_suppkey = supplier_no
+   AND total_revenue = (
+      SELECT
+         MAX(total_revenue)
+      FROM
+         revenue0
+   )
+ORDER BY
+   s_suppkey","0","0","0","0","0","0","1","2255.9951300000002","2255.9951300000002","2255.9951300000002","2255.9951300000002","0","1","1","269408","0","11","0","0","0","0","108","240","368.317875","0.08399","0.130991","2.055463","0","0","0","40","2.304162","1","37.777524","1","172.421269","1","123.21636"
+10,16419,True,"602381473296336835","SELECT
+   s_suppkey,
+   s_name,
+   s_address,
+   s_phone,
+   total_revenue
+FROM
+   supplier,
+   revenue0
+WHERE
+   s_suppkey = supplier_no
+   AND total_revenue = (
+      SELECT
+         MAX(total_revenue)
+      FROM
+         revenue0
+   )
+ORDER BY
+   s_suppkey","0","0","0","0","0","0","1","2290.495378","2290.495378","2290.495378","2290.495378","0","1","1","269862","0","11","0","0","0","0","108","240","370.3279","0.084883","0.140232","1.878947","0","0","0","40","2.521037","1","38.671093","1","179.417946","1","118.644267"
+10,16419,True,"-8858739670521730174","SELECT
+   s_name,
+   COUNT(*) AS numwait
+FROM
+   supplier,
+   lineitem l1,
+   orders,
+   nation
+WHERE
+   s_suppkey = l1.l_suppkey
+   AND o_orderkey = l1.l_orderkey
+   AND o_orderstatus = $2
+   AND l1.l_receiptdate > l1.l_commitdate
+   AND EXISTS
+   (
+      SELECT
+         *
+      FROM
+         lineitem l2
+      WHERE
+         l2.l_orderkey = l1.l_orderkey
+         AND l2.l_suppkey <> l1.l_suppkey
+   )
+   AND NOT EXISTS
+   (
+      SELECT
+         *
+      FROM
+         lineitem l3
+      WHERE
+         l3.l_orderkey = l1.l_orderkey
+         AND l3.l_suppkey <> l1.l_suppkey
+         AND l3.l_receiptdate > l3.l_commitdate
+   )
+   AND s_nationkey = n_nationkey
+   AND n_name = $1
+GROUP BY
+   s_name
+ORDER BY
+   numwait DESC,
+   s_name LIMIT $3","0","0","0","0","0","0","42","96388.897865","2111.887265","2463.337631","2294.973758690477","97.8071102265853","4200","48371241","30232718","0","2","0","0","0","0","0","0","43218.46838699998","0.029101000000000002","0","0","0","0","0","1596","46.627441999999995","0","0","42","23.598964000000002","42","474.270107"
+10,16419,True,"-496625237158165690","SELECT
+   s_suppkey,
+   s_name,
+   s_address,
+   s_phone,
+   total_revenue
+FROM
+   supplier,
+   revenue0
+WHERE
+   s_suppkey = supplier_no
+   AND total_revenue = (
+      SELECT
+         MAX(total_revenue)
+      FROM
+         revenue0
+   )
+ORDER BY
+   s_suppkey","0","0","0","0","0","0","1","2198.452505","2198.452505","2198.452505","2198.452505","0","1","1","269064","0","16","0","0","0","0","106","242","355.002387","0.394293","0.129274","1.70695","0","0","0","40","2.289464","1","37.35799","1","169.351711","1","121.367626"
+10,16419,True,"7421995456551428850","SELECT
+   s_suppkey,
+   s_name,
+   s_address,
+   s_phone,
+   total_revenue
+FROM
+   supplier,
+   revenue0
+WHERE
+   s_suppkey = supplier_no
+   AND total_revenue = (
+      SELECT
+         MAX(total_revenue)
+      FROM
+         revenue0
+   )
+ORDER BY
+   s_suppkey","0","0","0","0","0","0","1","2185.826158","2185.826158","2185.826158","2185.826158","0","1","1","270058","0","17","0","0","0","0","108","238","353.06162","0.112807","0.168587","1.675494","0","0","0","40","2.015689","1","35.200832","1","167.74402","1","117.717522"
+10,16419,True,"3307223188059133500","SHOW ALL","0","0","0","0","0","0","1","0.30491","0.30491","0.30491","0.30491","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0"
+10,16419,True,"-8004229574283968265","SELECT
+   s_suppkey,
+   s_name,
+   s_address,
+   s_phone,
+   total_revenue
+FROM
+   supplier,
+   revenue0
+WHERE
+   s_suppkey = supplier_no
+   AND total_revenue = (
+      SELECT
+         MAX(total_revenue)
+      FROM
+         revenue0
+   )
+ORDER BY
+   s_suppkey","0","0","0","0","0","0","1","2177.592389","2177.592389","2177.592389","2177.592389","0","1","1","268008","0","11","0","0","0","0","106","242","362.792263","0.097991","0.138793","1.739614","0","0","0","40","2.004224","1","35.646501","1","171.856332","1","116.643255"
+10,16419,True,"-7056272514681031980","create view revenue0 (supplier_no, total_revenue) as select l_suppkey, sum(l_extendedprice * (1 - l_discount)) from lineitem where l_shipdate >= '1994-09-01'::date and l_shipdate < '1994-09-01'::date + interval '3' month group by l_suppkey","0","0","0","0","0","0","1","0.493616","0.493616","0.493616","0.493616","0","0","75","29","20","0","0","0","0","0","0","0","0.077731","0","0","0","41","0","5575","0","0","0","0","0","0","0","0"
+10,5,True,"-2142115390761612697","SELECT CASE
+    WHEN (SELECT count(extname) FROM pg_catalog.pg_extension WHERE extname=$1) > $2
+    THEN $3
+    WHEN (SELECT COUNT(*) FROM pg_replication_slots) > $4
+    THEN $5
+    ELSE $6
+END as type","0","0","0","0","0","0","3","0.10944999999999999","0.0102","0.08005","0.03648333333333333","0.03102462283771105","3","2","1","0","0","0","0","0","0","0","0","0.04266","0","0","0","0","0","0","0","0","0","0","0","0","0","0"
+10,16419,True,"4452344162736673220","SELECT * FROM pg_stat_database_conflicts","0","0","0","0","0","0","1","0.00762","0.00762","0.00762","0.00762","0","4","1","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0"
+10,16419,True,"4106913820061969125","SELECT * FROM pg_statio_user_tables","0","0","0","0","0","0","1","0.28212000000000004","0.28212000000000004","0.28212000000000004","0.28212000000000004","0","8","97","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0"
+10,16419,True,"7719402811077081697","SET client_encoding='utf-8'","0","0","0","0","0","0","2","0.00326","0.00154","0.00172","0.00163","9.000000000000002e-05","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0"
+10,5,True,"7335952163293218877","/*pga4dash*/
+SELECT $1 AS chart_name, pg_catalog.row_to_json(t) AS chart_data
+FROM (SELECT
+   (SELECT count(*) FROM pg_catalog.pg_stat_activity) AS ""Total"",
+   (SELECT count(*) FROM pg_catalog.pg_stat_activity WHERE state = $2)  AS ""Active"",
+   (SELECT count(*) FROM pg_catalog.pg_stat_activity WHERE state = $3)  AS ""Idle""
+) t
+UNION ALL
+SELECT $4 AS chart_name, pg_catalog.row_to_json(t) AS chart_data
+FROM (SELECT
+   (SELECT sum(xact_commit) + sum(xact_rollback) FROM pg_catalog.pg_stat_database) AS ""Transactions"",
+   (SELECT sum(xact_commit) FROM pg_catalog.pg_stat_database) AS ""Commits"",
+   (SELECT sum(xact_rollback) FROM pg_catalog.pg_stat_database) AS ""Rollbacks""
+) t
+UNION ALL
+SELECT $5 AS chart_name, pg_catalog.row_to_json(t) AS chart_data
+FROM (SELECT
+   (SELECT sum(tup_inserted) FROM pg_catalog.pg_stat_database) AS ""Inserts"",
+   (SELECT sum(tup_updated) FROM pg_catalog.pg_stat_database) AS ""Updates"",
+   (SELECT sum(tup_deleted) FROM pg_catalog.pg_stat_database) AS ""Deletes""
+) t
+UNION ALL
+SELECT $6 AS chart_name, pg_catalog.row_to_json(t) AS chart_data
+FROM (SELECT
+   (SELECT sum(tup_fetched) FROM pg_catalog.pg_stat_database) AS ""Fetched"",
+   (SELECT sum(tup_returned) FROM pg_catalog.pg_stat_database) AS ""Returned""
+) t
+UNION ALL
+SELECT $7 AS chart_name, pg_catalog.row_to_json(t) AS chart_data
+FROM (SELECT
+   (SELECT sum(blks_read) FROM pg_catalog.pg_stat_database) AS ""Reads"",
+   (SELECT sum(blks_hit) FROM pg_catalog.pg_stat_database) AS ""Hits""
+) t","0","0","0","0","0","0","1","0.563171","0.563171","0.563171","0.563171","0","5","10","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0"
+10,16419,True,"-7559957338212707540","create view revenue0 (supplier_no, total_revenue) as select l_suppkey, sum(l_extendedprice * (1 - l_discount)) from lineitem where l_shipdate >= '1997-04-01'::date and l_shipdate < '1997-04-01'::date + interval '3' month group by l_suppkey","0","0","0","0","0","0","3","1.8082129999999998","0.508941","0.781832","0.6027376666666666","0.12668634081682034","0","225","87","60","0","0","0","0","0","0","0","0.526233","0","0","0","124","0","16785","0","0","0","0","0","0","0","0"
+10,16419,True,"3365982590372224235","select pg_stat_statements_reset()","0","0","0","0","0","0","1","0.045670999999999996","0.045670999999999996","0.045670999999999996","0.045670999999999996","0","1","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0"
+10,16419,True,"5301103249166043051","SELECT rel.oid, rel.relname AS name,
+    (SELECT count(*) FROM pg_catalog.pg_trigger WHERE tgrelid=rel.oid AND tgisinternal = $1) AS triggercount,
+    (SELECT count(*) FROM pg_catalog.pg_trigger WHERE tgrelid=rel.oid AND tgisinternal = $2 AND tgenabled = $3) AS has_enable_triggers,
+    (CASE WHEN rel.relkind = $4 THEN $5 ELSE $6 END) AS is_partitioned,
+    (SELECT count($7) FROM pg_catalog.pg_inherits WHERE inhrelid=rel.oid LIMIT $8) as is_inherits,
+    (SELECT count($9) FROM pg_catalog.pg_inherits WHERE inhparent=rel.oid LIMIT $10) as is_inherited,
+    des.description
+FROM pg_catalog.pg_class rel
+    LEFT OUTER JOIN pg_catalog.pg_description des ON (des.objoid=rel.oid AND des.objsubid=$11 AND des.classoid=$12::regclass)
+    WHERE rel.relkind IN ($13,$14,$15,$16) AND rel.relnamespace = $17::oid
+    AND NOT rel.relispartition
+        ORDER BY rel.relname","0","0","0","0","0","0","1","0.18886","0.18886","0.18886","0.18886","0","8","45","1","0","0","0","0","0","0","0","0","0.02262","0","0","0","0","0","0","0","0","0","0","0","0","0","0"
+10,16419,True,"-2083891731315078379","SELECT
+   ps_partkey,
+   SUM(ps_supplycost * ps_availqty) AS VALUE
+FROM
+   partsupp,
+   supplier,
+   nation
+WHERE
+   ps_suppkey = s_suppkey
+   AND s_nationkey = n_nationkey
+   AND n_name = $1
+GROUP BY
+   ps_partkey
+HAVING
+   SUM(ps_supplycost * ps_availqty) > (
+   SELECT
+      SUM(ps_supplycost * ps_availqty) * $2
+   FROM
+      partsupp, supplier, nation
+   WHERE
+      ps_suppkey = s_suppkey
+      AND s_nationkey = n_nationkey
+      AND n_name = $3 )
+   ORDER BY
+      VALUE DESC","0","0","0","0","0","0","43","10449.939307999997","222.031432","275.505439","243.02184437209303","11.064434652423166","82310","2419095","3296385","0","0","0","0","0","0","8033","14985","4531.7800609999995","0","9.105646","77.64169600000001","0","0","0","0","0","0","0","0","0","0","0"
+10,16419,True,"-842115948795927912","create view revenue0 (supplier_no, total_revenue) as select l_suppkey, sum(l_extendedprice * (1 - l_discount)) from lineitem where l_shipdate >= '1995-04-01'::date and l_shipdate < '1995-04-01'::date + interval '3' month group by l_suppkey","0","0","0","0","0","0","1","0.492758","0.492758","0.492758","0.492758","0","0","76","32","23","0","0","0","0","0","0","0","0.085611","0","0","0","42","0","5626","0","0","0","0","0","0","0","0"
+10,16419,True,"-1540851199369180844","SELECT set_config($1,$2,$3) FROM pg_settings WHERE name = $4","0","0","0","0","0","0","2","1.069122","0.503771","0.5653509999999999","0.534561","0.030789999999999984","2","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0"
+10,16419,True,"-8936955198796926976","SELECT
+   s_suppkey,
+   s_name,
+   s_address,
+   s_phone,
+   total_revenue
+FROM
+   supplier,
+   revenue0
+WHERE
+   s_suppkey = supplier_no
+   AND total_revenue = (
+      SELECT
+         MAX(total_revenue)
+      FROM
+         revenue0
+   )
+ORDER BY
+   s_suppkey","0","0","0","0","0","0","1","2197.477319","2197.477319","2197.477319","2197.477319","0","1","1","269882","0","16","0","0","0","0","110","246","358.448687","0.10827","0.14216","1.843363","0","0","0","40","1.867106","1","33.852302","1","173.143798","1","119.453289"
+10,16419,True,"2999103544079323559","SELECT $1::text AS PKTABLE_CAT, pkn.nspname AS PKTABLE_SCHEM, pkc.relname AS PKTABLE_NAME, pka.attname AS PKCOLUMN_NAME, $2::text AS FKTABLE_CAT, fkn.nspname AS FKTABLE_SCHEM, fkc.relname AS FKTABLE_NAME, fka.attname AS FKCOLUMN_NAME, pos.n AS KEY_SEQ, CASE con.confupdtype  WHEN $3 THEN $4 WHEN $5 THEN $6 WHEN $7 THEN $8 WHEN $9 THEN $10 WHEN $11 THEN $12 WHEN $13 THEN $14 ELSE $15 END AS UPDATE_RULE, CASE con.confdeltype  WHEN $16 THEN $17 WHEN $18 THEN $19 WHEN $20 THEN $21 WHEN $22 THEN $23 WHEN $24 THEN $25 WHEN $26 THEN $27 ELSE $28 END AS DELETE_RULE, con.conname AS FK_NAME, pkic.relname AS PK_NAME, CASE  WHEN con.condeferrable AND con.condeferred THEN $29 WHEN con.condeferrable THEN $30 ELSE $31 END AS DEFERRABILITY  FROM  pg_catalog.pg_namespace pkn, pg_catalog.pg_class pkc, pg_catalog.pg_attribute pka,  pg_catalog.pg_namespace fkn, pg_catalog.pg_class fkc, pg_catalog.pg_attribute fka,  pg_catalog.pg_constraint con,  pg_catalog.generate_series($32, $33) pos(n),  pg_catalog.pg_class pkic WHERE pkn.oid = pkc.relnamespace AND pkc.oid = pka.attrelid AND pka.attnum = con.confkey[pos.n] AND con.confrelid = pkc.oid  AND fkn.oid = fkc.relnamespace AND fkc.oid = fka.attrelid AND fka.attnum = con.conkey[pos.n] AND con.conrelid = fkc.oid  AND con.contype = $34 AND (pkic.relkind = $35 OR pkic.relkind = $36) AND pkic.oid = con.conindid  AND fkn.nspname = $37 AND fkc.relname = $38 ORDER BY pkn.nspname,pkc.relname, con.conname,pos.n","0","0","0","0","0","0","8","0.627303","0.017011000000000002","0.152893","0.07841287499999999","0.04665623549279749","9","262","1","0","0","0","0","0","0","0","0","0.00521","0","0","0","0","0","0","0","0","0","0","0","0","0","0"
+10,16419,True,"-6434401716891661490","DROP VIEW revenue0","0","0","0","0","0","0","43","13.303146999999996","0.244185","1.641853","0.309375511627907","0.209096312048864","0","3617","1237","217","0","0","0","0","0","0","0","3.7583610000000003","0","0","0","629","0","34783","0","0","0","0","0","0","0","0"
+10,16419,True,"8481800193146763696","SELECT
+   s_suppkey,
+   s_name,
+   s_address,
+   s_phone,
+   total_revenue
+FROM
+   supplier,
+   revenue0
+WHERE
+   s_suppkey = supplier_no
+   AND total_revenue = (
+      SELECT
+         MAX(total_revenue)
+      FROM
+         revenue0
+   )
+ORDER BY
+   s_suppkey","0","0","0","0","0","0","1","2196.3836699999997","2196.3836699999997","2196.3836699999997","2196.3836699999997","0","1","1","268008","0","16","0","0","0","0","106","242","356.14726","0.13547","0.14491","1.745527","0","0","0","40","1.999586","1","34.185688","1","168.03401","1","121.263489"
+10,16419,True,"8436017139407319238","SELECT
+   s_suppkey,
+   s_name,
+   s_address,
+   s_phone,
+   total_revenue
+FROM
+   supplier,
+   revenue0
+WHERE
+   s_suppkey = supplier_no
+   AND total_revenue = (
+      SELECT
+         MAX(total_revenue)
+      FROM
+         revenue0
+   )
+ORDER BY
+   s_suppkey","0","0","0","0","0","0","1","2202.1560670000003","2202.1560670000003","2202.1560670000003","2202.1560670000003","0","1","1","269882","0","18","0","0","0","0","110","246","354.936895","0.14686","0.15707","1.774537","0","0","0","40","2.583438","1","34.861067","1","171.365739","1","121.492496"
+10,16419,True,"-944946639373099149","select sum(l_extendedprice * l_discount) as revenue from lineitem where l_shipdate >= $1::date and l_shipdate < $2::date + interval $6 year and l_discount between $3::decimal - $7 and $4::decimal + $8 and l_quantity < $5","0","0","0","0","0","0","43","83658.92120900001","1366.412748","2444.276923","1945.5563071860465","293.15157392154043","43","19726","9183474","0","1","0","0","0","0","0","0","11512.282561999999","0.01309","0","0","0","0","0","369","24.387354000000002","0","0","43","12.351724999999998","43","203.630249"
+10,5,True,"5591784696012235849","SELECT
+             gss_authenticated, encrypted
+        FROM
+            pg_catalog.pg_stat_gssapi
+        WHERE pid = pg_backend_pid()","0","0","0","0","0","0","1","0.06691","0.06691","0.06691","0.06691","0","1","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0"
+10,16419,True,"-6320109354217978904","create view revenue0 (supplier_no, total_revenue) as select l_suppkey, sum(l_extendedprice * (1 - l_discount)) from lineitem where l_shipdate >= '1994-08-01'::date and l_shipdate < '1994-08-01'::date + interval '3' month group by l_suppkey","0","0","0","0","0","0","2","1.480445","0.58232","0.898125","0.7402225","0.15790250000000003","0","162","74","40","0","0","0","0","0","0","0","0.196714","0","0","0","83","20","120309","0","0","0","0","0","0","0","0"
+10,16419,True,"-488484303752125440","create view revenue0 (supplier_no, total_revenue) as select l_suppkey, sum(l_extendedprice * (1 - l_discount)) from lineitem where l_shipdate >= '1997-06-01'::date and l_shipdate < '1997-06-01'::date + interval '3' month group by l_suppkey","0","0","0","0","0","0","1","0.475509","0.475509","0.475509","0.475509","0","0","75","29","20","0","0","0","0","0","0","0","0.074391","0","0","0","41","0","5575","0","0","0","0","0","0","0","0"
+10,16419,True,"7048027824919541148","SELECT
+   nation,
+   o_year,
+   SUM(amount) AS sum_profit
+FROM
+   (
+      SELECT
+         n_name AS nation,
+         EXTRACT($2
+      FROM
+         o_orderdate) AS o_year,
+         l_extendedprice * ($3 - l_discount) - ps_supplycost * l_quantity AS amount
+      FROM
+         part,
+         supplier,
+         lineitem,
+         partsupp,
+         orders,
+         nation
+      WHERE
+         s_suppkey = l_suppkey
+         AND ps_suppkey = l_suppkey
+         AND ps_partkey = l_partkey
+         AND p_partkey = l_partkey
+         AND o_orderkey = l_orderkey
+         AND s_nationkey = n_nationkey
+         AND p_name LIKE $1
+   )
+   AS profit
+GROUP BY
+   nation,
+   o_year
+ORDER BY
+   nation,
+   o_year DESC","0","0","0","0","0","0","43","215314.17118100013","3538.485301","5442.9700299999995","5007.306306534884","665.8752763450075","7525","72929725","59802888","0","6","0","0","0","0","584228","585249","93532.54670699999","0.078721","623.082082","2703.440528","0","0","0","447","12.671216999999999","1","11.526308","9","136.609102","9","216.28910399999998"
+10,16419,True,"-67647327559944357","select l_shipmode, sum(case when o_orderpriority = $5 or o_orderpriority = $6 then $7 else $8 end) as high_line_count, sum(case when o_orderpriority <> $9 and o_orderpriority <> $10 then $11 else $12 end) as low_line_count from orders, lineitem where o_orderkey = l_orderkey and l_shipmode in ($1, $2) and l_commitdate < l_receiptdate and l_shipdate < l_commitdate and l_receiptdate >= $3::date and l_receiptdate < $4::date + interval $13 year group by l_shipmode order by l_shipmode","0","0","0","0","0","0","43","94904.894702","2053.797423","2433.84371","2207.090574465117","91.61683624558918","86","8845939","11086158","0","1","0","0","0","0","12181","12224","14665.706793000001","0.012831","12.560701000000002","83.05499599999999","0","0","0","824","40.74940399999999","0","0","43","22.585964000000004","43","408.02248800000007"
+10,16419,True,"-2885330479908940062","SELECT version()","0","0","0","0","0","0","3","0.02039","0.00167","0.016739999999999998","0.006796666666666665","0.007032137339070927","3","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0"
+10,16419,True,"-7284138693126214011","SELECT
+   s_suppkey,
+   s_name,
+   s_address,
+   s_phone,
+   total_revenue
+FROM
+   supplier,
+   revenue0
+WHERE
+   s_suppkey = supplier_no
+   AND total_revenue = (
+      SELECT
+         MAX(total_revenue)
+      FROM
+         revenue0
+   )
+ORDER BY
+   s_suppkey","0","0","0","0","0","0","1","2224.729505","2224.729505","2224.729505","2224.729505","0","1","1","268546","0","12","0","0","0","0","106","242","358.699117","0.082761","0.139183","1.733302","0","0","0","40","1.652751","1","62.46074","1","165.990051","1","117.549914"
+10,16419,True,"-4652487053797785480","SELECT
+   s_suppkey,
+   s_name,
+   s_address,
+   s_phone,
+   total_revenue
+FROM
+   supplier,
+   revenue0
+WHERE
+   s_suppkey = supplier_no
+   AND total_revenue = (
+      SELECT
+         MAX(total_revenue)
+      FROM
+         revenue0
+   )
+ORDER BY
+   s_suppkey","0","0","0","0","0","0","1","2178.936193","2178.936193","2178.936193","2178.936193","0","1","1","267960","0","11","0","0","0","0","106","242","353.324204","0.08768","0.139503","1.734342","0","0","0","40","1.954583","1","33.564007","1","165.84064","1","116.216723"
+10,16419,True,"-5356470257252220891","SELECT
+   s_suppkey,
+   s_name,
+   s_address,
+   s_phone,
+   total_revenue
+FROM
+   supplier,
+   revenue0
+WHERE
+   s_suppkey = supplier_no
+   AND total_revenue = (
+      SELECT
+         MAX(total_revenue)
+      FROM
+         revenue0
+   )
+ORDER BY
+   s_suppkey","0","0","0","0","0","0","1","2215.634657","2215.634657","2215.634657","2215.634657","0","1","1","269900","0","16","0","0","0","0","108","242","366.439424","0.105454","0.143274","1.806902","0","0","0","40","1.988192","1","58.985722","1","168.3331","1","116.629714"
+10,16419,True,"9077646515210761923","create view revenue0 (supplier_no, total_revenue) as select l_suppkey, sum(l_extendedprice * (1 - l_discount)) from lineitem where l_shipdate >= '1996-09-01'::date and l_shipdate < '1996-09-01'::date + interval '3' month group by l_suppkey","0","0","0","0","0","0","1","0.53495","0.53495","0.53495","0.53495","0","0","75","43","21","0","0","0","0","0","0","0","0.13112","0","0","0","42","0","5632","0","0","0","0","0","0","0","0"
+10,16419,True,"4124983557046791190","SELECT * FROM (SELECT n.nspname,c.relname,a.attname,a.atttypid,a.attnotnull OR (t.typtype = $1 AND t.typnotnull) AS attnotnull,a.atttypmod,a.attlen,t.typtypmod,row_number() OVER (PARTITION BY a.attrelid ORDER BY a.attnum) AS attnum, nullif(a.attidentity, $2) as attidentity,nullif(a.attgenerated, $3) as attgenerated,pg_catalog.pg_get_expr(def.adbin, def.adrelid) AS adsrc,dsc.description,t.typbasetype,t.typtype  FROM pg_catalog.pg_namespace n  JOIN pg_catalog.pg_class c ON (c.relnamespace = n.oid)  JOIN pg_catalog.pg_attribute a ON (a.attrelid=c.oid)  JOIN pg_catalog.pg_type t ON (a.atttypid = t.oid)  LEFT JOIN pg_catalog.pg_attrdef def ON (a.attrelid=def.adrelid AND a.attnum = def.adnum)  LEFT JOIN pg_catalog.pg_description dsc ON (c.oid=dsc.objoid AND a.attnum = dsc.objsubid)  LEFT JOIN pg_catalog.pg_class dc ON (dc.oid=dsc.classoid AND dc.relname=$4)  LEFT JOIN pg_catalog.pg_namespace dn ON (dc.relnamespace=dn.oid AND dn.nspname=$5)  WHERE c.relkind in ($6,$7,$8,$9,$10) and a.attnum > $11 AND NOT a.attisdropped  AND n.nspname LIKE $12 AND c.relname LIKE $13) c WHERE $14  ORDER BY nspname,c.relname,attnum","0","0","0","0","0","0","8","0.49543899999999996","0.041019999999999994","0.084432","0.06192987499999999","0.013765467358915744","61","261","3","0","0","0","0","0","0","0","0","0.01541","0","0","0","0","0","0","0","0","0","0","0","0","0","0"
+10,16419,True,"6248390178589040492","create view revenue0 (supplier_no, total_revenue) as select l_suppkey, sum(l_extendedprice * (1 - l_discount)) from lineitem where l_shipdate >= '1993-04-01'::date and l_shipdate < '1993-04-01'::date + interval '3' month group by l_suppkey","0","0","0","0","0","0","1","0.462488","0.462488","0.462488","0.462488","0","0","75","29","20","0","0","0","0","0","0","0","0.076051","0","0","0","42","0","5750","0","0","0","0","0","0","0","0"
+10,16419,True,"1708853975061214229","SELECT pg_cancel_backend($1)","0","0","0","0","0","0","1","0.01099","0.01099","0.01099","0.01099","0","1","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0"
+10,5,True,"-1540851199369180844","SELECT set_config($1,$2,$3) FROM pg_settings WHERE name = $4","0","0","0","0","0","0","1","0.5842109999999999","0.5842109999999999","0.5842109999999999","0.5842109999999999","0","1","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0"
+10,16419,True,"-9223317314218100470","SELECT
+   supp_nation,
+   cust_nation,
+   l_year,
+   SUM(volume) AS revenue
+FROM
+   (
+      SELECT
+         n1.n_name AS supp_nation,
+         n2.n_name AS cust_nation,
+         EXTRACT($5
+      FROM
+         l_shipdate) AS l_year,
+         l_extendedprice * ($6 - l_discount) AS volume
+      FROM
+         supplier,
+         lineitem,
+         orders,
+         customer,
+         nation n1,
+         nation n2
+      WHERE
+         s_suppkey = l_suppkey
+         AND o_orderkey = l_orderkey
+         AND c_custkey = o_custkey
+         AND s_nationkey = n1.n_nationkey
+         AND c_nationkey = n2.n_nationkey
+         AND
+         (
+            (n1.n_name = $1 AND n2.n_name = $2)
+            OR
+            (n1.n_name = $3 AND n2.n_name = $4)
+         )
+         AND l_shipdate BETWEEN DATE $7 AND DATE $8
+   )
+   AS shipping
+GROUP BY
+   supp_nation,
+   cust_nation,
+   l_year
+ORDER BY
+   supp_nation,
+   cust_nation,
+   l_year","0","0","0","0","0","0","43","108545.65270900002","2344.907423","2732.881527","2524.3175048604644","77.28852747550414","172","8848277","46247982","0","14","0","0","0","0","142852","142852","70102.57628000001","0.100858","159.585215","1215.93694","0","0","0","0","0","0","0","0","0","0","0"
+10,16419,True,"730366229162666581","/*pga4dash*/
+SELECT $1 AS chart_name, pg_catalog.row_to_json(t) AS chart_data
+FROM (SELECT
+   (SELECT count(*) FROM pg_catalog.pg_stat_activity WHERE datname = (SELECT datname FROM pg_catalog.pg_database WHERE oid = $2)) AS ""Total"",
+   (SELECT count(*) FROM pg_catalog.pg_stat_activity WHERE state = $3 AND datname = (SELECT datname FROM pg_catalog.pg_database WHERE oid = $4))  AS ""Active"",
+   (SELECT count(*) FROM pg_catalog.pg_stat_activity WHERE state = $5 AND datname = (SELECT datname FROM pg_catalog.pg_database WHERE oid = $6))  AS ""Idle""
+) t
+UNION ALL
+SELECT $7 AS chart_name, pg_catalog.row_to_json(t) AS chart_data
+FROM (SELECT
+   (SELECT sum(xact_commit) + sum(xact_rollback) FROM pg_catalog.pg_stat_database WHERE datname = (SELECT datname FROM pg_catalog.pg_database WHERE oid = $8)) AS ""Transactions"",
+   (SELECT sum(xact_commit) FROM pg_catalog.pg_stat_database WHERE datname = (SELECT datname FROM pg_catalog.pg_database WHERE oid = $9)) AS ""Commits"",
+   (SELECT sum(xact_rollback) FROM pg_catalog.pg_stat_database WHERE datname = (SELECT datname FROM pg_catalog.pg_database WHERE oid = $10)) AS ""Rollbacks""
+) t
+UNION ALL
+SELECT $11 AS chart_name, pg_catalog.row_to_json(t) AS chart_data
+FROM (SELECT
+   (SELECT sum(tup_inserted) FROM pg_catalog.pg_stat_database WHERE datname = (SELECT datname FROM pg_catalog.pg_database WHERE oid = $12)) AS ""Inserts"",
+   (SELECT sum(tup_updated) FROM pg_catalog.pg_stat_database WHERE datname = (SELECT datname FROM pg_catalog.pg_database WHERE oid = $13)) AS ""Updates"",
+   (SELECT sum(tup_deleted) FROM pg_catalog.pg_stat_database WHERE datname = (SELECT datname FROM pg_catalog.pg_database WHERE oid = $14)) AS ""Deletes""
+) t
+UNION ALL
+SELECT $15 AS chart_name, pg_catalog.row_to_json(t) AS chart_data
+FROM (SELECT
+   (SELECT sum(tup_fetched) FROM pg_catalog.pg_stat_database WHERE datname = (SELECT datname FROM pg_catalog.pg_database WHERE oid = $16)) AS ""Fetched"",
+   (SELECT sum(tup_returned) FROM pg_catalog.pg_stat_database WHERE datname = (SELECT datname FROM pg_catalog.pg_database WHERE oid = $17)) AS ""Returned""
+) t
+UNION ALL
+SELECT $18 AS chart_name, pg_catalog.row_to_json(t) AS chart_data
+FROM (SELECT
+   (SELECT sum(blks_read) FROM pg_catalog.pg_stat_database WHERE datname = (SELECT datname FROM pg_catalog.pg_database WHERE oid = $19)) AS ""Reads"",
+   (SELECT sum(blks_hit) FROM pg_catalog.pg_stat_database WHERE datname = (SELECT datname FROM pg_catalog.pg_database WHERE oid = $20)) AS ""Hits""
+) t","0","0","0","0","0","0","1","0.32903","0.32903","0.32903","0.32903","0","5","26","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0"
+10,16419,True,"-9005496441048721063","create view revenue0 (supplier_no, total_revenue) as select l_suppkey, sum(l_extendedprice * (1 - l_discount)) from lineitem where l_shipdate >= '1995-02-01'::date and l_shipdate < '1995-02-01'::date + interval '3' month group by l_suppkey","0","0","0","0","0","0","2","1.43173","0.522528","0.909202","0.715865","0.19333699999999998","0","151","63","40","0","0","0","0","0","0","0","0.17791099999999999","0","0","0","85","20","112553","0","0","0","0","0","0","0","0"
+10,16419,True,"-6358513674592029986","create view revenue0 (supplier_no, total_revenue) as select l_suppkey, sum(l_extendedprice * (1 - l_discount)) from lineitem where l_shipdate >= '1995-01-01'::date and l_shipdate < '1995-01-01'::date + interval '3' month group by l_suppkey","0","0","0","0","0","0","2","5.744471","0.547692","5.196779","2.8722355","2.3245435","0","220","100","40","0","0","0","0","0","0","0","3.166144","0","0","0","84","20","119925","0","0","0","0","0","0","0","0"
+10,16419,True,"4647070297903581691","SELECT oid, pg_catalog.format_type(oid, $2) AS typname FROM pg_catalog.pg_type WHERE oid = ANY($1) ORDER BY oid","0","0","0","0","0","0","1","0.019740999999999998","0.019740999999999998","0.019740999999999998","0.019740999999999998","0","1","3","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0"
+10,16419,True,"7572790825248475563","create view revenue0 (supplier_no, total_revenue) as select l_suppkey, sum(l_extendedprice * (1 - l_discount)) from lineitem where l_shipdate >= '1996-01-01'::date and l_shipdate < '1996-01-01'::date + interval '3' month group by l_suppkey","0","0","0","0","0","0","1","0.527371","0.527371","0.527371","0.527371","0","0","75","29","20","0","0","0","0","0","0","0","0.08082","0","0","0","43","0","5748","0","0","0","0","0","0","0","0"
+10,16419,True,"8994470303385999087","select s_name, s_address from supplier, nation where s_suppkey in ( select ps_suppkey from partsupp where ps_partkey in ( select p_partkey from part where p_name like $1 ) and ps_availqty > ( select $5 * sum(l_quantity) from lineitem where l_partkey = ps_partkey and l_suppkey = ps_suppkey and l_shipdate >= $2::date and l_shipdate < $3::date + interval $6 year ) ) and s_nationkey = n_nationkey and n_name = $4 order by s_name","0","0","0","0","0","0","42","44058.156322","954.605163","1143.063551","1049.003721952381","48.45190656660067","15031","11763359","17253268","0","1","0","0","0","0","0","0","27365.99128","0.016481","0","0","0","0","0","0","0","0","0","0","0","0","0"
+10,16419,True,"-2441250739684151010","SELECT
+   s_suppkey,
+   s_name,
+   s_address,
+   s_phone,
+   total_revenue
+FROM
+   supplier,
+   revenue0
+WHERE
+   s_suppkey = supplier_no
+   AND total_revenue = (
+      SELECT
+         MAX(total_revenue)
+      FROM
+         revenue0
+   )
+ORDER BY
+   s_suppkey","0","0","0","0","0","0","1","2221.033898","2221.033898","2221.033898","2221.033898","0","1","1","269826","0","16","0","0","0","0","106","240","359.609888","0.106481","0.140103","1.743671","0","0","0","40","2.231082","1","34.662493","1","164.576423","1","116.01991"
+10,16419,True,"2064869707185898531","COMMIT","0","0","0","0","0","0","1","0.00104","0.00104","0.00104","0.00104","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0"
+10,16419,True,"8337740243580573530","SET client_min_messages=notice","0","0","0","0","0","0","2","0.0020499999999999997","0.001","0.00105","0.0010249999999999999","2.4999999999999903e-05","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0"
+10,16419,True,"3697397594255643543","SELECT
+   s_suppkey,
+   s_name,
+   s_address,
+   s_phone,
+   total_revenue
+FROM
+   supplier,
+   revenue0
+WHERE
+   s_suppkey = supplier_no
+   AND total_revenue = (
+      SELECT
+         MAX(total_revenue)
+      FROM
+         revenue0
+   )
+ORDER BY
+   s_suppkey","0","0","0","0","0","0","1","2201.0565039999997","2201.0565039999997","2201.0565039999997","2201.0565039999997","0","1","1","267978","0","16","0","0","0","0","106","244","352.263861","0.111514","0.125583","1.737934","0","0","0","40","2.529288","1","38.150264","1","166.636379","1","120.00095"
+10,5,True,"7719402811077081697","SET client_encoding='utf-8'","0","0","0","0","0","0","1","0.00162","0.00162","0.00162","0.00162","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0"
+10,16419,True,"7832612780343467667","create view revenue0 (supplier_no, total_revenue) as select l_suppkey, sum(l_extendedprice * (1 - l_discount)) from lineitem where l_shipdate >= '1995-06-01'::date and l_shipdate < '1995-06-01'::date + interval '3' month group by l_suppkey","0","0","0","0","0","0","1","0.506271","0.506271","0.506271","0.506271","0","0","75","29","20","0","0","0","0","0","0","0","0.076701","0","0","0","43","0","5699","0","0","0","0","0","0","0","0"
+10,5,True,"5238886764819015996","SELECT
+    db.oid as did, db.datname, db.datallowconn,
+    pg_catalog.pg_encoding_to_char(db.encoding) AS serverencoding,
+    pg_catalog.has_database_privilege(db.oid, $1) as cancreate,
+    datistemplate
+FROM
+    pg_catalog.pg_database db
+WHERE db.oid = $2","0","0","0","0","0","0","1","0.036801","0.036801","0.036801","0.036801","0","1","1","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0"
+10,5,True,"-2885330479908940062","SELECT version()","0","0","0","0","0","0","1","0.00198","0.00198","0.00198","0.00198","0","1","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0"
+10,16419,True,"4048298855581437608","create view revenue0 (supplier_no, total_revenue) as select l_suppkey, sum(l_extendedprice * (1 - l_discount)) from lineitem where l_shipdate >= '1994-07-01'::date and l_shipdate < '1994-07-01'::date + interval '3' month group by l_suppkey","0","0","0","0","0","0","1","0.460907","0.460907","0.460907","0.460907","0","0","75","29","20","0","0","0","0","0","0","0","0.076683","0","0","0","41","0","5575","0","0","0","0","0","0","0","0"
+10,16419,True,"-357504140559161582","SELECT
+   s_suppkey,
+   s_name,
+   s_address,
+   s_phone,
+   total_revenue
+FROM
+   supplier,
+   revenue0
+WHERE
+   s_suppkey = supplier_no
+   AND total_revenue = (
+      SELECT
+         MAX(total_revenue)
+      FROM
+         revenue0
+   )
+ORDER BY
+   s_suppkey","0","0","0","0","0","0","1","2193.935295","2193.935295","2193.935295","2193.935295","0","1","1","267162","0","16","0","0","0","0","104","242","360.880729","0.10688","0.136952","1.767973","0","0","0","40","2.376909","1","36.318284","1","166.521454","1","115.914369"
+10,16419,True,"-1230386279905109600","SET application_name = 'tpch'","0","0","0","0","0","0","3","0.007350000000000001","0.00239","0.00253","0.00245","5.8878405775518954e-05","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0"
+10,16419,True,"-1796743056771589294","SELECT * FROM pg_statio_user_indexes","0","0","0","0","0","0","1","0.13694","0.13694","0.13694","0.13694","0","31","113","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0"
+10,16419,True,"6650430479887907887","BEGIN","0","0","0","0","0","0","69","0.03311","0.00031","0.00284","0.000479855072463768","0.00030871633597439983","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0"
+10,16419,True,"-6604770603387031657","SELECT
+   s_suppkey,
+   s_name,
+   s_address,
+   s_phone,
+   total_revenue
+FROM
+   supplier,
+   revenue0
+WHERE
+   s_suppkey = supplier_no
+   AND total_revenue = (
+      SELECT
+         MAX(total_revenue)
+      FROM
+         revenue0
+   )
+ORDER BY
+   s_suppkey","0","0","0","0","0","0","1","2156.134162","2156.134162","2156.134162","2156.134162","0","1","1","268008","0","16","0","0","0","0","106","242","360.154022","0.12368","0.13903","1.67391","0","0","0","40","1.997521","1","33.681041","1","165.22206","1","115.458893"
+10,16419,True,"5812696535754339910","create view revenue0 (supplier_no, total_revenue) as select l_suppkey, sum(l_extendedprice * (1 - l_discount)) from lineitem where l_shipdate >= '1996-07-01'::date and l_shipdate < '1996-07-01'::date + interval '3' month group by l_suppkey","0","0","0","0","0","0","1","0.770038","0.770038","0.770038","0.770038","0","0","75","29","20","0","0","0","0","0","0","0","0.185774","0","0","0","43","0","5693","0","0","0","0","0","0","0","0"
+10,16419,True,"-2765058962842402156","SELECT
+   s_suppkey,
+   s_name,
+   s_address,
+   s_phone,
+   total_revenue
+FROM
+   supplier,
+   revenue0
+WHERE
+   s_suppkey = supplier_no
+   AND total_revenue = (
+      SELECT
+         MAX(total_revenue)
+      FROM
+         revenue0
+   )
+ORDER BY
+   s_suppkey","0","0","0","0","0","0","1","2224.3188809999997","2224.3188809999997","2224.3188809999997","2224.3188809999997","0","1","1","270096","0","16","0","0","0","0","110","246","364.526214","0.106001","0.154571","1.802329","0","0","0","40","1.814691","1","58.254402","1","163.539893","1","114.728197"
+10,16419,True,"1500919254599543373","SELECT
+   SUM(l_extendedprice) / $3 AS avg_yearly
+FROM
+   lineitem,
+   part
+WHERE
+   p_partkey = l_partkey
+   AND p_brand = $1
+   AND p_container = $2
+   AND l_quantity < (
+   SELECT
+      $4 * AVG(l_quantity)
+   FROM
+      lineitem
+   WHERE
+      l_partkey = p_partkey )","0","0","0","0","0","0","43","57895.874597","1290.441121","1503.741373","1346.4156883023259","33.63538198293278","43","17273639","10042808","0","0","0","0","0","0","0","0","10971.327628999998","0","0","0","0","0","0","1075","35.25329299999999","0","0","43","15.588270000000003","43","369.87466500000005"
+10,5,True,"4634030752968494171","SELECT
+	r.oid, r.rolname, r.rolcanlogin, r.rolsuper,
+	pg_catalog.shobj_description(r.oid, $1) AS description
+FROM
+	pg_catalog.pg_roles r
+ORDER BY r.rolcanlogin, r.rolname","0","0","0","0","0","0","2","0.392682","0.150891","0.24179099999999998","0.196341","0.04544999999999999","30","39","1","0","0","0","0","0","0","0","0","0.04222","0","0","0","0","0","0","0","0","0","0","0","0","0","0"
+10,16419,True,"6086961418802792255","select $3 * sum(case when p_type like $4 then l_extendedprice * ($5 - l_discount) else $6 end) / sum(l_extendedprice * ($7 - l_discount)) as promo_revenue from lineitem, part where l_partkey = p_partkey and l_shipdate >= $1::date and l_shipdate < $2::date + interval $8 month","0","0","0","0","0","0","43","25964.53362999999","560.199405","643.254335","603.8263634883721","18.75580242944659","43","0","3915563","0","2","0","0","0","0","0","0","5225.923431000001","0.03891","0","0","0","0","0","799","34.040522","0","0","43","15.986302000000002","43","319.266866"
+10,16419,True,"5915410634074882152","/*pga4dash*/
+SELECT
+    pid,
+    datname,
+    usename,
+    application_name,
+    client_addr,
+    pg_catalog.to_char(backend_start, $1) AS backend_start,
+    state,
+    wait_event_type || $2 || wait_event AS wait_event,
+    array_to_string(pg_catalog.pg_blocking_pids(pid), $3) AS blocking_pids,
+    query,
+    pg_catalog.to_char(state_change, $4) AS state_change,
+    pg_catalog.to_char(query_start, $5) AS query_start,
+    pg_catalog.to_char(xact_start, $6) AS xact_start,
+    backend_type,
+    CASE WHEN state = $7 THEN ROUND((extract($8 from now() - query_start) / $9)::numeric, $10) ELSE $11 END AS active_since
+FROM
+    pg_catalog.pg_stat_activity
+WHERE
+    datname = (SELECT datname FROM pg_catalog.pg_database WHERE oid = $12)ORDER BY pid","0","0","0","0","0","0","4","0.42422000000000004","0.07302","0.16454","0.106055","0.03485344495168304","4","19","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0"
+10,16419,True,"-8629081555290748889","SELECT
+   s_suppkey,
+   s_name,
+   s_address,
+   s_phone,
+   total_revenue
+FROM
+   supplier,
+   revenue0
+WHERE
+   s_suppkey = supplier_no
+   AND total_revenue = (
+      SELECT
+         MAX(total_revenue)
+      FROM
+         revenue0
+   )
+ORDER BY
+   s_suppkey","0","0","0","0","0","0","1","2193.771291","2193.771291","2193.771291","2193.771291","0","1","1","269732","0","16","0","0","0","0","108","242","358.897823","0.122833","0.13938","1.986723","0","0","0","40","2.079903","1","35.988939","1","172.948773","1","121.552414"
+10,16419,True,"161607801495977692","SELECT
+   s_suppkey,
+   s_name,
+   s_address,
+   s_phone,
+   total_revenue
+FROM
+   supplier,
+   revenue0
+WHERE
+   s_suppkey = supplier_no
+   AND total_revenue = (
+      SELECT
+         MAX(total_revenue)
+      FROM
+         revenue0
+   )
+ORDER BY
+   s_suppkey","0","0","0","0","0","0","1","2178.347295","2178.347295","2178.347295","2178.347295","0","1","1","269746","0","16","0","0","0","0","108","242","356.505035","0.127761","0.211991","1.720813","0","0","0","40","2.035163","1","35.810953","1","165.745255","1","118.529874"
+10,16419,True,"4560789258604147685","SET SESSION CHARACTERISTICS AS TRANSACTION ISOLATION LEVEL SERIALIZABLE","0","0","0","0","0","0","1","0.00188","0.00188","0.00188","0.00188","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0"
+10,16419,True,"-4290669992150437401","SELECT
+   o_year,
+   SUM(
+   CASE
+      WHEN
+         nation = $1
+      THEN
+         volume
+      ELSE
+         $4
+   END
+) / SUM(volume) AS mkt_share
+FROM
+   (
+      SELECT
+         EXTRACT($5
+      FROM
+         o_orderdate) AS o_year,
+         l_extendedprice * ($6 - l_discount) AS volume,
+         n2.n_name AS nation
+      FROM
+         part,
+         supplier,
+         lineitem,
+         orders,
+         customer,
+         nation n1,
+         nation n2,
+         region
+      WHERE
+         p_partkey = l_partkey
+         AND s_suppkey = l_suppkey
+         AND l_orderkey = o_orderkey
+         AND o_custkey = c_custkey
+         AND c_nationkey = n1.n_nationkey
+         AND n1.n_regionkey = r_regionkey
+         AND r_name = $2
+         AND s_nationkey = n2.n_nationkey
+         AND o_orderdate BETWEEN DATE $7 AND DATE $8
+         AND p_type = $3
+   )
+   AS all_nations
+GROUP BY
+   o_year
+ORDER BY
+   o_year","0","0","0","0","0","0","43","169907.40117000003","3869.1365050000004","4101.529287","3951.3349109302335","55.00331624026738","86","141018916","50544373","0","23","0","0","0","0","0","0","74230.80230099999","0.285786","0","0","0","0","0","0","0","0","0","0","0","0","0"
+10,16419,True,"-2865639534750434278","SELECT
+   s_suppkey,
+   s_name,
+   s_address,
+   s_phone,
+   total_revenue
+FROM
+   supplier,
+   revenue0
+WHERE
+   s_suppkey = supplier_no
+   AND total_revenue = (
+      SELECT
+         MAX(total_revenue)
+      FROM
+         revenue0
+   )
+ORDER BY
+   s_suppkey","0","0","0","0","0","0","1","2200.655857","2200.655857","2200.655857","2200.655857","0","1","1","269572","0","11","0","0","0","0","108","244","357.29432","0.130401","0.143281","1.77855","0","0","0","40","2.060071","1","35.190546","1","168.562531","1","120.811496"
+10,16419,True,"-4903595237513634451","SELECT
+   c_count,
+   COUNT(*) AS custdist
+FROM
+   (
+      SELECT
+         c_custkey,
+         COUNT(o_orderkey) AS c_count
+      FROM
+         customer
+         LEFT OUTER JOIN
+            orders
+            ON c_custkey = o_custkey
+            AND o_comment NOT LIKE $1
+      GROUP BY
+         c_custkey
+   )
+   AS c_orders
+GROUP BY
+   c_count
+ORDER BY
+   custdist DESC,
+   c_count DESC","0","0","0","0","0","0","43","84753.90384000003","1867.5315759999999","2291.380581","1971.0210195348834","80.27536849098874","1763","185457","2093976","0","0","0","0","0","0","297252","493085","2236.1768739999998","0","306.35313600000006","2479.989027","0","0","0","1161","42.271978999999995","0","0","43","23.976658","43","393.736397"
+10,16419,True,"-4570799927402708811","SET extra_float_digits = 3","0","0","0","0","0","0","3","0.02181","0.00455","0.01241","0.00727","0.003636591811023062","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0"
+10,16419,True,"-6682301322956739706","SELECT
+   s_suppkey,
+   s_name,
+   s_address,
+   s_phone,
+   total_revenue
+FROM
+   supplier,
+   revenue0
+WHERE
+   s_suppkey = supplier_no
+   AND total_revenue = (
+      SELECT
+         MAX(total_revenue)
+      FROM
+         revenue0
+   )
+ORDER BY
+   s_suppkey","0","0","0","0","0","0","1","2196.432211","2196.432211","2196.432211","2196.432211","0","1","1","268874","0","11","0","0","0","0","110","242","354.014142","0.084742","0.140961","1.794042","0","0","0","40","2.280749","1","36.040083","1","173.013958","1","120.969145"
+10,16419,True,"-4209059595755531522","SELECT
+   s_suppkey,
+   s_name,
+   s_address,
+   s_phone,
+   total_revenue
+FROM
+   supplier,
+   revenue0
+WHERE
+   s_suppkey = supplier_no
+   AND total_revenue = (
+      SELECT
+         MAX(total_revenue)
+      FROM
+         revenue0
+   )
+ORDER BY
+   s_suppkey","0","0","0","0","0","0","1","2226.7273790000004","2226.7273790000004","2226.7273790000004","2226.7273790000004","0","1","1","269732","0","11","0","0","0","0","108","242","369.749419","0.093812","0.150542","1.897578","0","0","0","40","2.118217","1","36.339198","1","167.964717","1","118.258555"
+10,16419,True,"-2087008269107195845","create view revenue0 (supplier_no, total_revenue) as select l_suppkey, sum(l_extendedprice * (1 - l_discount)) from lineitem where l_shipdate >= '1994-01-01'::date and l_shipdate < '1994-01-01'::date + interval '3' month group by l_suppkey","0","0","0","0","0","0","1","0.87413","0.87413","0.87413","0.87413","0","0","75","29","20","0","0","0","0","0","0","0","0.415415","0","0","0","43","0","5787","0","0","0","0","0","0","0","0"
+10,16419,True,"5143700829170453064","select l_returnflag, l_linestatus, sum(l_quantity) as sum_qty, sum(l_extendedprice) as sum_base_price, sum(l_extendedprice * ($2 - l_discount)) as sum_disc_price, sum(l_extendedprice * ($3 - l_discount) * ($4 + l_tax)) as sum_charge, avg(l_quantity) as avg_qty, avg(l_extendedprice) as avg_price, avg(l_discount) as avg_disc, count(*) as count_order from lineitem where l_shipdate <= date $5 - concat($1,$6)::interval group by l_returnflag, l_linestatus order by l_returnflag, l_linestatus","0","0","0","0","0","0","44","479671.018781","10310.382158","11332.496751","10901.614063204546","255.32461462447398","176","313725","9582755","0","0","0","0","0","0","0","0","10191.788294999998","0","0","0","0","0","0","528","45.431261","9","135.114151","44","762.7752089999999","44","893.6422509999998"
+10,5,True,"3545412574037053608","SET DateStyle=ISO","0","0","0","0","0","0","1","0.00627","0.00627","0.00627","0.00627","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0"
+10,5,True,"7177081029719482536","/*pga4dash*/
+SELECT
+    pid,
+    datname,
+    usename,
+    application_name,
+    client_addr,
+    pg_catalog.to_char(backend_start, $1) AS backend_start,
+    state,
+    wait_event_type || $2 || wait_event AS wait_event,
+    array_to_string(pg_catalog.pg_blocking_pids(pid), $3) AS blocking_pids,
+    query,
+    pg_catalog.to_char(state_change, $4) AS state_change,
+    pg_catalog.to_char(query_start, $5) AS query_start,
+    pg_catalog.to_char(xact_start, $6) AS xact_start,
+    backend_type,
+    CASE WHEN state = $7 THEN ROUND((extract($8 from now() - query_start) / $9)::numeric, $10) ELSE $11 END AS active_since
+FROM
+    pg_catalog.pg_stat_activity
+ORDER BY pid","0","0","0","0","0","0","2","0.706343","0.10395099999999999","0.602392","0.3531715","0.2492205","12","7","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0"
+10,16419,True,"3344607863160188272","SELECT
+   s_suppkey,
+   s_name,
+   s_address,
+   s_phone,
+   total_revenue
+FROM
+   supplier,
+   revenue0
+WHERE
+   s_suppkey = supplier_no
+   AND total_revenue = (
+      SELECT
+         MAX(total_revenue)
+      FROM
+         revenue0
+   )
+ORDER BY
+   s_suppkey","0","0","0","0","0","0","1","2191.005371","2191.005371","2191.005371","2191.005371","0","1","1","268926","0","9","0","0","0","0","106","242","356.269762","0.07088","0.14139","1.876927","0","0","0","40","1.98401","1","35.959299","1","174.463338","1","120.247633"
+10,5,True,"-2176588561018435415","SELECT CASE WHEN usesuper
+       THEN pg_catalog.pg_is_in_recovery()
+       ELSE $1
+       END as inrecovery,
+       CASE WHEN usesuper AND pg_catalog.pg_is_in_recovery()
+       THEN pg_is_wal_replay_paused()
+       ELSE $2
+       END as isreplaypaused
+FROM pg_catalog.pg_user WHERE usename=current_user","0","0","0","0","0","0","1","0.009819999999999999","0.009819999999999999","0.009819999999999999","0.009819999999999999","0","1","1","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0"
+10,16419,True,"-4777828407165387477","SELECT
+   s_suppkey,
+   s_name,
+   s_address,
+   s_phone,
+   total_revenue
+FROM
+   supplier,
+   revenue0
+WHERE
+   s_suppkey = supplier_no
+   AND total_revenue = (
+      SELECT
+         MAX(total_revenue)
+      FROM
+         revenue0
+   )
+ORDER BY
+   s_suppkey","0","0","0","0","0","0","1","2224.6959039999997","2224.6959039999997","2224.6959039999997","2224.6959039999997","0","1","1","268644","0","16","0","0","0","0","104","240","354.951043","0.124491","0.166831","2.135971","0","0","0","40","2.488349","1","34.561816","1","174.11583","1","120.043722"
+10,16419,True,"9007855649960752336","SELECT COUNT(*) FROM pg_extension WHERE extname IN (
+                $1, $2)","0","0","0","0","0","0","1","0.03587","0.03587","0.03587","0.03587","0","1","0","1","0","0","0","0","0","0","0","0","0.02446","0","0","0","0","0","0","0","0","0","0","0","0","0","0"
+10,16419,True,"-4537571054985431035","SELECT
+   s_suppkey,
+   s_name,
+   s_address,
+   s_phone,
+   total_revenue
+FROM
+   supplier,
+   revenue0
+WHERE
+   s_suppkey = supplier_no
+   AND total_revenue = (
+      SELECT
+         MAX(total_revenue)
+      FROM
+         revenue0
+   )
+ORDER BY
+   s_suppkey","0","0","0","0","0","0","1","2200.097679","2200.097679","2200.097679","2200.097679","0","1","1","268122","0","16","0","0","0","0","102","240","360.162755","0.107454","0.150851","1.862719","0","0","0","40","2.063093","1","35.365003","1","165.890046","1","122.185452"
+10,16419,True,"6865091933239955883","select l_orderkey, sum(l_extendedprice * ($4 - l_discount)) as revenue, o_orderdate, o_shippriority from customer, orders, lineitem where c_mktsegment = $1 and c_custkey = o_custkey and l_orderkey = o_orderkey and o_orderdate < $2::date and l_shipdate > $3::date group by l_orderkey, o_orderdate, o_shippriority order by revenue desc, o_orderdate limit $5","0","0","0","0","0","0","43","55997.82485400001","1200.147186","3259.271697","1302.274996604651","308.7310662238524","430","42769260","10720014","0","1","0","0","0","0","11239","11282","15836.581038","0.01377","11.479332","71.13374800000003","0","0","0","1290","47.36380999999997","0","0","43","22.100164999999997","43","466.5440150000001"
+10,16419,True,"1817606875557569412","SELECT
+    nsp.nspname as schema_name,
+    (nsp.nspname = $1 AND EXISTS
+        (SELECT $2 FROM pg_catalog.pg_class WHERE relname = $3 AND
+            relnamespace = nsp.oid LIMIT $4)) OR
+    (nsp.nspname = $5 AND EXISTS
+        (SELECT $6 FROM pg_catalog.pg_class WHERE relname = $7 AND
+            relnamespace = nsp.oid LIMIT $8)) OR
+    (nsp.nspname = $9 AND EXISTS
+        (SELECT $10 FROM pg_catalog.pg_class WHERE relname = $11 AND
+            relnamespace = nsp.oid LIMIT $12)) AS is_catalog,
+    CASE
+    WHEN nsp.nspname = ANY($13)
+        THEN $14
+    ELSE $15 END AS db_support
+FROM
+    pg_catalog.pg_namespace nsp
+WHERE
+    nsp.oid = $16::OID","0","0","0","0","0","0","1","0.00935","0.00935","0.00935","0.00935","0","1","1","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0"
+10,16419,True,"3797844576419202242","SELECT
+   s_suppkey,
+   s_name,
+   s_address,
+   s_phone,
+   total_revenue
+FROM
+   supplier,
+   revenue0
+WHERE
+   s_suppkey = supplier_no
+   AND total_revenue = (
+      SELECT
+         MAX(total_revenue)
+      FROM
+         revenue0
+   )
+ORDER BY
+   s_suppkey","0","0","0","0","0","0","1","2200.41759","2200.41759","2200.41759","2200.41759","0","1","1","266650","0","16","0","0","0","0","102","236","352.13914","0.1112","0.13561","1.649012","0","0","0","40","2.787586","1","36.203417","1","168.975781","1","120.809273"
+10,16419,True,"-252915259995009433","create view revenue0 (supplier_no, total_revenue) as select l_suppkey, sum(l_extendedprice * (1 - l_discount)) from lineitem where l_shipdate >= '1993-07-01'::date and l_shipdate < '1993-07-01'::date + interval '3' month group by l_suppkey","0","0","0","0","0","0","1","0.690882","0.690882","0.690882","0.690882","0","0","77","39","21","0","0","0","0","0","0","0","0.096619","0","0","0","41","0","5579","0","0","0","0","0","0","0","0"
+10,16419,True,"-6861804378290272165","SELECT
+   s_suppkey,
+   s_name,
+   s_address,
+   s_phone,
+   total_revenue
+FROM
+   supplier,
+   revenue0
+WHERE
+   s_suppkey = supplier_no
+   AND total_revenue = (
+      SELECT
+         MAX(total_revenue)
+      FROM
+         revenue0
+   )
+ORDER BY
+   s_suppkey","0","0","0","0","0","0","1","2177.8440360000004","2177.8440360000004","2177.8440360000004","2177.8440360000004","0","1","1","267488","0","16","0","0","0","0","108","244","357.283623","0.104901","0.137081","1.730741","0","0","0","40","2.143192","1","37.397341","1","174.347138","1","117.281289"
+10,16419,True,"5591784696012235849","SELECT
+             gss_authenticated, encrypted
+        FROM
+            pg_catalog.pg_stat_gssapi
+        WHERE pid = pg_backend_pid()","0","0","0","0","0","0","2","0.08469000000000002","0.04207","0.042620000000000005","0.04234500000000001","0.0002749999999999992","2","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0"
+10,16419,True,"3007824077230373907","SELECT $1 AS TABLE_CAT, n.nspname AS TABLE_SCHEM, c.relname AS TABLE_NAME,  CASE n.nspname ~ $2 OR n.nspname = $3  WHEN $4 THEN CASE  WHEN n.nspname = $5 OR n.nspname = $6 THEN CASE c.relkind   WHEN $7 THEN $8   WHEN $9 THEN $10   WHEN $11 THEN $12   ELSE $13   END  WHEN n.nspname = $14 THEN CASE c.relkind   WHEN $15 THEN $16   WHEN $17 THEN $18   ELSE $19   END  ELSE CASE c.relkind   WHEN $20 THEN $21   WHEN $22 THEN $23   WHEN $24 THEN $25   WHEN $26 THEN $27   WHEN $28 THEN $29   ELSE $30   END  END  WHEN $31 THEN CASE c.relkind  WHEN $32 THEN $33  WHEN $34 THEN $35  WHEN $36 THEN $37  WHEN $38 then $39  WHEN $40 THEN $41  WHEN $42 THEN $43  WHEN $44 THEN $45  WHEN $46 THEN $47  WHEN $48 THEN $49  ELSE $50  END  ELSE $51  END  AS TABLE_TYPE, d.description AS REMARKS,  $52 as TYPE_CAT, $53 as TYPE_SCHEM, $54 as TYPE_NAME, $55 AS SELF_REFERENCING_COL_NAME, $56 AS REF_GENERATION  FROM pg_catalog.pg_namespace n, pg_catalog.pg_class c  LEFT JOIN pg_catalog.pg_description d ON (c.oid = d.objoid AND d.objsubid = $57  and d.classoid = $58::regclass)  WHERE c.relnamespace = n.oid  AND n.nspname LIKE $59 AND ($60  OR ( c.relkind = $61 AND n.nspname !~ $62 AND n.nspname <> $63 ) )  ORDER BY TABLE_TYPE,TABLE_SCHEM,TABLE_NAME","0","0","0","0","0","0","1","0.11916199999999999","0.11916199999999999","0.11916199999999999","0.11916199999999999","0","8","37","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0"
+10,16419,True,"-7430404911732246023","create view revenue0 (supplier_no, total_revenue) as select l_suppkey, sum(l_extendedprice * (1 - l_discount)) from lineitem where l_shipdate >= '1995-12-01'::date and l_shipdate < '1995-12-01'::date + interval '3' month group by l_suppkey","0","0","0","0","0","0","2","0.8413010000000001","0.417986","0.423315","0.42065050000000004","0.0026644999999999724","0","150","58","40","0","0","0","0","0","0","0","0.145782","0","0","0","84","0","11296","0","0","0","0","0","0","0","0"
+10,16419,True,"3056798788834760739","select current_schema()","0","0","0","0","0","0","1","0.022121000000000002","0.022121000000000002","0.022121000000000002","0.022121000000000002","0","1","3","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0"
+10,16419,True,"8552489071416514725","create view revenue0 (supplier_no, total_revenue) as select l_suppkey, sum(l_extendedprice * (1 - l_discount)) from lineitem where l_shipdate >= '1997-07-01'::date and l_shipdate < '1997-07-01'::date + interval '3' month group by l_suppkey","0","0","0","0","0","0","2","1.45669","0.483056","0.973634","0.728345","0.24528899999999998","0","150","58","40","0","0","0","0","0","0","0","0.46027100000000004","0","0","0","85","0","11420","0","0","0","0","0","0","0","0"
+10,5,True,"-1759747499479330993","SELECT
+    db.oid as did, db.datname as name, ta.spcname as spcname, db.datallowconn,
+    db.datistemplate AS is_template,
+    pg_catalog.has_database_privilege(db.oid, $1) as cancreate, datdba as owner,
+    descr.description
+FROM
+    pg_catalog.pg_database db
+    LEFT OUTER JOIN pg_catalog.pg_tablespace ta ON db.dattablespace = ta.oid
+    LEFT OUTER JOIN pg_catalog.pg_shdescription descr ON (
+        db.oid=descr.objoid AND descr.classoid=$2::regclass
+    )
+WHERE         db.oid > $3::OID OR db.datname IN ($4, $5)
+
+ORDER BY datname","0","0","0","0","0","0","1","0.08904100000000001","0.08904100000000001","0.08904100000000001","0.08904100000000001","0","2","7","1","0","0","0","0","0","0","0","0","0.050491","0","0","0","0","0","0","0","0","0","0","0","0","0","0"
+10,16419,True,"7999106350079389291","SELECT
+   c_name,
+   c_custkey,
+   o_orderkey,
+   o_orderdate,
+   o_totalprice,
+   SUM(l_quantity)
+FROM
+   customer,
+   orders,
+   lineitem
+WHERE
+   o_orderkey IN
+   (
+      SELECT
+         l_orderkey
+      FROM
+         lineitem
+      GROUP BY
+         l_orderkey
+      HAVING
+         SUM(l_quantity) > $1
+   )
+   AND c_custkey = o_custkey
+   AND o_orderkey = l_orderkey
+GROUP BY
+   c_name,
+   c_custkey,
+   o_orderkey,
+   o_orderdate,
+   o_totalprice
+ORDER BY
+   o_totalprice DESC,
+   o_orderdate LIMIT $2","0","0","0","0","0","0","43","144487.733308","3285.0047029999996","4482.469013","3360.179844372094","175.3495433275693","806","584335","13005493","0","141","0","0","0","0","0","0","16310.701944","1.8730300000000002","0","0","0","0","0","1634","47.68230899999998","43","391.242616","43","4739.555544","43","3404.5657769999993"
+10,16419,True,"8607243722065703722","create view revenue0 (supplier_no, total_revenue) as select l_suppkey, sum(l_extendedprice * (1 - l_discount)) from lineitem where l_shipdate >= '1994-11-01'::date and l_shipdate < '1994-11-01'::date + interval '3' month group by l_suppkey","0","0","0","0","0","0","3","2.973652","0.523772","1.907848","0.9912173333333334","0.6481986275853687","0","226","87","62","1","0","0","0","0","0","0","1.508921","0.03614","0","0","126","1","18314","0","0","0","0","0","0","0","0"
+10,16419,True,"-8061068784043973666","select cntrycode, count(*) as numcust, sum(c_acctbal) as totacctbal from ( select substring(c_phone from $15 for $16) as cntrycode, c_acctbal from customer where substring(c_phone from $17 for $18) in ($1, $2, $3, $4, $5, $6, $7) and c_acctbal > ( select avg(c_acctbal) from customer where c_acctbal > $19 and substring(c_phone from $20 for $21) in ($8, $9, $10, $11, $12, $13, $14) ) and not exists ( select * from orders where o_custkey = c_custkey ) ) as custsale group by cntrycode order by cntrycode","0","0","0","0","0","0","42","11437.013861999998","225.262788","295.502087","272.30985385714285","22.623774635779395","294","4621874","784371","0","0","0","0","0","0","0","0","867.6239020000002","0","0","0","0","0","0","0","0","0","0","0","0","0","0"
+10,16419,True,"8965062428185394454","create view revenue0 (supplier_no, total_revenue) as select l_suppkey, sum(l_extendedprice * (1 - l_discount)) from lineitem where l_shipdate >= '1997-02-01'::date and l_shipdate < '1997-02-01'::date + interval '3' month group by l_suppkey","0","0","0","0","0","0","1","0.895484","0.895484","0.895484","0.895484","0","0","75","29","20","0","0","0","0","0","0","0","0.0847","0","0","0","43","20","107758","0","0","0","0","0","0","0","0"
