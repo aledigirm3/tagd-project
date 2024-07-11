@@ -71,7 +71,6 @@ DISK intensive: Query 20
 D_CPU: 0.4541428367
 D_DISK: 0.8298549731
 
-
 Creazione modello analitico query CPU intensive:
 Throughput: 1.0716
 
@@ -92,4 +91,6 @@ Tempo di risposta:
 - cpuint: 1.268057278244192
 - diskint: 1.7447009363278492
 
-Ottenuti i valori del modello simulativo, rieseguiamo il benchmark con soltanto le due query e un tempo di 300 secondi utilizzando il file sample_tpch_16_20_config.xml
+Ottenuti i valori del modello simulativo, rieseguiamo il benchmark con soltanto le due query e un tempo di 60 secondi utilizzando il file sample_tpch_16_20_config.xml
+
+Analizzando il file pg_stat_statements_16_20.csv i service demand risultano simili al precedente benchmark. I tempi di risposta invece si discostano da quanto calcolato dal modello analitico.
