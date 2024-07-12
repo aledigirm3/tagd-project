@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="ISO-8859-1" standalone="no"?>
-<archive xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" name="punto1.jmva.jsimg" timestamp="Thu Jul 11 23:22:17 CEST 2024" xsi:noNamespaceSchemaLocation="Archive.xsd">
+<archive xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" name="punto1.jmva.jsimg" timestamp="Fri Jul 12 01:39:26 CEST 2024" xsi:noNamespaceSchemaLocation="Archive.xsd">
     <sim disableStatisticStop="false" logDecimalSeparator="," logDelimiter=";" logPath="C:\Users\tonto\JMT\" logReplaceMode="0" maxEvents="-1" maxSamples="1000000" name="punto1.jmva.jsimg" polling="1.0" xsi:noNamespaceSchemaLocation="SIMmodeldefinition.xsd">
-        <userClass customers="1" name="Disk-Intensive" priority="0" referenceSource="RefStation" softDeadline="0.0" type="closed"/>
+        <userClass customers="2" name="Disk-Intensive" priority="0" referenceSource="RefStation" softDeadline="0.0" type="closed"/>
         <userClass customers="0" name="CPU-Intensive" priority="0" referenceSource="RefStation" softDeadline="0.0" type="closed"/>
         <node name="Router">
             <section className="Queue">
@@ -393,7 +393,7 @@
         <connection source="Disk" target="Router"/>
         <preload>
             <stationPopulations stationName="RefStation">
-                <classPopulation population="1" refClass="Disk-Intensive"/>
+                <classPopulation population="2" refClass="Disk-Intensive"/>
             </stationPopulations>
         </preload>
     </sim>
@@ -413,76 +413,68 @@
             <position angle="0.0" rotate="false" x="143.0" y="90.0"/>
         </station>
     </jmodel>
-    <results elapsedTime="1744" logDecimalSeparator="," logDelimiter=";" pollingInterval="1.0" xsi:noNamespaceSchemaLocation="Results.xsd">
-        <measure alpha="0.99" analyzedSamples="40960" discardedSamples="80" finalValue="0.3569891788514782" name="CPU_Disk-Intensive_Number of Customers" nodeType="station" precision="0.03" referenceClass="Disk-Intensive" referenceStation="CPU" state="1" type="0">
-            <sample lastIntervalAvgValue="0.35541464863709377" lowerBound="0.33781101102894323" meanValue="0.3534908982958105" simulationTime="47281.62791049812" upperBound="0.36917078556267774"/>
-            <sample lastIntervalAvgValue="0.36149311328537836" lowerBound="0.34839295440834955" meanValue="0.3569891788514782" simulationTime="68907.27963579787" upperBound="0.3655854032946068"/>
+    <results elapsedTime="1550" logDecimalSeparator="," logDelimiter=";" pollingInterval="1.0" xsi:noNamespaceSchemaLocation="Results.xsd">
+        <measure alpha="0.99" analyzedSamples="92160" discardedSamples="730" finalValue="0.6299120635695685" name="CPU_Disk-Intensive_Number of Customers" nodeType="station" precision="0.03" referenceClass="Disk-Intensive" referenceStation="CPU" state="1" type="0">
+            <sample lastIntervalAvgValue="0.6258584164677365" lowerBound="0.5997243272276699" meanValue="0.624815851501679" simulationTime="87601.64651039895" upperBound="0.649907375775688"/>
+            <sample lastIntervalAvgValue="0.630357756485992" lowerBound="0.6168464882080601" meanValue="0.6299120635695685" simulationTime="120581.17529322892" upperBound="0.642977638931077"/>
         </measure>
-        <measure alpha="0.99" analyzedSamples="61440" discardedSamples="95" finalValue="0.902721216268718" name="CPU_Disk-Intensive_Residence Time" nodeType="station" precision="0.03" referenceClass="Disk-Intensive" referenceStation="CPU" state="1" type="3">
-            <sample lastIntervalAvgValue="0.9004706446682829" lowerBound="0.8551956012441957" meanValue="0.8969068522866438" simulationTime="47281.62791049812" upperBound="0.9386181033290918"/>
-            <sample lastIntervalAvgValue="0.9027066039530296" lowerBound="0.8897869812069299" meanValue="0.902721216268718" simulationTime="155894.42277404634" upperBound="0.9156554513305061"/>
+        <measure alpha="0.99" analyzedSamples="40960" discardedSamples="260" finalValue="1.225466661323181" name="CPU_Disk-Intensive_Residence Time" nodeType="station" precision="0.03" referenceClass="Disk-Intensive" referenceStation="CPU" state="1" type="3">
+            <sample lastIntervalAvgValue="1.2273962892892805" lowerBound="1.2040960448914395" meanValue="1.225466661323181" simulationTime="80382.64387010505" upperBound="1.2468372777549226"/>
+            <sample lastIntervalAvgValue="1.2273962892892805" lowerBound="1.2040960448914395" meanValue="1.225466661323181" simulationTime="80382.64387010505" upperBound="1.2468372777549226"/>
         </measure>
-        <measure alpha="0.99" analyzedSamples="40960" discardedSamples="250" finalValue="0.3969638975037261" name="CPU_Disk-Intensive_Throughput" nodeType="station" precision="0.03" referenceClass="Disk-Intensive" referenceStation="CPU" state="1" type="5">
-            <sample lastIntervalAvgValue="0.39442381373377566" lowerBound="0.37245252916219407" meanValue="0.39292090473903934" simulationTime="47281.62791049812" upperBound="0.4157698102033088"/>
-            <sample lastIntervalAvgValue="0.3971887685262562" lowerBound="0.3878497076307414" meanValue="0.3969638975037261" simulationTime="104083.33477575306" upperBound="0.4065167494675156"/>
+        <measure alpha="0.99" analyzedSamples="40960" discardedSamples="110" finalValue="0.5152427901247902" name="CPU_Disk-Intensive_Throughput" nodeType="station" precision="0.03" referenceClass="Disk-Intensive" referenceStation="CPU" state="1" type="5">
+            <sample lastIntervalAvgValue="0.5127411144481321" lowerBound="0.5019925347842066" meanValue="0.5152427901247902" simulationTime="80098.90145869035" upperBound="0.5292114988260715"/>
+            <sample lastIntervalAvgValue="0.5127411144481321" lowerBound="0.5019925347842066" meanValue="0.5152427901247902" simulationTime="80098.90145869035" upperBound="0.5292114988260715"/>
         </measure>
-        <measure alpha="0.99" analyzedSamples="40960" discardedSamples="80" finalValue="0.3569891788514782" name="CPU_Disk-Intensive_Utilization" nodeType="station" precision="0.03" referenceClass="Disk-Intensive" referenceStation="CPU" state="1" type="6">
-            <sample lastIntervalAvgValue="0.35541464863709377" lowerBound="0.33781101102894323" meanValue="0.3534908982958105" simulationTime="47281.62791049812" upperBound="0.36917078556267774"/>
-            <sample lastIntervalAvgValue="0.36149311328537836" lowerBound="0.34839295440834955" meanValue="0.3569891788514782" simulationTime="68907.27963579787" upperBound="0.3655854032946068"/>
+        <measure alpha="0.99" analyzedSamples="33280" discardedSamples="380" finalValue="0.45902179306393726" name="CPU_Disk-Intensive_Utilization" nodeType="station" precision="0.03" referenceClass="Disk-Intensive" referenceStation="CPU" state="1" type="6">
+            <sample lastIntervalAvgValue="0.45943875660656175" lowerBound="0.4459020156782042" meanValue="0.45902179306393726" simulationTime="43928.13768499045" upperBound="0.4721415704496703"/>
+            <sample lastIntervalAvgValue="0.45943875660656175" lowerBound="0.4459020156782042" meanValue="0.45902179306393726" simulationTime="43928.13768499045" upperBound="0.4721415704496703"/>
         </measure>
-        <measure alpha="0.99" analyzedSamples="24320" discardedSamples="2890" finalValue="0.6484125970144592" name="Disk_Disk-Intensive_Number of Customers" nodeType="station" precision="0.03" referenceClass="Disk-Intensive" referenceStation="Disk" state="1" type="0">
-            <sample lastIntervalAvgValue="0.6457715229729785" lowerBound="0.6298625737242346" meanValue="0.6484125970144592" simulationTime="45592.63926257796" upperBound="0.6669626203046838"/>
-            <sample lastIntervalAvgValue="0.6457715229729785" lowerBound="0.6298625737242346" meanValue="0.6484125970144592" simulationTime="45592.63926257796" upperBound="0.6669626203046838"/>
+        <measure alpha="0.99" analyzedSamples="61440" discardedSamples="235" finalValue="1.371236171687748" name="Disk_Disk-Intensive_Number of Customers" nodeType="station" precision="0.03" referenceClass="Disk-Intensive" referenceStation="Disk" state="1" type="0">
+            <sample lastIntervalAvgValue="1.373375809327999" lowerBound="1.3494005697188163" meanValue="1.371236171687748" simulationTime="80615.71426445548" upperBound="1.3930717736566796"/>
+            <sample lastIntervalAvgValue="1.373375809327999" lowerBound="1.3494005697188163" meanValue="1.371236171687748" simulationTime="80615.71426445548" upperBound="1.3930717736566796"/>
         </measure>
-        <measure alpha="0.99" analyzedSamples="20480" discardedSamples="250" finalValue="1.6415161757498347" name="Disk_Disk-Intensive_Residence Time" nodeType="station" precision="0.03" referenceClass="Disk-Intensive" referenceStation="Disk" state="1" type="3">
-            <sample lastIntervalAvgValue="1.6332821403911377" lowerBound="1.5720207069751186" meanValue="1.624390346659266" simulationTime="47281.195752319065" upperBound="1.676759986343413"/>
-            <sample lastIntervalAvgValue="1.6372553365967435" lowerBound="1.5935434815377612" meanValue="1.6415161757498347" simulationTime="52108.17791854715" upperBound="1.689488869961908"/>
+        <measure alpha="0.99" analyzedSamples="40960" discardedSamples="110" finalValue="2.680621593613965" name="Disk_Disk-Intensive_Residence Time" nodeType="station" precision="0.03" referenceClass="Disk-Intensive" referenceStation="Disk" state="1" type="3">
+            <sample lastIntervalAvgValue="2.6904963858638005" lowerBound="2.622527217138468" meanValue="2.680621593613965" simulationTime="80683.96966694981" upperBound="2.738715970089462"/>
+            <sample lastIntervalAvgValue="2.6904963858638005" lowerBound="2.622527217138468" meanValue="2.680621593613965" simulationTime="80683.96966694981" upperBound="2.738715970089462"/>
         </measure>
-        <measure alpha="0.99" analyzedSamples="15360" discardedSamples="40" finalValue="0.3976830582629783" name="Disk_Disk-Intensive_Throughput" nodeType="station" precision="0.03" referenceClass="Disk-Intensive" referenceStation="Disk" state="1" type="5">
-            <sample lastIntervalAvgValue="0.3986691222165114" lowerBound="0.3866768101908065" meanValue="0.3976830582629783" simulationTime="38638.55799605747" upperBound="0.4093342197717687"/>
-            <sample lastIntervalAvgValue="0.3986691222165114" lowerBound="0.3866768101908065" meanValue="0.3976830582629783" simulationTime="38638.55799605747" upperBound="0.4093342197717687"/>
+        <measure alpha="0.99" analyzedSamples="33280" discardedSamples="1995" finalValue="0.5085386380034337" name="Disk_Disk-Intensive_Throughput" nodeType="station" precision="0.03" referenceClass="Disk-Intensive" referenceStation="Disk" state="1" type="5">
+            <sample lastIntervalAvgValue="0.507396858680175" lowerBound="0.49992334062302957" meanValue="0.5085386380034337" simulationTime="69521.51830769358" upperBound="0.5174560812573836"/>
+            <sample lastIntervalAvgValue="0.507396858680175" lowerBound="0.49992334062302957" meanValue="0.5085386380034337" simulationTime="69521.51830769358" upperBound="0.5174560812573836"/>
         </measure>
-        <measure alpha="0.99" analyzedSamples="24320" discardedSamples="2890" finalValue="0.6484125970144592" name="Disk_Disk-Intensive_Utilization" nodeType="station" precision="0.03" referenceClass="Disk-Intensive" referenceStation="Disk" state="1" type="6">
-            <sample lastIntervalAvgValue="0.6457715229729785" lowerBound="0.6298625737242346" meanValue="0.6484125970144592" simulationTime="45592.63926257796" upperBound="0.6669626203046838"/>
-            <sample lastIntervalAvgValue="0.6457715229729785" lowerBound="0.6298625737242346" meanValue="0.6484125970144592" simulationTime="45592.63926257796" upperBound="0.6669626203046838"/>
+        <measure alpha="0.99" analyzedSamples="17920" discardedSamples="1015" finalValue="0.8385473928983049" name="Disk_Disk-Intensive_Utilization" nodeType="station" precision="0.03" referenceClass="Disk-Intensive" referenceStation="Disk" state="1" type="6">
+            <sample lastIntervalAvgValue="0.8367897310572383" lowerBound="0.8141954247103325" meanValue="0.8385473928983049" simulationTime="25020.525098271806" upperBound="0.8628993610862774"/>
+            <sample lastIntervalAvgValue="0.8367897310572383" lowerBound="0.8141954247103325" meanValue="0.8385473928983049" simulationTime="25020.525098271806" upperBound="0.8628993610862774"/>
         </measure>
         <measure alpha="0.99" analyzedSamples="0" discardedSamples="0" finalValue="0.0" name="CPU_CPU-Intensive_Number of Customers" nodeType="station" precision="0.03" referenceClass="CPU-Intensive" referenceStation="CPU" state="3" type="0">
-            <sample lastIntervalAvgValue="0.0" meanValue="0.0" simulationTime="0.0"/>
             <sample lastIntervalAvgValue="0.0" meanValue="0.0" simulationTime="0.0"/>
             <sample lastIntervalAvgValue="0.0" meanValue="0.0" simulationTime="0.0"/>
         </measure>
         <measure alpha="0.99" analyzedSamples="0" discardedSamples="0" finalValue="0.0" name="CPU_CPU-Intensive_Residence Time" nodeType="station" precision="0.03" referenceClass="CPU-Intensive" referenceStation="CPU" state="3" type="3">
             <sample lastIntervalAvgValue="0.0" meanValue="0.0" simulationTime="0.0"/>
             <sample lastIntervalAvgValue="0.0" meanValue="0.0" simulationTime="0.0"/>
-            <sample lastIntervalAvgValue="0.0" meanValue="0.0" simulationTime="0.0"/>
         </measure>
         <measure alpha="0.99" analyzedSamples="0" discardedSamples="0" finalValue="0.0" name="CPU_CPU-Intensive_Throughput" nodeType="station" precision="0.03" referenceClass="CPU-Intensive" referenceStation="CPU" state="3" type="5">
-            <sample lastIntervalAvgValue="Infinity" meanValue="0.0" simulationTime="0.0"/>
             <sample lastIntervalAvgValue="Infinity" meanValue="0.0" simulationTime="0.0"/>
             <sample lastIntervalAvgValue="0.0" meanValue="0.0" simulationTime="0.0"/>
         </measure>
         <measure alpha="0.99" analyzedSamples="0" discardedSamples="0" finalValue="0.0" name="CPU_CPU-Intensive_Utilization" nodeType="station" precision="0.03" referenceClass="CPU-Intensive" referenceStation="CPU" state="3" type="6">
             <sample lastIntervalAvgValue="0.0" meanValue="0.0" simulationTime="0.0"/>
             <sample lastIntervalAvgValue="0.0" meanValue="0.0" simulationTime="0.0"/>
-            <sample lastIntervalAvgValue="0.0" meanValue="0.0" simulationTime="0.0"/>
         </measure>
         <measure alpha="0.99" analyzedSamples="0" discardedSamples="0" finalValue="0.0" name="Disk_CPU-Intensive_Number of Customers" nodeType="station" precision="0.03" referenceClass="CPU-Intensive" referenceStation="Disk" state="3" type="0">
-            <sample lastIntervalAvgValue="0.0" meanValue="0.0" simulationTime="0.0"/>
             <sample lastIntervalAvgValue="0.0" meanValue="0.0" simulationTime="0.0"/>
             <sample lastIntervalAvgValue="0.0" meanValue="0.0" simulationTime="0.0"/>
         </measure>
         <measure alpha="0.99" analyzedSamples="0" discardedSamples="0" finalValue="0.0" name="Disk_CPU-Intensive_Residence Time" nodeType="station" precision="0.03" referenceClass="CPU-Intensive" referenceStation="Disk" state="3" type="3">
             <sample lastIntervalAvgValue="0.0" meanValue="0.0" simulationTime="0.0"/>
             <sample lastIntervalAvgValue="0.0" meanValue="0.0" simulationTime="0.0"/>
-            <sample lastIntervalAvgValue="0.0" meanValue="0.0" simulationTime="0.0"/>
         </measure>
         <measure alpha="0.99" analyzedSamples="0" discardedSamples="0" finalValue="0.0" name="Disk_CPU-Intensive_Throughput" nodeType="station" precision="0.03" referenceClass="CPU-Intensive" referenceStation="Disk" state="3" type="5">
-            <sample lastIntervalAvgValue="Infinity" meanValue="0.0" simulationTime="0.0"/>
             <sample lastIntervalAvgValue="Infinity" meanValue="0.0" simulationTime="0.0"/>
             <sample lastIntervalAvgValue="0.0" meanValue="0.0" simulationTime="0.0"/>
         </measure>
         <measure alpha="0.99" analyzedSamples="0" discardedSamples="0" finalValue="0.0" name="Disk_CPU-Intensive_Utilization" nodeType="station" precision="0.03" referenceClass="CPU-Intensive" referenceStation="Disk" state="3" type="6">
-            <sample lastIntervalAvgValue="0.0" meanValue="0.0" simulationTime="0.0"/>
             <sample lastIntervalAvgValue="0.0" meanValue="0.0" simulationTime="0.0"/>
             <sample lastIntervalAvgValue="0.0" meanValue="0.0" simulationTime="0.0"/>
         </measure>

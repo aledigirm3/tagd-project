@@ -171,14 +171,14 @@ Throughput: 1.1865
 Util. CPU: 0.9998 (saturo)
 Util. Disco: 0.0176 (quasi uguale a prima)
 Numero medio di clienti CPU: 1.9819
-Tempo di risposta (N_i / X_i): 1.9819 / 1.1865 = 1.6703750526759376
+Tempo di risposta (N_0 / X_0): 2 / 1.1865 = 1.6703750526759376
 
 Benchmark:
 file: CPUint_summary_3.json, pg_stat_statements_3_16_300s.csv
 Throughput (goodput): 1.1295683704661714 (potrebbe essere thrashing)
 Util. CPU: 100% (saturo)
 Util. Disco: 0.006344785536908484
-Tempo di risposta: 1.773663
+Tempo di risposta:  1.773663
 
 --- DISK INTENSIVE ---
 Ci aspettiamo un aumento del throughput. Il disco andrà in saturazione? Secondo noi sì.
@@ -195,8 +195,20 @@ file: DISKint_summary_3.json, pg_stat_statements_3_7_300s.csv
 Throughput (goodput): 0.6445184367217778
 Util. CPU:
 Util. Disco:
-Tempo di risposta: 3.111039
+Tempo di risposta:
+
+DA RICONTROLLARE
+
+NOTA: I valori dell'utilizzazione e del tempo di risposta sono ottenuti dalle statistiche di postgres, nelle quali abbiamo diviso per 2 il total_exec_time. Il throughput è invece ottenuto dal summary prodotto da benchbase.
 
 Dal benchmark risulta che la query 7 sia passata da disk intensive a cpu intensive soltanto aumentando il numero di job nel sistema.
-
 Mettendo i job da 2 a 3 si ha il throughput seguente: 0.8 mentre il modello predice: 0.56.
+
+? Disk intensive: il tempo totale è il doppio con 2 job.
+
+Tentativo con max_parallel_workers_per_gather
+query 7
+jobs 2
+
+ci aspettiamo che il blk_read_time raddoppi rispetto al caso con 1 job. Non è andata così. il blk_read_time è rimasto quasi uguale al caso con 1 job. l'utilizzazione di entrambi i centri continua a discostarsi dal modello simulativo.
+(NVME)
