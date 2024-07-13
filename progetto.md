@@ -1,68 +1,118 @@
-------
 
-Punto 0: individuazione della query CPU-Intensive e della query Disk-Intensive.
 
-File: pg_stat_statements_1_2000s.csv
-Durata benchmark con tutte le query: 2000 secondi
 
-Query CPU intensive 16
-CPU Service demand 0.8418712777657399
-DISK Service demand 0.01474560369767442
+# Progetto Basi II
 
-Query disk intensive 7
-CPU Service demand 0.8933116159835509
-DISK Service demand 1.630294817162791
+Il seguente progetto è finalizzato a modellare un modello simulativo (o analitico) di un dbms sulla base delle prestazioni riscontrate nell'utilizzo del benchmark tpch, fatto giare su un container docker contenente un server di postgres (cercando di rendere il meno rumorosi possibili i dati durante le esecuzioni).
+In particolare, il benchmark tpch, da la possibilità di creare un carico di lavoro con cui popolare il DB postgres al fine di poter sottomettere fino a 22 query di varia natura, le quali andranno a utilizzare disco e cpu (ognuna a modo loro)
+Dopo aver impostato tutte le configurazioni necessarie richeste dalle specifiche tecniche del progetto sono stati svolti i punti 1, 2, 3, 4 e 5, descritti in modo approfondito nella seguente relazione.
+ 
 
-------
 
-Punto 1: calcolo delle metriche del sistema
-- tempi di servizio
-- tempo di esecuzione delle query
-- utilizzazione di cpu e disco
+## Punto 0:
 
-Per fare ciò eseguiamo 2 benchmark, 1 per ogni classe di workload.
+La fase preliminare (da cui "punto 0"),dopo limitato il numero di processori a disposizione per l'ambiente virtuale (tramite il file .wslconfig), è stata quella di effettuare un benchmark con tutte e 22 le query messe a disposizione dal benchmark, configurate per essere eseguite serialmente e ciclicamente al fine di fare un'analisi del modello reale con lo scopo di apprendere più informazioni riguardo le prestazioni del sistema.
+Il benchmark è stato eseguito per 2000 secondi (poco piu di mezz'ora) ed è riuscito a soddisfare una media di 43 query l'una.
+Grazie al file [pg_stat_statements_1_2000s.csv](null) siamo riusciti a estrarre i dati di nostro interesse al fine di individiare la query disk-intensive e quella cpu-intensive; più precisamente sono stati eseguiti i seguenti passi:
 
-Query CPU intensive 16
-File: pg_stat_statements_1_16_300s.csv, CPUint_summary.json
-Throughput (goodput): 1.1428574273565018
-Service Demand CPU (D_CPU): 0.873331
-Service Demand Disk (D_DISK): 0.003121
-Utilizzazione CPU (D_CPU * throughput): 0.998092819890681
-Utilizzazione Disco: 0.003566858030779642
-Tempo di esecuzione (adj_mean_exec_time): 0.876452
+- calcolo dell **tempo medio di esecuzione** per ogni query (ecludendo i possibili outliers):
+  
+  - $t' = (T_e - t_M- t_m) / (C - 2)$
+  
+  dove $t'$ è il tempo medio di esecuzione, $T_e$ il tempo totale di esecuzione, $t_M$ e $t_m$ sono rispettivamente tempo massimo e tempo minimo di esecuzione (di una query) e $C$ è il numero di chiamate della query in questione.
+- calcolo **service demand** della CPU e del disco per ogni query:
+  
+  - $D_c = t' - ((B_r + B_w) / C)$
+  
+  - $D_d = t' - D_c$
 
-Query disk intensive 7
-File: pg_stat_statements_1_7_300s.csv, DISKint_summary.json
-Throughput (goodput): 0.4119602231342898
-D_CPU: 0.900671	
-D_DISK: 1.54916
-Utilizzazione CPU: 0.900671 * 0.4119602231342898 = 0.3710406261305839
-Utilizzazione Disk: 1.54916 * 0.4119602231342898 = 0.6381922992707164
-Tempo di esecuzione: 2.449831
+  dove rispettivamente $D_d$ e $D_c$ sono i service demand del disco e della cpu, mentre $B_r$ e $B_r$ sono i tempi di lettura e scrittura totali del disco.
+- calcolo del **rapporto tra service demand della cpu e quello del disco**:
+  
+  - $R = D_c/D_d$
 
-Tempi di servizio: corrispondenti ai service demand. Noti dalle statistiche di postgres.
-Tempo di esecuzione delle query: noti anche questi dalle statistiche.
-Utilizzazione: calcolabile con la service demand law (util = throughput del sistema * service demand)
+Questo ultimo calcolo ci ha permesso di capire quale fosse la query cpu-intensive (query con valore di $R$ più alto), con $R = 57$ circa, e quella disk-intensive (query con valore di $R$ più basso), con $R = 0.54$ circa... in effetti si puo anche notare come il carico abbia un maggior impatto per quanto riguarda la cpu.
+Eseguendo ulteriori analisi è stato possibile trovare le due query:
+- **Q16 -> CPU-intensive:**
+  
+  - $D_c = 0.8418712777657399$
+  - $D_d = 0.01474560369767442$
+- **Q7 -> DISK-intensive:**
+  
+  - $D_c = 0.8933116159835509$
+  - $D_c = 1.630294817162791$
+  
+Dopo aver individuato le query di nostro interesse sono stati creati 2 file, rispettivamente per la query disk-intensive e cpu-intensive, con lo scopo di poter eseguire queste query singolarmente al fine di andare ad analizzare le statistiche delle singole query, riducendo il possibile rumore della macchina (per poi analizzarle in un modello simulativo).
 
-------
+NOTA:
 
-Punto 2: modello simulativo e confronto con metriche ottenute al punto 1
+(d'ora in poi le formule e le nomenclature utilizzate in precedenza verranno prese per buone, pertanto potrebbe essere omessa la formula estesa)
 
-Modello simulativo
+## Punto 1
 
-Query CPU intensive 16
-Throughput: 1.1669
-Utilizzazione CPU: 0.9831
-Utilizzazione Disco: 0.0172
+Dopo aver eseguito il [Punto 0](#punto-0), avendo i due file con i quali possiamo effettuare query singolarmente, sono stati effettuari due benchmark, ognuno con tempo totale di esecuzione pari a 300s (5 minuti) e senza altre query concorrenti ,di cui uno per la query cpu-intensive (Q16) e uno per la disk-intensive(Q7), al fine di poter trovare rispettivi service demand e poter fare ulteriori analisi riguardo i tempi di risposta, i throughput e l'utilizazzione.
+Chiaramente, per estrarre le statistiche, sono stati utilizzati i soliti file "pg_stat_statements.csv" e i file "summary.json (estratti dalla folder "results" del container, al fine di visualizzare il throughput).
+Con gli stessi passaggi del [Punto 0](#punto-0) siamo riusciti a calcolare il service demand del disco e della cpu (per entrambe le query), mentre per l'utilizzazione e il tempo di risposta sono state usate le seguenti formule:
 
-Query DISK intensive 7
-Throughput: 0.3956
-Utilizzazione CPU: 0.3570
-Utilizzazione Disco: 0.6484
+- calcolo **utilizzazione** (demand law)
+  
+  - $U = X * D$
 
------
+  dove $U$ è l'utilizzazione del centro (cpu -> $U_c$, disco -> $U_d$), $X$ è il throughput della query e &D& è il service demand del disco o della cpu (sulla basi di quale utilizzazione vogliamo calcolare)
 
-Punto 3:
+- calcolo **tempo di risposta** (little law):
+  
+  - $T_r = N / X$
+  
+  dove $T_r$ è il tempo di risposta di una query, $N$ è il numero medio di entità (query concorrenti in questo caso) nel sistema e $X$ è il throughput della query in questione.
+
+Dopo aver definito opportunamente tali grandezze è ora di andare a vedere le prestazioni della macchina reale:
+
+- **Q16 -> CPU-intensive:**
+  
+  - File: [pg_stat_statements_1_16_300s.csv](null), [CPUint_summary.json](null)
+  - $X = 1.1428574273565018$ (goodput)
+  - $D_c = 0.873331$
+  - $D_d = 0.003121$
+  - $U_c = 0.998092819890681$ -> satura
+  - $U_d = 0.003566858030779642$
+  - $T_r = 0.8749997821802326$
+  
+
+- **Q7 -> DISK-intensive:**
+  
+  - File: [pg_stat_statements_1_7_300s.csv](null), [ DISKint_summary.json](null)
+  - $X = 0.4119602231342898$ (goodput)
+  - $D_c = 0.900671$
+  - $D_c = 1.54916$
+  - $U_c = 0.3710406261305839$
+  - $U_d = 0.6381922992707164$
+  - $T_r = 2.4274188230887095$
+  
+Si noti come per il carico cpu-intensive l'utilizzazione è praticamente al massimo (la cpu è collo di bottiglia per definizione), inoltre i tempi di risposta corrispondono al service demand della cpu, mentre per il carico disk-intensive l'utilizzazione non supera il 64% e, anche in questo caso il tempo di risposta corrisponde al service demand del disco... poteva andare peggio tutto sommato.
+
+## Punto 2
+
+A questo punto, tramite JMT (java modelling tool), è stato creato un modello simulativo con due classi di workload (cpu-intensive e disk-intensive) e due centri (cpu e disco) mediante le statistiche ricavate nel [Punto 1](#punto-1), in particolare utilizzando i service demand della cpu e del disco per tutte e due le classi di lavoro.
+
+Ecco i risultati del **modello simulativo**:
+
+- **Q16 -> CPU-intensive:**
+  
+  - $X = 1.1669$
+  - $U_c = 0.98311$ -> satura
+  - $U_d =  0.0172$
+
+- **Q7 -> DISK-intensive:**
+  
+  - $X = 0.3956$
+  - $U_c = 0.3570$ -> satura
+  - $U_d =  0.6484$
+
+I risultati prodotti sono stati sorprendentemente soddisfacenti, con differenze di throughput, utilizzazione dei centri e tempi di risposta trascurabili (possibile rumore, i tempi di risposta sono stati omessi per semplicità).
+
+
+## Punto 3:
 
 
 --- CPU INTENSIVE ---
