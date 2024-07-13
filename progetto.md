@@ -1,101 +1,3 @@
-# Punto 1
-
-Fattore di scala: 2.
-
-Time: 900
-
-Limitazione a 1 del numero di CPU.
-
-Senza <time>, esegue ogni query 2 volte. Con time, esegue il benchmark per tot tempo.
-
-Scaricare le statistiche in csv da pg_stat_statements.
-
-excel:
-file -> opzioni -> impostaz. avanzate -> utilizza sep. di sistema (dec. punto, migli. virgola)
-
-dati -> testo / csv [NON RILEVARE I TIPI DI DATI]
-
-colonne:
-query
-calls (num di chiamate alla query)
-    -> filtra solo query con valore sensato (quelle a 1 non fanno parte del benchmark)
-    non contare DROP VIEW revenue;
-
-total_exec_time (ms)
-min|max|mean_exec_time
-
-mean_exec_time = tempo di risposta (cpu + disco)
-
-blk_read_time (ms)
-blk_write_time (ms)
-sono entrambi totali
-
-ipotizziamo 1 visita ad ogni centro.
-
-aggiungiamo D_CPU, D_DISK
-
-D_CPU: = mean_tot - ((blk read + write) / calls)
-D_DISK = mean_tot - D_CPU
-
-Obiettivo è identificare la query più disk intensive e quella più cpu intensive e caratterizziamo solo due classi.
-
-Faccio rapporto D cpu/disk, cpu-i = max, disk-i = min.
-
-prima di fare il modello simulativo, fai il modello analitico.
-!! Fare la conversione in secondi. 
-
-Risolvere per una classe, guardare throughput.
-Rieseguire benchmark con solo una query specifica.
-
-Per trovare la query: in folder queries: grep <qualcosa> *
-
-Crea un nuovo file di configurazione, cambia i weights. Tieni solo 1. Nei transactiontypes tieni solo la query.
-
-Guarda il summary e cerca il throughput. (Goodput: conta anche i job non terminati)
-
-Prova anche togliendo min e max. 
-
-Salva il modello analitico e aprilo con modello simulativo.
-
-----
-
-Calcolato tempo di risposta medio totale usando media che esclude min e max.
-
-I valori sono in secondi.
-
-CPU intensive: Query 16
-D_CPU: 0.9169211302	
-D_DISK: 0.01629483482
-
-DISK intensive: Query 20
-D_CPU: 0.4541428367
-D_DISK: 0.8298549731
-
-Creazione modello analitico query CPU intensive:
-Throughput: 1.0716
-
-Modello analitico entrambe le query:
-Throughput sistema: 1.3617720433125422
-Throughput cpu-intensive: 0.7886079100343513
-Throughput Disk-intensive: 0.573164133278191
-
-Utilizzazione:
-- CPU: 0.9833896415350118
-    - Classe cpu-int: 0.7230912561533572
-    - Classe disk-int: 0.26029838538165456
-- DISK: 0.4884933420352132
-    - Classe cpu-int: 0.012850235631755174
-    - Classe disk-int: 0.475643106403458
-
-Tempo di risposta:
-- cpuint: 1.268057278244192
-- diskint: 1.7447009363278492
-
-Ottenuti i valori del modello simulativo, rieseguiamo il benchmark con soltanto le due query e un tempo di 60 secondi utilizzando il file sample_tpch_16_20_config.xml
-
-Analizzando il file pg_stat_statements_16_20.csv i service demand risultano simili al precedente benchmark. I tempi di risposta invece si discostano da quanto calcolato dal modello analitico.
-
-
 ------
 
 Punto 0: individuazione della query CPU-Intensive e della query Disk-Intensive.
@@ -212,3 +114,92 @@ jobs 2
 
 ci aspettiamo che il blk_read_time raddoppi rispetto al caso con 1 job. Non è andata così. il blk_read_time è rimasto quasi uguale al caso con 1 job. l'utilizzazione di entrambi i centri continua a discostarsi dal modello simulativo.
 (NVME)
+
+-------
+
+Punto 4:
+
+MODELLO
+
+CPU Intensive 
+Già con 2 job si satura la CPU.
+
+DISK Intensive
+Il disco va in saturazione al 5o job.
+
+(Aggiungere immagini)
+![](./dimage_1.png)
+
+BENCHMARK
+
+
+
+Punto 4 - dimensionamento con raid
+
+- mettere 0.33 alle prob. del router
+- con 10 dischi, dividere per 10 i service demand dei dischi trovati all'inizio
+- su jmt misuriamo le metriche solo per un disco a caso tra questi 10, per gli altri è uguale
+- una volta aggiunto il raid 0 e fatta what if analysis con 20 query, bisogna aumentare a questo punto anche il numero di cpu dato che all' aumentare dei job il collo di bottiglia diventa proprio la CPU anche se il carico risulta essere disk intensive
+- l'idea è quella di utilizzare 20 cpu dato che inizialmente la cpu si saturava anche con solo query sequenziali nel sistema
+
+10 dischi:
+CPU Intensive:
+DISK Service demand 0.001474560369767442
+
+DISK Intensive:
+DISK Service demand 0.1630294817162791
+
+
+40 dischi:
+CPU Intensive:
+DISK Service demand 0.0003686400924418605
+
+DISK Intensive:
+DISK Service demand 0.040757370429069774
+
+20 cpu e 40 dischi:
+DISK Intensive (con 20 job)
+Util. disco: 65%
+Util. cpu: 70.5%
+Throughput: 15.87 req/s
+Tempo di risposta: circa 1.26s
+
+CPU Intensive (con 20 job)
+La cpu ha un'utilizzazione oltre il 70%.
+Il disco è utilizzato allo 0.008% circa.
+
+[02:24] ALESSANDRO DI GIROLAMO
+Con 8 costumers abbiamo che il la risorsa è utilizzata al 60%/70% circa... con 20 il disco è abbondantemente saturo
+ 
+[02:24] ALESSANDRO DI GIROLAMO
+e se usassimo 15 dischi? ancora una volta il risultato non è soddisfacente (al 70% di utilizzazione abbiamo circa 10 customers)
+
+[02:24] ALESSANDRO DI GIROLAMO
+a questo punto un approccio "brute force" non sarebbe una cattiva idea, proviamo con 40 dischi.
+
+[02:31] ALESSANDRO DI GIROLAMO
+L'utilizzazione del disco con 20 costumers non supera il 70% (dalla sumulazione risulta circa il 65%), mentre la CPU 
+un'utilizzazione del 70% circa (diventando il collo di bottiglia per definizione) e, sapendo cio, possiamo immaginare che le 20 CPU precedentemente istanziate nonn reggeranno sicuramente un carico cpu-intensive (sapendo che questo è un carico disk_intensive).
+
+Come prima cosa è stato provata una simulazione (sempre da 1 a 20 costumers) con lo stesso numero di CPU dimensionate nel caso del modellamento del disco (ci sono voluti 20m).
+Il disco, come ci si poteva aspettare ha un'utilizzazione irrilevante (circa 0), mentre la CPU è piu che satura con 20 customers.
+
+Provando invece con 30 CPU l'utilizzazione, con 20 costumers, non supera il 70%, piu precisamente ha un valore del 67% circa, un buon risultato tutto sommato.
+
+30 cpu, 40 dischi
+CPU Intensive (con 20 job)
+Util. disco: 0.008%
+Util. cpu: 66%
+Throughput: 23.6935 req/s
+Tempo di risposta: circa 0.84s
+
+DISK Intensive (con 20 job)
+Util. disco: 64%
+Util. cpu: 48%
+Throughput: 15.76 req/s
+Tempo di risposta: circa 1.27s
+
+verifiche e considerazioni finali:
+come ultima verifica è opportuno provare nuovamente una simulazione disk-intensive con 20 costumers per acertarsi della correttezza dei risultati ottenuti. Si puo natare che il disco ha un'utilizzazione del 64% circa e di cpu pari al 48% circa.
+Possiamo ritenere il sistema pronto a un aumento del carico fino a 20 query concorrenti.
+
