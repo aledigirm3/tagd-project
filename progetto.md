@@ -1,121 +1,114 @@
+# Progetto di Capacity Planning - Tecnologie e Architetture per la Gestione dei Dati
 
+## Introduzione
 
+In questo documento viene presentato il lavoro svolto in merito al progetto di capacity planning per il corso di Tecnologie e Architetture per la Gestione dei Dati, anno accademico 2023-2024.
 
-# Progetto Basi II
+Il lavoro qui presente è stato svolto dagli studenti:
+- Alessandro Di Girolamo
+- Alberto Tontoni
 
-Il seguente progetto è finalizzato a modellare un modello simulativo (o analitico) di un dbms sulla base delle prestazioni riscontrate nell'utilizzo del benchmark tpch, fatto giare su un container docker contenente un server di postgres (cercando di rendere il meno rumorosi possibili i dati durante le esecuzioni).
-In particolare, il benchmark tpch, da la possibilità di creare un carico di lavoro con cui popolare il DB postgres al fine di poter sottomettere fino a 22 query di varia natura, le quali andranno a utilizzare disco e cpu (ognuna a modo loro)
-Dopo aver creato e caricato i dati necessari all'esecuzione delle query (con fattore di scala pari a 2, quindi, in questo caso, con 4 GB di dati) e configurato il server postgres secondo le specifiche tecniche del progetto sono stati svolti i punti 0, 1, 2, 3, 4 e 5, descritti in modo approfondito nella seguente relazione.
-(I file contenenti le statistiche di postgres sono stati analizzati in modo automatizzato tramite lo script "*stats_reader.ipynb*" presente nel repository github sel progetto).
+Le attività svolte hanno previsto l'utilizzo degli strumenti Java Modeling Tools (JMT) e Benchbase per il dimensionamento di un DBMS PostgreSQL. E' stato utilizzato un computer fisso al fine di eseguire numerosi benchmark tramite Benchbase, utilizzando un fattore di scala pari a 2, i cui risultati sono stati confrontati con quanto predetto da modelli simulativi realizzati tramite JMT. Di seguito sono riportate le specifiche tecniche della macchina utilizzata:
+- CPU: AMD Ryzen 7 5800X 8-Core Processor
+- RAM: 16 GB, DDR4 3200 MHz
+- Unità disco: SSD 1TB NVMe 1.4 PCIe con velocità di lettura fino a 7300MB/s
+- Sistema operativo: Windows 10
 
+Al fine di rendere più agevole lo sviluppo dei punti del progetto, sono stati realizzati degli script di utilità per determinare, ad esempio e nel modo più automatizzato possibile, i workload rispettivamente CPU-intensive e Disk-intensive. Tali script sono disponibili per la consultazione insieme ai file contenenti le statistiche dei benchmark al'indirizzo di seguito specificato.
 
---> **[Link al repo github](null)** <--
- 
+**Link al repository github**: https://github.com/tontonialberto/tagd-project
 
+## Punto 0
 
-## Punto 0:
+Dopo aver configurato il database Postgres e l'ambiente WSL come richiesto, è stato possibile lanciare l'esecuzione di un benchmark comprensivo di tutte le 22 query offerte da quest'ultimo. La configurazione utilizzata ha previsto l'esecuzione seriale per 2000 secondi (circa mezz'ora) concludendosi con una media di 43 query eseguite per ciascuna tipologia.
 
-La fase preliminare (da cui "punto 0"), dopo aver limitato il numero di processori a disposizione per l'ambiente virtuale a 1 (tramite il file .wslconfig), è stata quella di eseguire un benchmark con tutte e 22 le query messe a disposizione dal benchmark, configurate per essere eseguite serialmente e ciclicamente al fine di fare un'analisi del modello reale con lo scopo di apprendere più informazioni riguardo le prestazioni del sistema.
-Il benchmark è stato eseguito per 2000 secondi (poco piu di mezz'ora) ed è riuscito a soddisfare una media di 43 query l'una.
-Grazie al file [pg_stat_statements_1_2000s.csv](null) siamo riusciti a estrarre i dati di nostro interesse al fine di individiare la query disk-intensive e quella cpu-intensive; più precisamente sono stati eseguiti i seguenti passi:
+Tramite l'ausilio del notebook [`stats_reader.ipynb`](https://github.com/tontonialberto/tagd-project/scripts) è stato possibile analizzare le statistiche contenute nel file [`pg_stat_statements_1_2000s.csv`](https://github.com/tontonialberto/tagd-project/statistics) al fine di individuare i workload CPU-Intensive e Disk-Intensive. L'individuazione delle query di interesse ha richiesto i seguenti passaggi:
+- calcolo del **tempo medio di esecuzione** per ogni query, escludendo gli outliers in una certa misura:
+  $$
+  \bar{T} = (T_e - t_M- t_m) / (C - 2)
+  $$
+  dove $\bar{T}$ è il tempo medio di esecuzione, $T_e$ il tempo totale di esecuzione, $t_M$ e $t_m$ sono rispettivamente tempo massimo e tempo minimo di esecuzione, $C$ è il numero di invocazioni della query in questione nell'intervallo temporale considerato;
+- calcolo del **service demand** della CPU e del disco per ogni query:
+    $$
+    D_c = \bar{T} - ((B_r + B_w) / C)\\
+    $$
 
-- calcolo dell **tempo medio di esecuzione** per ogni query (ecludendo i possibili outliers):
-  
-  - $t' = (T_e - t_M- t_m) / (C - 2)$
-  
-  dove $t'$ è il tempo medio di esecuzione, $T_e$ il tempo totale di esecuzione, $t_M$ e $t_m$ sono rispettivamente tempo massimo e tempo minimo di esecuzione (di una query) e $C$ è il numero di chiamate della query in questione.
-- calcolo **service demand** della CPU e del disco per ogni query:
-  
-  - $D_c = t' - ((B_r + B_w) / C)$
-  
-  - $D_d = t' - D_c$
+    $$
+    D_d = \bar{T} - D_c
+    $$
 
-  dove rispettivamente $D_d$ e $D_c$ sono i service demand del disco e della cpu, mentre $B_r$ e $B_r$ sono i tempi di lettura e scrittura totali del disco.
+  dove rispettivamente $D_d$ e $D_c$ sono i service demand del disco e della cpu, mentre $B_r$ e $B_r$ sono i tempi di lettura e scrittura totali del disco;
 - calcolo del **rapporto tra service demand della cpu e quello del disco**:
   
-  - $R = D_c/D_d$
+  $$
+  R = D_c/D_d
+  $$
+    
+    Questo ultimo calcolo ci ha permesso di individuare come query CPU-Intensive quella con il massimo valore di $R$ (nel nostro caso, $R = 57$ circa), e come Disk-Intensive quella con il valore minimo ($R = 0.54$ circa).
 
-Questo ultimo calcolo ci ha permesso di capire quale fosse la query cpu-intensive (query con valore di $R$ più alto), con $R = 57$ circa, e quella disk-intensive (query con valore di $R$ più basso), con $R = 0.54$ circa... in effetti si puo anche notare come il carico abbia un maggior impatto per quanto riguarda la cpu.
-Eseguendo ulteriori analisi è stato possibile trovare le due query:
-- **Q16 -> CPU-intensive:**
-  
-  - $D_c = 0.8418712777657399$
-  - $D_d = 0.01474560369767442$
-- **Q7 -> DISK-intensive:**
-  
-  - $D_c = 0.8933116159835509$
-  - $D_d = 1.630294817162791$
-  
-Dopo aver individuato le query di nostro interesse sono stati creati 2 file, rispettivamente per la query disk-intensive e cpu-intensive, con lo scopo di poter eseguire queste query singolarmente al fine di andare ad analizzare le statistiche delle singole query, riducendo il possibile rumore della macchina (per poi analizzarle in un modello simulativo).
-
-NOTA:
-(d'ora in poi le formule e le nomenclature utilizzate in precedenza verranno prese per buone, pertanto potrebbe essere omessa la formula estesa).
+Detto ciò, vengono riportate le due query così individuate:
+- **CPU-Intensive**:
+    - Nome: Q16
+    - $D_c = 0.8418712777657399s$
+    - $D_d = 0.01474560369767442s$
+- **Disk-Intensive**:
+    - Nome: Q7
+    - $D_c = 0.8933116159835509s$
+    - $D_d = 1.630294817162791s$
 
 ## Punto 1
 
-Dopo aver eseguito il [Punto 0](#punto-0), avendo i due file con i quali possiamo effettuare query singolarmente, sono stati effettuari due benchmark, ognuno con tempo totale di esecuzione pari a 300s (5 minuti) e senza altre query concorrenti ,di cui uno per la query cpu-intensive (Q16) e uno per la disk-intensive(Q7), al fine di poter trovare rispettivi service demand e poter fare ulteriori analisi riguardo i tempi di risposta, i throughput e l'utilizazzione.
-Chiaramente, per estrarre le statistiche, sono stati utilizzati i soliti file "pg_stat_statements.csv" e i file "summary.json (estratti dalla folder "results" del container, al fine di visualizzare il throughput).
-Con gli stessi passaggi del [Punto 0](#punto-0) siamo riusciti a calcolare il service demand del disco e della cpu (per entrambe le query), mentre per l'utilizzazione e il tempo di risposta sono state usate le seguenti formule:
+A questo punto, è stato eseguito un benchmark separato per ciascuna delle due query individuate. E' stato considerato un tempo di esecuzione di 300 secondi per ciascun benchmark e le statistiche sul throughput sono state estratte dal file JSON "summary" prodotto da Benchbase, mentre le altre statistiche sono state estratte dalla vista `pg_stat_statements`.
 
-- calcolo **utilizzazione** (demand law)
-  
-  - $U = X * D$
+> Nota: è stato considerato il goodput, anzichè il throughput, di suddetto file "summary".
 
-  dove $U$ è l'utilizzazione del centro (cpu -> $U_c$, disco -> $U_d$), $X$ è il throughput della query e &D& è il service demand del disco o della cpu (sulla basi di quale utilizzazione vogliamo calcolare)
+A partire da service demand $D$ e throughput $X$ così ottenuti, e sapendo che il numero medio di job $N$ nel sistema è pari a 1, è stato possibile derivare l'utilizzazione $U$ e il tempo di risposta $T_r$ tramite le formule seguenti:
+- Legge del service demand: $U = X \cdot D$
+- Legge di Little: $T_r = \frac{N}{X}$
 
-- calcolo **tempo di risposta** (little law):
-  
-  - $T_r = N / X$
-  
-  dove $T_r$ è il tempo di risposta di una query, $N$ è il numero medio di entità (query concorrenti in questo caso) nel sistema e $X$ è il throughput della query in questione.
+Per ciascuna delle query in questione riportiamo le rispettive grandezze.
 
-Dopo aver definito opportunamente tali grandezze è ora di andare a vedere le prestazioni della **macchina reale**:
+Query *CPU-Intensive*:
+- $X = 1.1428574273565018 \space req/s$
+- $D_c = 0.873331s$
+- $D_d = 0.003121s$
+- $U_c = 99.8\%$
+- $U_d = 0.35\%$
+- $T_r = 0.8749997821802326s$
+- Files delle statistiche per consultazione: [`pg_stat_statements_1_16_300s.csv`](https://github.com/tontonialberto/tagd-project/statistics), [`CPUint_summary.json`](https://github.com/tontonialberto/tagd-project/statistics)
+  
+Query *Disk-Intensive*:
+- $X = 0.4119602231342898 \space req/s$
+- $D_c = 0.900671s$
+- $D_d = 1.54916s$
+- $U_c = 37.1\%$
+- $U_d = 63.8\%$
+- $T_r = 2.4274188230887095s$
+- Files delle statistiche per consultazione: [`pg_stat_statements_1_7_300s.csv`](https://github.com/tontonialberto/tagd-project/statistics), [`DISKint_summary.json`](https://github.com/tontonialberto/tagd-project/statistics)
 
-- **Q16 -> CPU-intensive:**
-  
-  - File: [pg_stat_statements_1_16_300s.csv](null), [CPUint_summary.json](null)
-  - $X = 1.1428574273565018$ (goodput)
-  - $D_c = 0.873331$
-  - $D_d = 0.003121$
-  - $U_c = 0.998092819890681$ -> satura
-  - $U_d = 0.003566858030779642$
-  - $T_r = 0.8749997821802326$
-  
-
-- **Q7 -> DISK-intensive:**
-  
-  - File: [pg_stat_statements_1_7_300s.csv](null), [ DISKint_summary.json](null)
-  - $X = 0.4119602231342898$ (goodput)
-  - $D_c = 0.900671$
-  - $D_d = 1.54916$
-  - $U_c = 0.3710406261305839$
-  - $U_d = 0.6381922992707164$
-  - $T_r = 2.4274188230887095$
-  
-Si noti come per il carico cpu-intensive l'utilizzazione è praticamente al massimo (la cpu è collo di bottiglia per definizione), inoltre i tempi di risposta corrispondono al service demand della cpu, mentre per il carico disk-intensive l'utilizzazione non supera il 64% e, anche in questo caso il tempo di risposta corrisponde al service demand del disco... poteva andare peggio tutto sommato.
+E' scontato che la CPU e il disco siano il collo di bottiglia, rispettivamente, per la query CPU-Intensive e per quella Disk-Intensive. Tuttavia è possibile fare delle considerazioni più accurate: l'utilizzazione della CPU è quasi al massimo nella query CPU-Intensive, dunque il sistema è in saturazione. Cio' non si verifica per il carico Disk-Intensive, in quanto l'unità disco è utilizzata solo al 64%, un livello accettabile di utilizzazione delle risorse.
 
 ## Punto 2
 
-A questo punto, tramite JMT (java modelling tool), è stato creato un modello simulativo con due classi di workload (cpu-intensive e disk-intensive) e due centri (cpu e disco) mediante le statistiche ricavate nel [Punto 1](#punto-1), in particolare utilizzando i service demand della cpu e del disco per tutte e due le classi di lavoro.
+Tramite JMT è stato realizzato un modello simulativo concernente le due classi di workload individuate. Per la modellazione di suddetta rete chiusa sono stati utilizzati i service demand presentati al Punto 1.
 
-Ecco i risultati del **modello simulativo**:
+A seguire delle tabelle di comparazione dei risultati tra il sistema reale e il modello utilizzante un singolo job per ciascuna classe di workload.
 
-File: [punto1.jmva.jsimg](null)
+Per la query *CPU-Intensive*:
+|                                | Modello simulativo | Sistema reale |
+| ------------------------------ | ------------------ | ------------- |
+| Throughput del sistema (req/s) | 1.1669             | 1.142         |
+| Utilizzazione CPU (%)          | 98.31              | 99.8          |
+| Utilzzazione Disco  (%)        | 1.72               | 0.35          |
 
-- **Q16 -> CPU-intensive:**
-  
-  - $X = 1.1669$
-  - $U_c = 0.98311$ -> satura
-  - $U_d =  0.0172$
+Per la query *Disk-Intensive*:
+|                                | Modello simulativo | Sistema reale |
+| ------------------------------ | ------------------ | ------------- |
+| Throughput del sistema (req/s) | 0.3956             | 0.4119        |
+| Utilizzazione CPU (%)          | 35.7               | 37.1          |
+| Utilzzazione Disco  (%)        | 64.8               | 63.8          |
 
-- **Q7 -> DISK-intensive:**
-  
-  - $X = 0.3956$
-  - $U_c = 0.3570$ -> satura
-  - $U_d =  0.6484$
-
-I risultati prodotti sono stati sorprendentemente soddisfacenti, con differenze di throughput, utilizzazione dei centri e tempi di risposta trascurabili (possibile rumore, i tempi di risposta sono stati omessi per semplicità).
-
+Possiamo dunque ritenere il modello sufficientemente accurato e rappresentativo del sistema reale considerato finora. Il file di suddetto modello è consultabile accedendo al repository del progetto: [`punto1.jmva.jsimg`](https://github.com/tontonialberto/tagd-project/models).
 
 ## Punto 3:
 
