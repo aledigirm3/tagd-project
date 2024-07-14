@@ -150,7 +150,7 @@ A seguire una serie di schermate dell'analisi *What-If* condotta tramite JMT per
 ![](./image_3.png)
 ![](./image_4.png) 
 
-Come atteso, superato un numero di *customers* pari a 2, la CPU va in saturazione: con 3 *customers* l'utilizzazione è circa pari al 100%. Il throughput aumenta rapidamente fino a 2 *customers* con un valore pari a $X = 2.3$, per poi salire di molto poco (di 0.1 circa) fino a completa saturazione all'ulteriore aumentare di job/customers nel sistema.
+Come atteso, superato un numero di *customers* pari a 2, la CPU va in saturazione: con 3 *customers* l'utilizzazione è circa pari al 100%. Il throughput aumenta rapidamente fino a 2 *customers* con un valore pari a $X = 2.3 \space req/s$, per poi salire di molto poco (di 0.1 circa) fino a completa saturazione all'ulteriore aumentare di job/customers nel sistema.
 
 A seguire gli andamenti, rispetto al collo di bottiglia (Disco), nel caso della query *Disk-Intensive*.
 
@@ -158,11 +158,11 @@ A seguire gli andamenti, rispetto al collo di bottiglia (Disco), nel caso della 
 ![](./dimage_3.png)
 ![](./dimage_4.png) 
 
-Il disco arriva a quasi saturazione con 3 *customers* (con utilizzazione del 97% circa) e un throughput che fino a 2 *customers* sale rapidamente fino a $X=0.56$ circa, per poi salire progressivamente in modo più lento, fino a raggiungere la saturazione con customers.
+Il disco arriva a quasi saturazione con 3 *customers* (con utilizzazione del 97% circa) e un throughput che fino a 2 *customers* sale rapidamente fino a $X=0.56 \space req/s$ circa, per poi salire progressivamente in modo più lento, fino a raggiungere la saturazione con customers.
 
-A verifica della bontà delle previsioni, vengono eseguiti ulteriori benchmark (di 300 secondi ciascuno) sul sistema reale,. 
+A verifica della bontà delle previsioni, vengono eseguiti ulteriori benchmark (di 300 secondi ciascuno) sul sistema reale. 
 
-A seguire un resoconto del throughput e dello stato di utilizzazione del collo di bottiglia per la query *CPU-Intensive* con 2 e 5 job concorrenti, eseguita sul sistema reale:
+A seguire un resoconto del throughput e dello stato di utilizzazione del collo di bottiglia per la query *CPU-Intensive* con 2 e 5 job concorrenti:
 - Con 2 job concorrenti:
     - $U_c = 99.4708954550472\%$
     - $X = 2.1860486094211584 \space req/s$
@@ -188,58 +188,39 @@ Possiamo dunque concludere confermando l'accuratezza del modello nei confronti d
 
 ### Punto 4a 
 
-In questo punto è stato modellato il sistema (modello simulativo del [punto precedente](#punto-4)) con lo scopo di mantenere un'utilizzazione dei centri nell'intervallo 60%-70% e un tempo di risposta medio inferiore ai 30 secondi sapendo che possiamo avere un numero massimo di query concorrenti (cpu-intensive o disk-intensive) pari a 20, inoltre il sistema, secondo le specifiche tecniche, doveva prevedere l'utilizzo di dischi *RAID 5*.
-Per quanto riguarda la scelta dei dischi è stato pensato l'utilizzo dei *RAID 0* dato che sono davvero molto simili a livello di prestazioni con la differenza esclusivamente a livello di storage, per la parità, che prevede un disco in meno in termini di memoria disponibile... la cosa è trascurabile (i dischi *RAID 5* offrono sicuramente più affidabilità, ma considerando che si sta usando un computer personale possiamo trascurare questa qualità per i nostri test).
-Prima di descrivere l'approccio utilizzato è opportuno precisare che, per garantire il corretto funzionamento del sistema, le probabilità di istradamento dai router ai centri deve essere bilanciata (in questo caso 0.333333333 ciascuno), il service demand di ciascun disco, con $K$ dischi, deve essere modificato nel seguente modo: $D_d' = D_d / K$ (chiaramente sulla base del carico che stiamo considerando) e infine di considerare un solo disco nella valutazione delle metriche queste sono uguali per tutti gli altri dischi.
-Dopo queste premesse è ora di vedere come è stato approcciato il problema, in particolare è stato approcciato prima il carico disk-intensive per modellare il disco e poi (una volta modellato secondo le specifiche il disco) il carico cpu-intensive per modellare opportunamente anche la cpu (utilizzando lo strumento di analisi *what-if* di JMT); seguiranno, di conseguenza, le varie prove effettuate con le opportune considerazioni:
+In questa sezione viene utilizzato il modello simulativo precedentemente sviluppato per far fronte ad ulteriori requisiti porgettuali: garantire un tempo di risposta medio inferiore a 30s, prevedere un numero di query concorrenti non superiore a 20 e nel contempo mantenere l'utilizzazione dei centri nel range 60-70%, avendo cura di implementare la ridondanza dei dischi tramite RAID 5.
 
-1. **10 dischi e 1 cpu:** (carico disk-intensive)
+Si è scelto di modellare il sottosistema di storage come un RAID 0 in quanto equivalente al RAID 5 a livello di variabili operazionali, avendo cura tuttavia di aggiungere - in produzione - un ulteriore disco agli N utilizzati in fase di modellazione al fine di ottenere prestazioni analoghe.
+
+Per modellare tale soluzione tecnologica si è utilizzato il template "RAID 0" disponibile all'interno di JMT, avendo cura di specificare il service demand di ciascun disco nell'array (supponendo di avere N dischi) nel seguente modo:
+
+$$
+D'_{d} = \frac{D_{d}}{N}
+$$
+
+A questo punto, si è deciso di approcciare prima il carico Disk-Intensive con lo scopo di determinare un adeguato dimensionamento del disco, dimensionare eventualmente la CPU in accordo per poi applicare l'iter al workload CPU-Intensive.
+
+Dopo un ristretto numero di tentativi, si è giunti ad una configurazione in grado di soddisfare le specifiche progettuali in termini di tempo di risposta per workload Disk-Intensive. Tale configurazione fa utilizzo di 20 CPU e 40 dischi RAID 0. A seguire le statistiche ottenute dal modello simulativo considerando 20 customers nel sistema:
+- $U_d = 65\%$
+- $U_c = 70.5\%$
+- $X = 15.87 \space req/s$
+- $T_r = 1.26s$
+
+Come possiamo notare, il nuovo collo di bottiglia è ora la CPU, con un'utilizzazione leggermente superiore al 70.5%. Tuttavia dobbiamo ancora effettuare il dimensionamento circa il carico CPU-Intensive: le simulazioni condotte hanno consentito di verificare l'ottenimento di un buon risultato aumentando le CPU fino a 30.
+
+In definitiva, l'utilizzo di 30 CPU e 40 dischi in configurazione RAID 0 consentono di soddisfare le specifiche di progetto. A seguire le statistiche per il carico CPU-Intensive con 20 customers nel sistema:
+- $U_c = 66\%$
+- $U_d = 0.008\%$
+- $X = 23.6935 \space req/s$
+- $T_r = 0.84s$
+
+Per completezza si riportano anche le statistiche per il carico Disk-Intensive con 20 customers nel sistema:
+- $U_d = 64\%$
+- $U_c = 48\%$
+- $X = 15.76 \space req/s$
+- $T_r = 1.27s$
   
-  Utilizzando 10 dischi () e 1 cpu si è notato che la cpu saturava troppo velocemente anche se si stava utilizzando un carico puramente disk-intensive, per questo motivo si è considerato, come primo approccio, quello di aumentare le cpu del nostro sistema. 
-
-2. **10 dischi e 20 cpu** (carico disk-intensive)
-   
-   La scelta di utilizzare 20 cpu è stata sicuramente opportuna, facendo tornare come collo di bottiglia il disco che ha un'utilizzazione del 60%-70% gia con 8 *customers*... il sistema dovrebbe reggere fino a 20 *customers*; un approccio "brute force" forse non sarebbe sbagliato.
-
-3. **40 dischi e 20 cpu** (carico disk-intensive)
-   
-   a questo punto possiamo dire di aver raggiunto le specifiche richieste per quanto riguarda il disco e tempi di risposta.
-   Ecco qui sotto riportate le statistiche (con 20 *customers* nel sistema):
-   
-   - $U_d = 0,65$
-   - $U_c = 0,0.705$
-   - $X = 15,87$ req/s
-   - $T_r = 1.26$ s
-
-L'utilizzazione del disco con 20 costumers non supera il 70% (dalla sumulazione risulta circa il 65%), mentre la CPU ha un'utilizzazione del 70% circa (diventando il collo di bottiglia per definizione) e, sapendo cio, possiamo immaginare che le 20 CPU precedentemente istanziate non reggeranno sicuramente un carico cpu-intensive (sapendo che questo è un carico disk_intensive).
-
-4. **40 dischi e 20 cpu** (carico cpu-intensive)
-   
-   Come prima cosa è stato provata una simulazione (sempre da 1 a 20 costumers) con lo stesso numero di CPU dimensionate nel caso del modellamento del disco (ci sono voluti 20m).
-   Il disco, come ci si poteva aspettare ha un'utilizzazione irrilevante (circa 0), mentre la CPU è piu che satura con 20 customers.
-
-5. **40 dischi e 30 cpu** (carico cpu-intensive)
-   
-   Provando invece con 30 CPU l'utilizzazione, con 20 costumers, non supera il 70%, piu precisamente ha un valore del 67% circa, un buon risultato tutto sommato.
-   Seguono le statistiche del sistema (con 20 *customers* nel sistema):
-
-   - $U_d = 0.00008$
-   - $U_c = 0.66$
-   - $X = 23.6935$ req/s
-   - $T_r = 0.84$ s
-  
-6. **verifiche e considerazioni finali:**
-   come ultima verifica è opportuno provare nuovamente una simulazione disk-intensive con 20 costumers per acertarsi della correttezza dei risultati ottenuti.
-   Dalle statistiche si ottiene che:
-
-   - $U_d = 0.64$
-   - $U_c = 0.48$
-   - $X = 15.76$ req/s
-   - $T_r = 1.27$ s
-  
-  Si puo natare che il disco ha un'utilizzazione del 64% circa e di cpu pari al 48% circa e che i tempi di risposta rientrano anch'essi nei requisiti imposti dalle specifiche.
-  Possiamo ritenere il sistema pronto a un aumento del carico fino a 20 query concorrenti.
-  File modello simulativo: [punto4.jmva.jsimg](null)
+Il file del modello simulativo utilizzato è consultabile al seguente link: [`punto4.jmva.jsimg`](https://github.com/tontonialberto/tagd-project/models).
 
 
 ## Punto 5
