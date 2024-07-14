@@ -1,0 +1,368 @@
+"userid","dbid","toplevel","queryid","query","plans","total_plan_time","min_plan_time","max_plan_time","mean_plan_time","stddev_plan_time","calls","total_exec_time","min_exec_time","max_exec_time","mean_exec_time","stddev_exec_time","rows","shared_blks_hit","shared_blks_read","shared_blks_dirtied","shared_blks_written","local_blks_hit","local_blks_read","local_blks_dirtied","local_blks_written","temp_blks_read","temp_blks_written","blk_read_time","blk_write_time","temp_blk_read_time","temp_blk_write_time","wal_records","wal_fpi","wal_bytes","jit_functions","jit_generation_time","jit_inlining_count","jit_inlining_time","jit_optimization_count","jit_optimization_time","jit_emission_count","jit_emission_time"
+10,16419,True,"-3825640688184167069","SELECT * FROM pg_stat_database","0","0","0","0","0","0","1","0.03764","0.03764","0.03764","0.03764","0","5","1","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0"
+10,16419,True,"1345865735253463468","SELECT * FROM pg_stat_user_tables","0","0","0","0","0","0","1","0.14622","0.14622","0.14622","0.14622","0","8","20","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0"
+10,16419,True,"3545412574037053608","SET DateStyle=ISO","0","0","0","0","0","0","2","0.01116","0.00459","0.00657","0.00558","0.0009900000000000002","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0"
+10,16419,True,"-6911109443227572258","SELECT * FROM pg_stat_bgwriter","0","0","0","0","0","0","1","0.00505","0.00505","0.00505","0.00505","0","1","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0"
+10,16419,True,"-141619989335985508","SELECT * FROM pg_stat_archiver","0","0","0","0","0","0","1","0.01004","0.01004","0.01004","0.01004","0","1","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0"
+10,16419,True,"3916515019762028860","SELECT     tmp.TABLE_CAT,     tmp.TABLE_SCHEM,     tmp.TABLE_NAME,     tmp.NON_UNIQUE,     tmp.INDEX_QUALIFIER,     tmp.INDEX_NAME,     tmp.TYPE,     tmp.ORDINAL_POSITION,     trim(both $1 from pg_catalog.pg_get_indexdef(tmp.CI_OID, tmp.ORDINAL_POSITION, $2)) AS COLUMN_NAME,   CASE tmp.AM_NAME     WHEN $3 THEN CASE tmp.I_INDOPTION[tmp.ORDINAL_POSITION - $4] & $5::smallint       WHEN $6 THEN $7       ELSE $8     END     ELSE $9   END AS ASC_OR_DESC,     tmp.CARDINALITY,     tmp.PAGES,     tmp.FILTER_CONDITION FROM (SELECT $10 AS TABLE_CAT, n.nspname AS TABLE_SCHEM,   ct.relname AS TABLE_NAME, NOT i.indisunique AS NON_UNIQUE,   $11 AS INDEX_QUALIFIER, ci.relname AS INDEX_NAME,   CASE i.indisclustered     WHEN $12 THEN $13    ELSE CASE am.amname       WHEN $14 THEN $15      ELSE $16    END   END AS TYPE,   (information_schema._pg_expandarray(i.indkey)).n AS ORDINAL_POSITION,   ci.reltuples AS CARDINALITY,   ci.relpages AS PAGES,   pg_catalog.pg_get_expr(i.indpred, i.indrelid) AS FILTER_CONDITION,   ci.oid AS CI_OID,   i.indoption AS I_INDOPTION,   am.amname AS AM_NAME FROM pg_catalog.pg_class ct   JOIN pg_catalog.pg_namespace n ON (ct.relnamespace = n.oid)   JOIN pg_catalog.pg_index i ON (ct.oid = i.indrelid)   JOIN pg_catalog.pg_class ci ON (ci.oid = i.indexrelid)   JOIN pg_catalog.pg_am am ON (ci.relam = am.oid) WHERE $17  AND n.nspname = $18 AND ct.relname = $19) AS tmp ORDER BY NON_UNIQUE, TYPE, INDEX_NAME, ORDINAL_POSITION","0","0","0","0","0","0","8","1.33601","0.11333","0.2364","0.16700125","0.0492199871590546","37","599","2","0","0","0","0","0","0","0","0","0.013","0","0","0","0","0","0","0","0","0","0","0","0","0","0"
+10,16419,True,"2441368605364275007","SELECT
+   p_brand,
+   p_type,
+   p_size,
+   COUNT(DISTINCT ps_suppkey) AS supplier_cnt
+FROM
+   partsupp,
+   part
+WHERE
+   p_partkey = ps_partkey
+   AND p_brand <> $1
+   AND p_type NOT LIKE $2
+   AND p_size IN ($3, $4, $5, $6, $7, $8, $9, $10)
+   AND ps_suppkey NOT IN
+   (
+      SELECT
+         s_suppkey
+      FROM
+         supplier
+      WHERE
+         s_comment LIKE $11
+   )
+GROUP BY
+   p_brand,
+   p_type,
+   p_size
+ORDER BY
+   supplier_cnt DESC,
+   p_brand,
+   p_type,
+   p_size","0","0","0","0","0","0","658","603891.0977380002","839.277618","1537.184649","917.7676257416413","133.06714547633496","16137582","7671940","922862","0","0","0","0","0","0","998030","1001320","1075.1832100000006","0","964.218311","6239.735418000008","0","0","0","0","0","0","0","0","0","0","0"
+10,16419,True,"2247467723989480173","SELECT setting FROM pg_catalog.pg_settings WHERE name=$1","0","0","0","0","0","0","1","0.50605","0.50605","0.50605","0.50605","0","1","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0"
+10,5,True,"931303454371000975","SELECT
+            roles.oid as id, roles.rolname as name,
+            roles.rolsuper as is_superuser,
+            CASE WHEN roles.rolsuper THEN $1 ELSE roles.rolcreaterole END as
+            can_create_role,
+            CASE WHEN roles.rolsuper THEN $2
+            ELSE roles.rolcreatedb END as can_create_db,
+            CASE WHEN $3=ANY(ARRAY(WITH RECURSIVE cte AS (
+            SELECT pg_roles.oid,pg_roles.rolname FROM pg_roles
+                WHERE pg_roles.oid = roles.oid
+            UNION ALL
+            SELECT m.roleid,pgr.rolname FROM cte cte_1
+                JOIN pg_auth_members m ON m.member = cte_1.oid
+                JOIN pg_roles pgr ON pgr.oid = m.roleid)
+            SELECT rolname  FROM cte)) THEN $4
+            ELSE $5 END as can_signal_backend
+        FROM
+            pg_catalog.pg_roles as roles
+        WHERE
+            rolname = current_user","0","0","0","0","0","0","1","0.04171","0.04171","0.04171","0.04171","0","1","4","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0"
+10,16419,True,"-6734339306640854527","SELECT
+    nsp.oid,
+    nsp.nspname as name,
+    pg_catalog.has_schema_privilege(nsp.oid, $1) as can_create,
+    pg_catalog.has_schema_privilege(nsp.oid, $2) as has_usage,
+    des.description
+FROM
+    pg_catalog.pg_namespace nsp
+    LEFT OUTER JOIN pg_catalog.pg_description des ON
+        (des.objoid=nsp.oid AND des.classoid=$3::regclass)
+WHERE
+             nspname NOT LIKE $4 AND
+            NOT (
+(nsp.nspname = $5 AND EXISTS
+        (SELECT $6 FROM pg_catalog.pg_class WHERE relname = $7 AND
+            relnamespace = nsp.oid LIMIT $8)) OR
+    (nsp.nspname = $9 AND EXISTS
+        (SELECT $10 FROM pg_catalog.pg_class WHERE relname = $11 AND
+            relnamespace = nsp.oid LIMIT $12)) OR
+    (nsp.nspname = $13 AND EXISTS
+        (SELECT $14 FROM pg_catalog.pg_class WHERE relname = $15 AND
+            relnamespace = nsp.oid LIMIT $16))
+    )
+
+    
+ORDER BY nspname","0","0","0","0","0","0","1","0.35196099999999997","0.35196099999999997","0.35196099999999997","0.35196099999999997","0","1","10","2","0","0","0","0","0","0","0","0","0.285021","0","0","0","0","0","0","0","0","0","0","0","0","0","0"
+10,5,True,"-3088299803543020730","SELECT
+    db.oid as did, db.datname, db.datallowconn,
+    pg_encoding_to_char(db.encoding) AS serverencoding,
+    has_database_privilege(db.oid, $1) as cancreate,
+    datistemplate
+FROM
+    pg_catalog.pg_database db
+WHERE db.datname = current_database()","0","0","0","0","0","0","1","0.008110000000000001","0.008110000000000001","0.008110000000000001","0.008110000000000001","0","1","1","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0"
+10,16419,True,"931303454371000975","SELECT
+            roles.oid as id, roles.rolname as name,
+            roles.rolsuper as is_superuser,
+            CASE WHEN roles.rolsuper THEN $1 ELSE roles.rolcreaterole END as
+            can_create_role,
+            CASE WHEN roles.rolsuper THEN $2
+            ELSE roles.rolcreatedb END as can_create_db,
+            CASE WHEN $3=ANY(ARRAY(WITH RECURSIVE cte AS (
+            SELECT pg_roles.oid,pg_roles.rolname FROM pg_roles
+                WHERE pg_roles.oid = roles.oid
+            UNION ALL
+            SELECT m.roleid,pgr.rolname FROM cte cte_1
+                JOIN pg_auth_members m ON m.member = cte_1.oid
+                JOIN pg_roles pgr ON pgr.oid = m.roleid)
+            SELECT rolname  FROM cte)) THEN $4
+            ELSE $5 END as can_signal_backend
+        FROM
+            pg_catalog.pg_roles as roles
+        WHERE
+            rolname = current_user","0","0","0","0","0","0","2","0.31201","0.15232","0.15969","0.156005","0.003684999999999994","2","8","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0"
+10,16419,True,"5848681576227864375","SELECT n.nspname, r.relname
+FROM pg_catalog.pg_class r
+    LEFT JOIN pg_catalog.pg_namespace n ON (r.relnamespace = n.oid)
+WHERE r.oid = $1","0","0","0","0","0","0","1","0.03073","0.03073","0.03073","0.03073","0","1","4","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0"
+10,16419,True,"-3088299803543020730","SELECT
+    db.oid as did, db.datname, db.datallowconn,
+    pg_encoding_to_char(db.encoding) AS serverencoding,
+    has_database_privilege(db.oid, $1) as cancreate,
+    datistemplate
+FROM
+    pg_catalog.pg_database db
+WHERE db.datname = current_database()","0","0","0","0","0","0","2","0.014700000000000001","0.006860000000000001","0.00784","0.007350000000000001","0.0004899999999999993","2","2","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0"
+10,16419,True,"-4554835823379561409","SELECT * FROM pg_stat_user_indexes","0","0","0","0","0","0","1","0.15569","0.15569","0.15569","0.15569","0","31","113","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0"
+10,16419,True,"3928562716391272690","SELECT
+    c.oid,
+    c.relname AS name,
+    description AS comment
+FROM pg_catalog.pg_class c
+LEFT OUTER JOIN pg_catalog.pg_description des ON (des.objoid=c.oid and des.objsubid=$1 AND des.classoid=$2::regclass)
+WHERE
+  c.relkind = $3
+    AND c.relnamespace = $4::oid
+ORDER BY
+    c.relname","0","0","0","0","0","0","1","0.09343","0.09343","0.09343","0.09343","0","2","18","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0"
+10,5,True,"-848981424258973678","SELECT
+    has_table_privilege(
+      $1, $2
+    ) has_priviledge
+WHERE EXISTS(
+    SELECT has_schema_privilege($3, $4)
+    WHERE EXISTS(
+        SELECT cl.oid FROM pg_catalog.pg_class cl
+        LEFT JOIN pg_catalog.pg_namespace ns ON ns.oid=relnamespace
+        WHERE relname=$5 AND nspname=$6
+    )
+)","0","0","0","0","0","0","1","0.00827","0.00827","0.00827","0.00827","0","0","2","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0"
+10,5,True,"8337740243580573530","SET client_min_messages=notice","0","0","0","0","0","0","1","0.00256","0.00256","0.00256","0.00256","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0"
+10,16419,True,"3307223188059133500","SHOW ALL","0","0","0","0","0","0","1","0.2031","0.2031","0.2031","0.2031","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0"
+10,5,True,"-2142115390761612697","SELECT CASE
+    WHEN (SELECT count(extname) FROM pg_catalog.pg_extension WHERE extname=$1) > $2
+    THEN $3
+    WHEN (SELECT COUNT(*) FROM pg_replication_slots) > $4
+    THEN $5
+    ELSE $6
+END as type","0","0","0","0","0","0","3","0.03756","0.008440000000000001","0.017410000000000002","0.01252","0.0037065077903600846","3","3","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0"
+10,16419,True,"4452344162736673220","SELECT * FROM pg_stat_database_conflicts","0","0","0","0","0","0","1","0.00949","0.00949","0.00949","0.00949","0","4","1","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0"
+10,16419,True,"4106913820061969125","SELECT * FROM pg_statio_user_tables","0","0","0","0","0","0","1","0.288761","0.288761","0.288761","0.288761","0","8","97","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0"
+10,16419,True,"7719402811077081697","SET client_encoding='utf-8'","0","0","0","0","0","0","2","0.0034000000000000002","0.00164","0.00176","0.0017000000000000001","5.9999999999999995e-05","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0"
+10,5,True,"7335952163293218877","/*pga4dash*/
+SELECT $1 AS chart_name, pg_catalog.row_to_json(t) AS chart_data
+FROM (SELECT
+   (SELECT count(*) FROM pg_catalog.pg_stat_activity) AS ""Total"",
+   (SELECT count(*) FROM pg_catalog.pg_stat_activity WHERE state = $2)  AS ""Active"",
+   (SELECT count(*) FROM pg_catalog.pg_stat_activity WHERE state = $3)  AS ""Idle""
+) t
+UNION ALL
+SELECT $4 AS chart_name, pg_catalog.row_to_json(t) AS chart_data
+FROM (SELECT
+   (SELECT sum(xact_commit) + sum(xact_rollback) FROM pg_catalog.pg_stat_database) AS ""Transactions"",
+   (SELECT sum(xact_commit) FROM pg_catalog.pg_stat_database) AS ""Commits"",
+   (SELECT sum(xact_rollback) FROM pg_catalog.pg_stat_database) AS ""Rollbacks""
+) t
+UNION ALL
+SELECT $5 AS chart_name, pg_catalog.row_to_json(t) AS chart_data
+FROM (SELECT
+   (SELECT sum(tup_inserted) FROM pg_catalog.pg_stat_database) AS ""Inserts"",
+   (SELECT sum(tup_updated) FROM pg_catalog.pg_stat_database) AS ""Updates"",
+   (SELECT sum(tup_deleted) FROM pg_catalog.pg_stat_database) AS ""Deletes""
+) t
+UNION ALL
+SELECT $6 AS chart_name, pg_catalog.row_to_json(t) AS chart_data
+FROM (SELECT
+   (SELECT sum(tup_fetched) FROM pg_catalog.pg_stat_database) AS ""Fetched"",
+   (SELECT sum(tup_returned) FROM pg_catalog.pg_stat_database) AS ""Returned""
+) t
+UNION ALL
+SELECT $7 AS chart_name, pg_catalog.row_to_json(t) AS chart_data
+FROM (SELECT
+   (SELECT sum(blks_read) FROM pg_catalog.pg_stat_database) AS ""Reads"",
+   (SELECT sum(blks_hit) FROM pg_catalog.pg_stat_database) AS ""Hits""
+) t","0","0","0","0","0","0","1","0.13977","0.13977","0.13977","0.13977","0","5","10","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0"
+10,16419,True,"3365982590372224235","SELECT pg_stat_statements_reset()","0","0","0","0","0","0","1","0.0463","0.0463","0.0463","0.0463","0","1","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0"
+10,16419,True,"5301103249166043051","SELECT rel.oid, rel.relname AS name,
+    (SELECT count(*) FROM pg_catalog.pg_trigger WHERE tgrelid=rel.oid AND tgisinternal = $1) AS triggercount,
+    (SELECT count(*) FROM pg_catalog.pg_trigger WHERE tgrelid=rel.oid AND tgisinternal = $2 AND tgenabled = $3) AS has_enable_triggers,
+    (CASE WHEN rel.relkind = $4 THEN $5 ELSE $6 END) AS is_partitioned,
+    (SELECT count($7) FROM pg_catalog.pg_inherits WHERE inhrelid=rel.oid LIMIT $8) as is_inherits,
+    (SELECT count($9) FROM pg_catalog.pg_inherits WHERE inhparent=rel.oid LIMIT $10) as is_inherited,
+    des.description
+FROM pg_catalog.pg_class rel
+    LEFT OUTER JOIN pg_catalog.pg_description des ON (des.objoid=rel.oid AND des.objsubid=$11 AND des.classoid=$12::regclass)
+    WHERE rel.relkind IN ($13,$14,$15,$16) AND rel.relnamespace = $17::oid
+    AND NOT rel.relispartition
+        ORDER BY rel.relname","0","0","0","0","0","0","1","0.15702000000000002","0.15702000000000002","0.15702000000000002","0.15702000000000002","0","8","46","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0"
+10,16419,True,"-1540851199369180844","SELECT set_config($1,$2,$3) FROM pg_settings WHERE name = $4","0","0","0","0","0","0","2","1.0998830000000002","0.542481","0.5574020000000001","0.5499415000000001","0.007460500000000064","2","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0"
+10,16419,True,"2999103544079323559","SELECT $1::text AS PKTABLE_CAT, pkn.nspname AS PKTABLE_SCHEM, pkc.relname AS PKTABLE_NAME, pka.attname AS PKCOLUMN_NAME, $2::text AS FKTABLE_CAT, fkn.nspname AS FKTABLE_SCHEM, fkc.relname AS FKTABLE_NAME, fka.attname AS FKCOLUMN_NAME, pos.n AS KEY_SEQ, CASE con.confupdtype  WHEN $3 THEN $4 WHEN $5 THEN $6 WHEN $7 THEN $8 WHEN $9 THEN $10 WHEN $11 THEN $12 WHEN $13 THEN $14 ELSE $15 END AS UPDATE_RULE, CASE con.confdeltype  WHEN $16 THEN $17 WHEN $18 THEN $19 WHEN $20 THEN $21 WHEN $22 THEN $23 WHEN $24 THEN $25 WHEN $26 THEN $27 ELSE $28 END AS DELETE_RULE, con.conname AS FK_NAME, pkic.relname AS PK_NAME, CASE  WHEN con.condeferrable AND con.condeferred THEN $29 WHEN con.condeferrable THEN $30 ELSE $31 END AS DEFERRABILITY  FROM  pg_catalog.pg_namespace pkn, pg_catalog.pg_class pkc, pg_catalog.pg_attribute pka,  pg_catalog.pg_namespace fkn, pg_catalog.pg_class fkc, pg_catalog.pg_attribute fka,  pg_catalog.pg_constraint con,  pg_catalog.generate_series($32, $33) pos(n),  pg_catalog.pg_class pkic WHERE pkn.oid = pkc.relnamespace AND pkc.oid = pka.attrelid AND pka.attnum = con.confkey[pos.n] AND con.confrelid = pkc.oid  AND fkn.oid = fkc.relnamespace AND fkc.oid = fka.attrelid AND fka.attnum = con.conkey[pos.n] AND con.conrelid = fkc.oid  AND con.contype = $34 AND (pkic.relkind = $35 OR pkic.relkind = $36) AND pkic.oid = con.conindid  AND fkn.nspname = $37 AND fkc.relname = $38 ORDER BY pkn.nspname,pkc.relname, con.conname,pos.n","0","0","0","0","0","0","8","0.61395","0.01582","0.1459","0.07674375","0.04536106450952732","9","262","1","0","0","0","0","0","0","0","0","0.00537","0","0","0","0","0","0","0","0","0","0","0","0","0","0"
+10,5,True,"5591784696012235849","SELECT
+             gss_authenticated, encrypted
+        FROM
+            pg_catalog.pg_stat_gssapi
+        WHERE pid = pg_backend_pid()","0","0","0","0","0","0","1","0.08077999999999999","0.08077999999999999","0.08077999999999999","0.08077999999999999","0","1","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0"
+10,16419,True,"-2885330479908940062","SELECT version()","0","0","0","0","0","0","3","0.00877","0.0017000000000000001","0.00521","0.0029233333333333333","0.0016182363513680222","3","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0"
+10,16419,True,"4124983557046791190","SELECT * FROM (SELECT n.nspname,c.relname,a.attname,a.atttypid,a.attnotnull OR (t.typtype = $1 AND t.typnotnull) AS attnotnull,a.atttypmod,a.attlen,t.typtypmod,row_number() OVER (PARTITION BY a.attrelid ORDER BY a.attnum) AS attnum, nullif(a.attidentity, $2) as attidentity,nullif(a.attgenerated, $3) as attgenerated,pg_catalog.pg_get_expr(def.adbin, def.adrelid) AS adsrc,dsc.description,t.typbasetype,t.typtype  FROM pg_catalog.pg_namespace n  JOIN pg_catalog.pg_class c ON (c.relnamespace = n.oid)  JOIN pg_catalog.pg_attribute a ON (a.attrelid=c.oid)  JOIN pg_catalog.pg_type t ON (a.atttypid = t.oid)  LEFT JOIN pg_catalog.pg_attrdef def ON (a.attrelid=def.adrelid AND a.attnum = def.adnum)  LEFT JOIN pg_catalog.pg_description dsc ON (c.oid=dsc.objoid AND a.attnum = dsc.objsubid)  LEFT JOIN pg_catalog.pg_class dc ON (dc.oid=dsc.classoid AND dc.relname=$4)  LEFT JOIN pg_catalog.pg_namespace dn ON (dc.relnamespace=dn.oid AND dn.nspname=$5)  WHERE c.relkind in ($6,$7,$8,$9,$10) and a.attnum > $11 AND NOT a.attisdropped  AND n.nspname LIKE $12 AND c.relname LIKE $13) c WHERE $14  ORDER BY nspname,c.relname,attnum","0","0","0","0","0","0","8","0.49319999999999997","0.040299999999999996","0.08433","0.06164999999999999","0.015485323696971913","61","261","3","0","0","0","0","0","0","0","0","0.01538","0","0","0","0","0","0","0","0","0","0","0","0","0","0"
+10,16419,True,"1708853975061214229","SELECT pg_cancel_backend($1)","0","0","0","0","0","0","1","0.02419","0.02419","0.02419","0.02419","0","1","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0"
+10,5,True,"-1540851199369180844","SELECT set_config($1,$2,$3) FROM pg_settings WHERE name = $4","0","0","0","0","0","0","1","0.5559620000000001","0.5559620000000001","0.5559620000000001","0.5559620000000001","0","1","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0"
+10,16419,True,"730366229162666581","/*pga4dash*/
+SELECT $1 AS chart_name, pg_catalog.row_to_json(t) AS chart_data
+FROM (SELECT
+   (SELECT count(*) FROM pg_catalog.pg_stat_activity WHERE datname = (SELECT datname FROM pg_catalog.pg_database WHERE oid = $2)) AS ""Total"",
+   (SELECT count(*) FROM pg_catalog.pg_stat_activity WHERE state = $3 AND datname = (SELECT datname FROM pg_catalog.pg_database WHERE oid = $4))  AS ""Active"",
+   (SELECT count(*) FROM pg_catalog.pg_stat_activity WHERE state = $5 AND datname = (SELECT datname FROM pg_catalog.pg_database WHERE oid = $6))  AS ""Idle""
+) t
+UNION ALL
+SELECT $7 AS chart_name, pg_catalog.row_to_json(t) AS chart_data
+FROM (SELECT
+   (SELECT sum(xact_commit) + sum(xact_rollback) FROM pg_catalog.pg_stat_database WHERE datname = (SELECT datname FROM pg_catalog.pg_database WHERE oid = $8)) AS ""Transactions"",
+   (SELECT sum(xact_commit) FROM pg_catalog.pg_stat_database WHERE datname = (SELECT datname FROM pg_catalog.pg_database WHERE oid = $9)) AS ""Commits"",
+   (SELECT sum(xact_rollback) FROM pg_catalog.pg_stat_database WHERE datname = (SELECT datname FROM pg_catalog.pg_database WHERE oid = $10)) AS ""Rollbacks""
+) t
+UNION ALL
+SELECT $11 AS chart_name, pg_catalog.row_to_json(t) AS chart_data
+FROM (SELECT
+   (SELECT sum(tup_inserted) FROM pg_catalog.pg_stat_database WHERE datname = (SELECT datname FROM pg_catalog.pg_database WHERE oid = $12)) AS ""Inserts"",
+   (SELECT sum(tup_updated) FROM pg_catalog.pg_stat_database WHERE datname = (SELECT datname FROM pg_catalog.pg_database WHERE oid = $13)) AS ""Updates"",
+   (SELECT sum(tup_deleted) FROM pg_catalog.pg_stat_database WHERE datname = (SELECT datname FROM pg_catalog.pg_database WHERE oid = $14)) AS ""Deletes""
+) t
+UNION ALL
+SELECT $15 AS chart_name, pg_catalog.row_to_json(t) AS chart_data
+FROM (SELECT
+   (SELECT sum(tup_fetched) FROM pg_catalog.pg_stat_database WHERE datname = (SELECT datname FROM pg_catalog.pg_database WHERE oid = $16)) AS ""Fetched"",
+   (SELECT sum(tup_returned) FROM pg_catalog.pg_stat_database WHERE datname = (SELECT datname FROM pg_catalog.pg_database WHERE oid = $17)) AS ""Returned""
+) t
+UNION ALL
+SELECT $18 AS chart_name, pg_catalog.row_to_json(t) AS chart_data
+FROM (SELECT
+   (SELECT sum(blks_read) FROM pg_catalog.pg_stat_database WHERE datname = (SELECT datname FROM pg_catalog.pg_database WHERE oid = $19)) AS ""Reads"",
+   (SELECT sum(blks_hit) FROM pg_catalog.pg_stat_database WHERE datname = (SELECT datname FROM pg_catalog.pg_database WHERE oid = $20)) AS ""Hits""
+) t","0","0","0","0","0","0","1","0.19414","0.19414","0.19414","0.19414","0","5","26","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0"
+10,16419,True,"4647070297903581691","SELECT oid, pg_catalog.format_type(oid, $2) AS typname FROM pg_catalog.pg_type WHERE oid = ANY($1) ORDER BY oid","0","0","0","0","0","0","1","0.0207","0.0207","0.0207","0.0207","0","1","3","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0"
+10,16419,True,"2064869707185898531","COMMIT","0","0","0","0","0","0","2","0.0017000000000000001","0.00053","0.00117","0.0008500000000000001","0.00032","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0"
+10,16419,True,"8337740243580573530","SET client_min_messages=notice","0","0","0","0","0","0","2","0.0023699999999999997","0.00106","0.00131","0.0011849999999999999","0.00012500000000000006","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0"
+10,5,True,"7719402811077081697","SET client_encoding='utf-8'","0","0","0","0","0","0","1","0.00228","0.00228","0.00228","0.00228","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0"
+10,5,True,"5238886764819015996","SELECT
+    db.oid as did, db.datname, db.datallowconn,
+    pg_catalog.pg_encoding_to_char(db.encoding) AS serverencoding,
+    pg_catalog.has_database_privilege(db.oid, $1) as cancreate,
+    datistemplate
+FROM
+    pg_catalog.pg_database db
+WHERE db.oid = $2","0","0","0","0","0","0","1","0.01008","0.01008","0.01008","0.01008","0","1","1","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0"
+10,5,True,"-2885330479908940062","SELECT version()","0","0","0","0","0","0","1","0.0023599999999999997","0.0023599999999999997","0.0023599999999999997","0.0023599999999999997","0","1","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0"
+10,16419,True,"-1230386279905109600","SET application_name = 'tpch'","0","0","0","0","0","0","4","0.009559999999999999","0.00196","0.00275","0.0023899999999999998","0.0002972372789540369","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0"
+10,16419,True,"-1796743056771589294","SELECT * FROM pg_statio_user_indexes","0","0","0","0","0","0","1","0.13546","0.13546","0.13546","0.13546","0","31","113","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0"
+10,16419,True,"6650430479887907887","BEGIN","0","0","0","0","0","0","11","0.00699","0.00031","0.00253","0.0006354545454545456","0.0006166531902332084","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0"
+10,5,True,"4634030752968494171","SELECT
+	r.oid, r.rolname, r.rolcanlogin, r.rolsuper,
+	pg_catalog.shobj_description(r.oid, $1) AS description
+FROM
+	pg_catalog.pg_roles r
+ORDER BY r.rolcanlogin, r.rolname","0","0","0","0","0","0","2","0.6652109999999999","0.14354999999999998","0.5216609999999999","0.33260549999999994","0.1890555","30","39","1","0","0","0","0","0","0","0","0","0.162901","0","0","0","0","0","0","0","0","0","0","0","0","0","0"
+10,16419,True,"5915410634074882152","/*pga4dash*/
+SELECT
+    pid,
+    datname,
+    usename,
+    application_name,
+    client_addr,
+    pg_catalog.to_char(backend_start, $1) AS backend_start,
+    state,
+    wait_event_type || $2 || wait_event AS wait_event,
+    array_to_string(pg_catalog.pg_blocking_pids(pid), $3) AS blocking_pids,
+    query,
+    pg_catalog.to_char(state_change, $4) AS state_change,
+    pg_catalog.to_char(query_start, $5) AS query_start,
+    pg_catalog.to_char(xact_start, $6) AS xact_start,
+    backend_type,
+    CASE WHEN state = $7 THEN ROUND((extract($8 from now() - query_start) / $9)::numeric, $10) ELSE $11 END AS active_since
+FROM
+    pg_catalog.pg_stat_activity
+WHERE
+    datname = (SELECT datname FROM pg_catalog.pg_database WHERE oid = $12)ORDER BY pid","0","0","0","0","0","0","4","0.602781","0.07951","0.31196","0.15069525","0.0946908791156123","4","19","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0"
+10,16419,True,"4560789258604147685","SET SESSION CHARACTERISTICS AS TRANSACTION ISOLATION LEVEL SERIALIZABLE","0","0","0","0","0","0","2","0.00345","0.00168","0.00177","0.001725","4.4999999999999955e-05","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0"
+10,16419,True,"-4570799927402708811","SET extra_float_digits = 3","0","0","0","0","0","0","4","0.018049999999999997","0.00364","0.00613","0.004512499999999999","0.0009721207486727149","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0"
+10,5,True,"3545412574037053608","SET DateStyle=ISO","0","0","0","0","0","0","1","0.00823","0.00823","0.00823","0.00823","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0"
+10,5,True,"7177081029719482536","/*pga4dash*/
+SELECT
+    pid,
+    datname,
+    usename,
+    application_name,
+    client_addr,
+    pg_catalog.to_char(backend_start, $1) AS backend_start,
+    state,
+    wait_event_type || $2 || wait_event AS wait_event,
+    array_to_string(pg_catalog.pg_blocking_pids(pid), $3) AS blocking_pids,
+    query,
+    pg_catalog.to_char(state_change, $4) AS state_change,
+    pg_catalog.to_char(query_start, $5) AS query_start,
+    pg_catalog.to_char(xact_start, $6) AS xact_start,
+    backend_type,
+    CASE WHEN state = $7 THEN ROUND((extract($8 from now() - query_start) / $9)::numeric, $10) ELSE $11 END AS active_since
+FROM
+    pg_catalog.pg_stat_activity
+ORDER BY pid","0","0","0","0","0","0","2","0.562521","0.14828000000000002","0.41424099999999997","0.2812605","0.1329805","12","7","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0"
+10,5,True,"-2176588561018435415","SELECT CASE WHEN usesuper
+       THEN pg_catalog.pg_is_in_recovery()
+       ELSE $1
+       END as inrecovery,
+       CASE WHEN usesuper AND pg_catalog.pg_is_in_recovery()
+       THEN pg_is_wal_replay_paused()
+       ELSE $2
+       END as isreplaypaused
+FROM pg_catalog.pg_user WHERE usename=current_user","0","0","0","0","0","0","1","0.00916","0.00916","0.00916","0.00916","0","1","1","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0"
+10,16419,True,"9007855649960752336","SELECT COUNT(*) FROM pg_extension WHERE extname IN (
+                $1, $2)","0","0","0","0","0","0","1","0.267606","0.267606","0.267606","0.267606","0","1","0","1","0","0","0","0","0","0","0","0","0.251956","0","0","0","0","0","0","0","0","0","0","0","0","0","0"
+10,16419,True,"1817606875557569412","SELECT
+    nsp.nspname as schema_name,
+    (nsp.nspname = $1 AND EXISTS
+        (SELECT $2 FROM pg_catalog.pg_class WHERE relname = $3 AND
+            relnamespace = nsp.oid LIMIT $4)) OR
+    (nsp.nspname = $5 AND EXISTS
+        (SELECT $6 FROM pg_catalog.pg_class WHERE relname = $7 AND
+            relnamespace = nsp.oid LIMIT $8)) OR
+    (nsp.nspname = $9 AND EXISTS
+        (SELECT $10 FROM pg_catalog.pg_class WHERE relname = $11 AND
+            relnamespace = nsp.oid LIMIT $12)) AS is_catalog,
+    CASE
+    WHEN nsp.nspname = ANY($13)
+        THEN $14
+    ELSE $15 END AS db_support
+FROM
+    pg_catalog.pg_namespace nsp
+WHERE
+    nsp.oid = $16::OID","0","0","0","0","0","0","1","0.010020000000000001","0.010020000000000001","0.010020000000000001","0.010020000000000001","0","1","1","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0"
+10,16419,True,"5591784696012235849","SELECT
+             gss_authenticated, encrypted
+        FROM
+            pg_catalog.pg_stat_gssapi
+        WHERE pid = pg_backend_pid()","0","0","0","0","0","0","2","0.13143100000000002","0.04514","0.086291","0.06571550000000001","0.020575500000000007","2","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0"
+10,16419,True,"3007824077230373907","SELECT $1 AS TABLE_CAT, n.nspname AS TABLE_SCHEM, c.relname AS TABLE_NAME,  CASE n.nspname ~ $2 OR n.nspname = $3  WHEN $4 THEN CASE  WHEN n.nspname = $5 OR n.nspname = $6 THEN CASE c.relkind   WHEN $7 THEN $8   WHEN $9 THEN $10   WHEN $11 THEN $12   ELSE $13   END  WHEN n.nspname = $14 THEN CASE c.relkind   WHEN $15 THEN $16   WHEN $17 THEN $18   ELSE $19   END  ELSE CASE c.relkind   WHEN $20 THEN $21   WHEN $22 THEN $23   WHEN $24 THEN $25   WHEN $26 THEN $27   WHEN $28 THEN $29   ELSE $30   END  END  WHEN $31 THEN CASE c.relkind  WHEN $32 THEN $33  WHEN $34 THEN $35  WHEN $36 THEN $37  WHEN $38 then $39  WHEN $40 THEN $41  WHEN $42 THEN $43  WHEN $44 THEN $45  WHEN $46 THEN $47  WHEN $48 THEN $49  ELSE $50  END  ELSE $51  END  AS TABLE_TYPE, d.description AS REMARKS,  $52 as TYPE_CAT, $53 as TYPE_SCHEM, $54 as TYPE_NAME, $55 AS SELF_REFERENCING_COL_NAME, $56 AS REF_GENERATION  FROM pg_catalog.pg_namespace n, pg_catalog.pg_class c  LEFT JOIN pg_catalog.pg_description d ON (c.oid = d.objoid AND d.objsubid = $57  and d.classoid = $58::regclass)  WHERE c.relnamespace = n.oid  AND n.nspname LIKE $59 AND ($60  OR ( c.relkind = $61 AND n.nspname !~ $62 AND n.nspname <> $63 ) )  ORDER BY TABLE_TYPE,TABLE_SCHEM,TABLE_NAME","0","0","0","0","0","0","1","0.14911","0.14911","0.14911","0.14911","0","8","37","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0"
+10,16419,True,"3056798788834760739","select current_schema()","0","0","0","0","0","0","1","0.02109","0.02109","0.02109","0.02109","0","1","3","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0"
+10,5,True,"-1759747499479330993","SELECT
+    db.oid as did, db.datname as name, ta.spcname as spcname, db.datallowconn,
+    db.datistemplate AS is_template,
+    pg_catalog.has_database_privilege(db.oid, $1) as cancreate, datdba as owner,
+    descr.description
+FROM
+    pg_catalog.pg_database db
+    LEFT OUTER JOIN pg_catalog.pg_tablespace ta ON db.dattablespace = ta.oid
+    LEFT OUTER JOIN pg_catalog.pg_shdescription descr ON (
+        db.oid=descr.objoid AND descr.classoid=$2::regclass
+    )
+WHERE         db.oid > $3::OID OR db.datname IN ($4, $5)
+
+ORDER BY datname","0","0","0","0","0","0","1","0.041","0.041","0.041","0.041","0","2","8","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0"

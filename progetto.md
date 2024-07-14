@@ -6,6 +6,7 @@
 Il seguente progetto è finalizzato a modellare un modello simulativo (o analitico) di un dbms sulla base delle prestazioni riscontrate nell'utilizzo del benchmark tpch, fatto giare su un container docker contenente un server di postgres (cercando di rendere il meno rumorosi possibili i dati durante le esecuzioni).
 In particolare, il benchmark tpch, da la possibilità di creare un carico di lavoro con cui popolare il DB postgres al fine di poter sottomettere fino a 22 query di varia natura, le quali andranno a utilizzare disco e cpu (ognuna a modo loro)
 Dopo aver creato e caricato i dati necessari all'esecuzione delle query (con fattore di scala pari a 2, quindi, in questo caso, con 4 GB di dati) e configurato il server postgres secondo le specifiche tecniche del progetto sono stati svolti i punti 0, 1, 2, 3, 4 e 5, descritti in modo approfondito nella seguente relazione.
+(I file contenenti le statistiche di postgres sono stati analizzati in modo automatizzato tramite lo script "*stats_reader.ipynb*" presente nel repository github sel progetto).
 
 
 --> **[Link al repo github](null)** <--
@@ -68,7 +69,7 @@ Con gli stessi passaggi del [Punto 0](#punto-0) siamo riusciti a calcolare il se
   
   dove $T_r$ è il tempo di risposta di una query, $N$ è il numero medio di entità (query concorrenti in questo caso) nel sistema e $X$ è il throughput della query in questione.
 
-Dopo aver definito opportunamente tali grandezze è ora di andare a vedere le prestazioni della macchina reale:
+Dopo aver definito opportunamente tali grandezze è ora di andare a vedere le prestazioni della **macchina reale**:
 
 - **Q16 -> CPU-intensive:**
   
@@ -118,9 +119,9 @@ I risultati prodotti sono stati sorprendentemente soddisfacenti, con differenze 
 
 ## Punto 3:
 
-In questo punto sono stati eseguiti nuovamente benchmark per le query disk-intensive e cpu-intensive (sempre per 5 minuti), con la differenza che nelle precedenti esecuzioni non venivano eseguite query concorrenti, mentre adesso è stato impostato a 2 il numero di query concorrenti (cambiando il valore "terminal" nel file di configurazione delle query).
+In questo punto sono stati eseguiti nuovamente benchmark per le query disk-intensive e cpu-intensive (sempre per 5 minuti), con la differenza che nelle precedenti esecuzioni non venivano eseguite query concorrenti, mentre adesso è stato impostato a 2 il numero di query concorrenti (cambiando il valore *terminals* nel file di configurazione delle query).
 A priori ci si potrebbe aspettare che per la query cpu-intensive il throughput non può aumentare in quanto l' utilizzazione (della cpu), con un cliente in media nel sistema, è gia 98% circa, mentre per la query disk-intensive ci si può aspettare un aumento del throughput (e dell' utilizzazione).
-Dopo aver modificato il numero dei *customers* nel modelllo simulativo e dopo aver simulato le prestazioni rispettivamente per le due query i risultati del benchmark e del modello sono stati messi a confronto:
+Dopo aver modificato il numero dei *customers* nel modelllo simulativo (usato nel [punto precedente](#punto-2)) e dopo aver simulato le prestazioni rispettivamente per le due query i risultati del benchmark e del modello sono stati messi a confronto:
 
 - **Q16 -> CPU-intensive -> Modello simulativo:**
   - $X = 1.1865$
@@ -182,77 +183,85 @@ Ecco qui riportati i risultati del Modello Simulativo per quanto riguarda le que
 Come ci si poteva aspettare la CPU, superato un numero di *customers* pari a 2, va in saturazione (con 3 *customers* l'utilizzazione e circa 100%), analogamente anche il throughput, giustamente, aumenta rapidamente fino a 2 *customers* con un valore pari a $X = 2.3$, per poi salire di molto poco (di 0.1 circa) fino a completa saturazione del sistema (con un numero di *customers* pari a 3).
 Per quanto riguarda il disco, come da ipotesi, arriva a quasi saturazione con 3 *customers* (con utilizzazione del 97% circa) e un throughput che fino a 2 *customers* sale velocemente fino a $X=0.56$ circa, dopodiché fino a 3 *customers* sale più lentamente (fino a raggiungere $X=0.6$); con *customers* il disco è completamente saturo.
 
+A questo punto non possiamo che eseguire nuovamente almeno due benchmark (con 2 cpu): uno con 2 *customers* e l'altro con 5 *customers* (*terminals*con valori 2 e 5) sia per la query cpu-intensive, sia per la disk-intensive, al fine di vedere se i risultati ricavati dalle statistiche della macchina reale siano paragonabili al modello simulativo (l'esecuzione è stata mantenuta a 5 minuti).
+(I risultati sono stati estratti dai noti file per le statistiche di postgres e del container, mediante opportuni calcoli eseguiti in modo analogo ai punti precedenti).
 
-BENCHMARK
+- **CPU-intensive -> Benchmark -> 2 customers**
+  - File: [pg_stat_statements_4_16_2_300s.csv](null), [CPUint_summary_4_2.json]()
+  - $U_c = 0.994708954550472$ -> satura
+  - $X = 2.1860486094211584$ req/s
+  
+- **CPU-intensive -> Benchmark -> 5 customers**
+  - File: [pg_stat_statements_4_16_5_300s.csv](null), [CPUint_summary_4_5.json](null)
+  - $U_c = 0.9830228695699584$ -> satura
+  - $X = 2.2126251062282$ req/s
+  
+- **DISK-intensive -> Benchmark -> 2 customers**
+  - File: [pg_stat_statements_4_7_2_300s.csv](null), [DISKint_summary_4_2.json](null)
+  - $U_d = 0.43401358968800696$
+  - $X = 0.43853842920049774$ req/s
+  
+- **DISK-intensive -> Benchmark -> 5 customers**
+  - File: [pg_stat_statements_4_7_5_300s.csv](null),[DISKint_summary_4_5.json](null)
+  - $U_d = 0.99999999$ -> saturo
+  - $X = 0.7541532588537293$ req/s
+
+Possiamo concludere, avendo i risultati confrontabili tra il modello simulativo e la macchina reale, dicendo che per quanto riguarda la CPU nel carico cpu-intensive, questa si comporta nello stesso modo in tutti e due i casi (reale e simulativo) degradando quando il numero di query concorrenti è >= 2, con una particolare vicinanza tra i risultati della macchina reale a confronto con la simulazione, mentre per quanto riguarda il disco i risultati della simlazione si discostano di più con la macchina reale nel caso di due query concorrenti, soprattutto per quanto riguarda l'utilizzazione (anche se abbiamo detto prima, alla fine del [Punto 3](#punto-3), che la tecnologia *NMVe* potrebbe alterare l'utilizzazione del disco a causa della parallelizzazione delle operazioni di I/O), ma quando eseguiamo il benchmark con 5 query concorrenti i numeri iniziano essere meno distanti con il modello simulativo, infatti il disco si satura e i valori throughput (tra simulativo e reale) si avvicinano di molto.
 
 
+## Punto 4a 
 
-Punto 4 - dimensionamento con raid
+In questo punto è stato modellato il sistema (modello simulativo del [punto precedente](#punto-4)) con lo scopo di mantenere un'utilizzazione dei centri nell'intervallo 60%-70% e un tempo di risposta medio inferiore ai 30 secondi sapendo che possiamo avere un numero massimo di query concorrenti (cpu-intensive o disk-intensive) pari a 20, inoltre il sistema, secondo le specifiche tecniche, doveva prevedere l'utilizzo di dischi *RAID 5*.
+Per quanto riguarda la scelta dei dischi è stato pensato l'utilizzo dei *RAID 0* dato che sono davvero molto simili a livello di prestazioni con la differenza esclusivamente a livello di storage, per la parità, che prevede un disco in meno in termini di memoria disponibile... la cosa è trascurabile (i dischi *RAID 5* offrono sicuramente più affidabilità, ma considerando che si sta usando un computer personale possiamo trascurare questa qualità per i nostri test).
+Prima di descrivere l'approccio utilizzato è opportuno precisare che, per garantire il corretto funzionamento del sistema, le probabilità di istradamento dai router ai centri deve essere bilanciata (in questo caso 0.333333333 ciascuno), il service demand di ciascun disco, con $K$ dischi, deve essere modificato nel seguente modo: $D_d' = D_d / K$ (chiaramente sulla base del carico che stiamo considerando) e infine di considerare un solo disco nella valutazione delle metriche queste sono uguali per tutti gli altri dischi.
+Dopo queste premesse è ora di vedere come è stato approcciato il problema, in particolare è stato approcciato prima il carico disk-intensive per modellare il disco e poi (una volta modellato secondo le specifiche il disco) il carico cpu-intensive per modellare opportunamente anche la cpu (utilizzando lo strumento di analisi *what-if* di JMT); seguiranno, di conseguenza, le varie prove effettuate con le opportune considerazioni:
 
-- mettere 0.33 alle prob. del router
-- con 10 dischi, dividere per 10 i service demand dei dischi trovati all'inizio
-- su jmt misuriamo le metriche solo per un disco a caso tra questi 10, per gli altri è uguale
-- una volta aggiunto il raid 0 e fatta what if analysis con 20 query, bisogna aumentare a questo punto anche il numero di cpu dato che all' aumentare dei job il collo di bottiglia diventa proprio la CPU anche se il carico risulta essere disk intensive
-- l'idea è quella di utilizzare 20 cpu dato che inizialmente la cpu si saturava anche con solo query sequenziali nel sistema
+1. **10 dischi e 1 cpu:** (carico disk-intensive)
+  
+  Utilizzando 10 dischi () e 1 cpu si è notato che la cpu saturava troppo velocemente anche se si stava utilizzando un carico puramente disk-intensive, per questo motivo si è considerato, come primo approccio, quello di aumentare le cpu del nostro sistema. 
 
-10 dischi:
-CPU Intensive:
-DISK Service demand 0.001474560369767442
+2. **10 dischi e 20 cpu** (carico disk-intensive)
+   
+   La scelta di utilizzare 20 cpu è stata sicuramente opportuna, facendo tornare come collo di bottiglia il disco che ha un'utilizzazione del 60%-70% gia con 8 *customers*... il sistema dovrebbe reggere fino a 20 *customers*; un approccio "brute force" forse non sarebbe sbagliato.
 
-DISK Intensive:
-DISK Service demand 0.1630294817162791
+3. **40 dischi e 20 cpu** (carico disk-intensive)
+   
+   a questo punto possiamo dire di aver raggiunto le specifiche richieste per quanto riguarda il disco e tempi di risposta.
+   Ecco qui sotto riportate le statistiche (con 20 *customers* nel sistema):
+   
+   - $U_d = 0,65$
+   - $U_c = 0,0.705$
+   - $X = 15,87$ req/s
+   - $T_r = 1.26$ s
 
+L'utilizzazione del disco con 20 costumers non supera il 70% (dalla sumulazione risulta circa il 65%), mentre la CPU ha un'utilizzazione del 70% circa (diventando il collo di bottiglia per definizione) e, sapendo cio, possiamo immaginare che le 20 CPU precedentemente istanziate non reggeranno sicuramente un carico cpu-intensive (sapendo che questo è un carico disk_intensive).
 
-40 dischi:
-CPU Intensive:
-DISK Service demand 0.0003686400924418605
+4. **40 dischi e 20 cpu** (carico cpu-intensive)
+   
+   Come prima cosa è stato provata una simulazione (sempre da 1 a 20 costumers) con lo stesso numero di CPU dimensionate nel caso del modellamento del disco (ci sono voluti 20m).
+   Il disco, come ci si poteva aspettare ha un'utilizzazione irrilevante (circa 0), mentre la CPU è piu che satura con 20 customers.
 
-DISK Intensive:
-DISK Service demand 0.040757370429069774
+5. **40 dischi e 30 cpu** (carico cpu-intensive)
+   
+   Provando invece con 30 CPU l'utilizzazione, con 20 costumers, non supera il 70%, piu precisamente ha un valore del 67% circa, un buon risultato tutto sommato.
+   Seguono le statistiche del sistema (con 20 *customers* nel sistema):
 
-20 cpu e 40 dischi:
-DISK Intensive (con 20 job)
-Util. disco: 65%
-Util. cpu: 70.5%
-Throughput: 15.87 req/s
-Tempo di risposta: circa 1.26s
+   - $U_d = 0.00008$
+   - $U_c = 0.66$
+   - $X = 23.6935$ req/s
+   - $T_r = 0.84$ s
+  
+6. **verifiche e considerazioni finali:**
+   come ultima verifica è opportuno provare nuovamente una simulazione disk-intensive con 20 costumers per acertarsi della correttezza dei risultati ottenuti.
+   Dalle statistiche si ottiene che:
 
-CPU Intensive (con 20 job)
-La cpu ha un'utilizzazione oltre il 70%.
-Il disco è utilizzato allo 0.008% circa.
+   - $U_d = 0.64$
+   - $U_c = 0.48$
+   - $X = 15.76$ req/s
+   - $T_r = 1.27$ s
+  
+  Si puo natare che il disco ha un'utilizzazione del 64% circa e di cpu pari al 48% circa e che i tempi di risposta rientrano anch'essi nei requisiti imposti dalle specifiche.
+  Possiamo ritenere il sistema pronto a un aumento del carico fino a 20 query concorrenti.
+  File modello simulativo: [punto4.jmva.jsimg](null)
 
-[02:24] ALESSANDRO DI GIROLAMO
-Con 8 costumers abbiamo che il la risorsa è utilizzata al 60%/70% circa... con 20 il disco è abbondantemente saturo
- 
-[02:24] ALESSANDRO DI GIROLAMO
-e se usassimo 15 dischi? ancora una volta il risultato non è soddisfacente (al 70% di utilizzazione abbiamo circa 10 customers)
-
-[02:24] ALESSANDRO DI GIROLAMO
-a questo punto un approccio "brute force" non sarebbe una cattiva idea, proviamo con 40 dischi.
-
-[02:31] ALESSANDRO DI GIROLAMO
-L'utilizzazione del disco con 20 costumers non supera il 70% (dalla sumulazione risulta circa il 65%), mentre la CPU 
-un'utilizzazione del 70% circa (diventando il collo di bottiglia per definizione) e, sapendo cio, possiamo immaginare che le 20 CPU precedentemente istanziate nonn reggeranno sicuramente un carico cpu-intensive (sapendo che questo è un carico disk_intensive).
-
-Come prima cosa è stato provata una simulazione (sempre da 1 a 20 costumers) con lo stesso numero di CPU dimensionate nel caso del modellamento del disco (ci sono voluti 20m).
-Il disco, come ci si poteva aspettare ha un'utilizzazione irrilevante (circa 0), mentre la CPU è piu che satura con 20 customers.
-
-Provando invece con 30 CPU l'utilizzazione, con 20 costumers, non supera il 70%, piu precisamente ha un valore del 67% circa, un buon risultato tutto sommato.
-
-30 cpu, 40 dischi
-CPU Intensive (con 20 job)
-Util. disco: 0.008%
-Util. cpu: 66%
-Throughput: 23.6935 req/s
-Tempo di risposta: circa 0.84s
-
-DISK Intensive (con 20 job)
-Util. disco: 64%
-Util. cpu: 48%
-Throughput: 15.76 req/s
-Tempo di risposta: circa 1.27s
-
-verifiche e considerazioni finali:
-come ultima verifica è opportuno provare nuovamente una simulazione disk-intensive con 20 costumers per acertarsi della correttezza dei risultati ottenuti. Si puo natare che il disco ha un'utilizzazione del 64% circa e di cpu pari al 48% circa.
-Possiamo ritenere il sistema pronto a un aumento del carico fino a 20 query concorrenti.
 
