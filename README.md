@@ -1,3 +1,5 @@
+
+
 # Progetto di Capacity Planning - Tecnologie e Architetture per la Gestione dei Dati
 
 # Indice
@@ -182,7 +184,7 @@ A seguire un resoconto analogo per la query *Disk-Intensive*:
 - Con 2 job concorrenti: 
     - $U_d = 43.401358968800696\%$
     - $X = 0.43853842920049774 \space req/s$
-- COn 5 job concorrenti:
+- Con 5 job concorrenti:
     - $U_d = 99.99\%$
     - $X = 0.7541532588537293 \space req/s$
 
