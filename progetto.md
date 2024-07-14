@@ -110,48 +110,35 @@ Per la query *Disk-Intensive*:
 
 Possiamo dunque ritenere il modello sufficientemente accurato e rappresentativo del sistema reale considerato finora. Il file di suddetto modello è consultabile accedendo al repository del progetto: [`punto1.jmva.jsimg`](https://github.com/tontonialberto/tagd-project/models).
 
-## Punto 3:
+## Punto 3
 
-In questo punto sono stati eseguiti nuovamente benchmark per le query disk-intensive e cpu-intensive (sempre per 5 minuti), con la differenza che nelle precedenti esecuzioni non venivano eseguite query concorrenti, mentre adesso è stato impostato a 2 il numero di query concorrenti (cambiando il valore *terminals* nel file di configurazione delle query).
-A priori ci si potrebbe aspettare che per la query cpu-intensive il throughput non può aumentare in quanto l' utilizzazione (della cpu), con un cliente in media nel sistema, è gia 98% circa, mentre per la query disk-intensive ci si può aspettare un aumento del throughput (e dell' utilizzazione).
-Dopo aver modificato il numero dei *customers* nel modelllo simulativo (usato nel [punto precedente](#punto-2)) e dopo aver simulato le prestazioni rispettivamente per le due query i risultati del benchmark e del modello sono stati messi a confronto:
+Impostando il parametro `terminals` pari a 2 nel file di configurazione di benchbase, sono stati eseguiti nuovamente, per 300 secondi ciascuno, i benchmark relativi alle due classi di workload, al fine di valutare le prestazioni con un numero di query concorrenti pari a 2.
 
-- **Q16 -> CPU-intensive -> Modello simulativo:**
-  - $X = 1.1865$
-  - $U_c =  0.9998$ -> satura
-  - $U_d = 0.0176$ -> simile ai punti precedenti
-  - $N = 1.9819$ (numero medio clienti sistema)
-  - $T_r = 1.773663$
+Le nostre considerazioni a priori ci fanno supporre che il throughput del carico CPU-Intensive non possa aumentare per via delle considerazioni fatte ai Punti 1 e 2. Invece dal carico Disk-Intensive ci si potrebbe aspettare un aumento del throughput in quanto l'attuale collo di bottiglia, il disco, non è ancora giunto a saturazione.
 
-- **Q16 -> CPU-intensive -> Benchmark:**
+A seguire le tabelle di comparazione tra il sistema reale e il modello simulativo precedentemente sviluppato, con un numero di customers pari a 2.
 
-   - file: [CPUint_summary_3.json](null), [pg_stat_statements_3_16_300s.csv](null)
-   - $X = 1.1295683704661714$ (goodput)
-   - $U_c =  0,99$ -> satura
-   - $U_d = 0.006344785536908484$
-   - $T_r = 1.773663$
-  
-- **Q7 -> DISK-intensive -> Modello simulativo:**
+Per la query *CPU-Intensive*:
+|                                   | Modello simulativo | Sistema reale |
+| --------------------------------- | ------------------ | ------------- |
+| Throughput del sistema (req/s)    | 1.1865             | 1.1295        |
+| Utilizzazione CPU (%)             | 99.98              | 99            |
+| Utilzzazione Disco  (%)           | 1.76               | 0.63          |
+| Tempo di risposta del sistema (s) | 1.7736             | 1.7705        |
 
-   - $X = 0.5152$
-   - $U_c = 0.4590$
-   - $U_d = 0.8385$
-   - $N = 1.3712$ (numero medio clienti sistema)
-   - $T_r = 2.6614906832298137$
+Per la query *Disk-Intensive*:
+|                                   | Modello simulativo | Sistema reale |
+| --------------------------------- | ------------------ | ------------- |
+| Throughput del sistema (req/s)    | 0.5152             | 0.6445        |
+| Utilizzazione CPU (%)             | 45.9               | 37            |
+| Utilzzazione Disco  (%)           | 83.85              | 62.1          |
+| Tempo di risposta del sistema (s) | 2.6615             | 3.1031        |
 
-- **Q7 -> DISK-intensive -> Benchmark:**
+Come atteso, le previsioni del modello confermano la saturazione preannunciata per il workload CPU-Intensive (il throughput aumenta in modo trascurabile rispetto al caso con un solo job) e l'apprezzabile incremento di throughput per il carico Disk-Intensive (con il collo di bottiglia che passa da un'utilizzazione del 64.8% con un solo job all'83.85% con due job).
 
-   - file: [DISKint_summary_3.json](null), [pg_stat_statements_3_7_300s.csv](null)
-   - $X = 0.6445184367217778$ (goodput)
-   - $U_c = 0.3704563070589434 $ 
-   - $U_d = 0.621447254760885$ -> ambiguo!
-  
-Gia da qui si può notare come le previsioni effettuate per quanto riguarda il carico cpu-intensive rispecchiano abbastanza le ipotesi fatte in precedenza, mentre per quanto riguarda il carico disk-intensive qualcosa non va, in particolare l'utilizzazione del disco è molto minore di quanto ci si poteva aspettare e da quanto ha predetto il modello simulativo... Dopo vari test e varie ricerche abbiamo notato che lo storage utilizzato nel computer fisico sul quale sono stati eseguiti i benchmark sfrutta la tecnologia *NMVe* la quale prevede (ove ritenuto necessario) la parallelizzazione delle letture/scritture permettendo di mantenere un'utilizzazione del disco relativamente piu bassa e con incrementi di troughput (non siamo sicuri che sia esattamente questo il problema, la nostra è un'ipotesi fatta andando per esclusione nei vari test).
-Comunque si può assumere di poter mantenere una credibilità nella correlazione tra il modello e la macchina reale visti i buoni risultati ottenuti precedentemente.
+Si può notare come le previsioni per il carico CPU-Intensive continuino ad essere accurate, mentre ciò non accade per il carico Disk-Intensive: con 2 job, infatti, l'utilizzazione reale del disco è oltre 20 punti percentuali inferiore a quanto predetto dal modello. Riteniamo che ciò sia ritenuto alla tecnologia NVMe utilizzata dall'unità disco del sistema reale, la quale è in grado di ottimizzare alcune operazioni di lettura/scrittura permettendo di mantenere un'utilizzazione del disco relativamente bassa. Tuttavia questa è un'ipotesi per esclusione a seguito di diversi esperimenti e ricerche.
 
-NOTA:
-(il calcolo dell'utilizzazione dei centri è stato effetuato utilizzando service demand e considerando il tempo di esecuzione totale del server postgres, mentre per quanto riguarda i tempi di risposta è stato preso in considerazione il tempo totale dei *costumers* che hanno sottomesso le query).
-
+Ad ogni modo, riteniamo che il modello simulativo sia da ritenersi affidabile per lo svolgimento dei punti successivi; cio' è principalmente motivato dall'accuratezza dei risultati ottenuti nelle sezioni precedenti.
 
 ## Punto 4
 
