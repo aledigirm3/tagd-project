@@ -26,15 +26,15 @@ Le attività svolte hanno previsto l'utilizzo degli strumenti Java Modeling Tool
 - Unità disco: SSD 1TB NVMe 1.4 PCIe con velocità di lettura fino a 7300MB/s
 - Sistema operativo: Windows 10
 
-Al fine di rendere più agevole lo sviluppo dei punti del progetto, sono stati realizzati degli script di utilità per determinare, ad esempio e nel modo più automatizzato possibile, i workload rispettivamente CPU-intensive e Disk-intensive. Tali script sono disponibili per la consultazione insieme ai file contenenti le statistiche dei benchmark al'indirizzo di seguito specificato.
+Al fine di rendere più agevole lo sviluppo dei punti del progetto, sono stati realizzati degli script di utilità per determinare, ad esempio e nel modo più automatizzato possibile, i workload rispettivamente CPU-Intensive e Disk-Intensive. Tali script sono disponibili per la consultazione insieme ai file contenenti le statistiche dei benchmark all'indirizzo di seguito specificato.
 
 **Link al repository github**: https://github.com/tontonialberto/tagd-project
 
 ## Punto 1 - Analisi delle prestazioni della macchina reale
 
-Dopo aver configurato il database Postgres e l'ambiente WSL come richiesto, è stato possibile lanciare l'esecuzione di un benchmark comprensivo di tutte le 22 query offerte da quest'ultimo. La configurazione utilizzata ha previsto l'esecuzione seriale per 2000 secondi (circa mezz'ora) concludendosi con una media di 43 query eseguite per ciascuna tipologia.
+Dopo aver configurato il database Postgres e l'ambiente WSL come richiesto, è stato possibile lanciare l'esecuzione del benchmark TPC-H comprensivo di tutte le 22 query offerte da quest'ultimo. La configurazione utilizzata ha previsto l'esecuzione seriale per 2000 secondi (circa mezz'ora) concludendosi con una media di 43 query eseguite per ciascuna tipologia.
 
-Tramite l'ausilio del notebook [`stats_reader.ipynb`](https://github.com/tontonialberto/tagd-project/scripts) è stato possibile analizzare le statistiche contenute nel file [`pg_stat_statements_1_2000s.csv`](https://github.com/tontonialberto/tagd-project/statistics) al fine di individuare i workload CPU-Intensive e Disk-Intensive. L'individuazione delle query di interesse ha richiesto i seguenti passaggi:
+Tramite l'ausilio del notebook [`stats_reader.ipynb`](https://github.com/tontonialberto/tagd-project/tree/main/scripts) è stato possibile analizzare le statistiche contenute nel file [`pg_stat_statements_1_2000s.csv`](https://github.com/tontonialberto/tagd-project/tree/main/statistics) al fine di individuare i workload CPU-Intensive e Disk-Intensive. L'individuazione delle query di interesse ha richiesto i seguenti passaggi:
 - calcolo del **tempo medio di esecuzione** per ogni query, escludendo gli outliers in una certa misura:
   $$
   \bar{T} = (T_e - t_M- t_m) / (C - 2)
@@ -85,7 +85,7 @@ Query *CPU-Intensive*:
 - $U_c = 99.8\%$
 - $U_d = 0.35\%$
 - $T_r = 0.8749997821802326s$
-- Files delle statistiche per consultazione: [`pg_stat_statements_1_16_300s.csv`](https://github.com/tontonialberto/tagd-project/statistics), [`CPUint_summary.json`](https://github.com/tontonialberto/tagd-project/statistics)
+- Files delle statistiche per consultazione: [`pg_stat_statements_1_16_300s.csv`](https://github.com/tontonialberto/tagd-project/tree/main/statistics), [`CPUint_summary.json`](https://github.com/tontonialberto/tagd-project/tree/main/statistics)
   
 Query *Disk-Intensive*:
 - $X = 0.4119602231342898 \space req/s$
@@ -94,7 +94,7 @@ Query *Disk-Intensive*:
 - $U_c = 37.1\%$
 - $U_d = 63.8\%$
 - $T_r = 2.4274188230887095s$
-- Files delle statistiche per consultazione: [`pg_stat_statements_1_7_300s.csv`](https://github.com/tontonialberto/tagd-project/statistics), [`DISKint_summary.json`](https://github.com/tontonialberto/tagd-project/statistics)
+- Files delle statistiche per consultazione: [`pg_stat_statements_1_7_300s.csv`](https://github.com/tontonialberto/tagd-project/tree/main/statistics), [`DISKint_summary.json`](https://github.com/tontonialberto/tagd-project/tree/main/statistics)
 
 E' scontato che la CPU e il disco siano il collo di bottiglia, rispettivamente, per la query CPU-Intensive e per quella Disk-Intensive. Tuttavia è possibile fare delle considerazioni più accurate: l'utilizzazione della CPU è quasi al massimo nella query CPU-Intensive, dunque il sistema è in saturazione. Cio' non si verifica per il carico Disk-Intensive, in quanto l'unità disco è utilizzata solo al 64%, un livello accettabile di utilizzazione delle risorse.
 
@@ -109,16 +109,16 @@ Per la query *CPU-Intensive*:
 | ------------------------------ | ------------------ | ------------- |
 | Throughput del sistema (req/s) | 1.1669             | 1.142         |
 | Utilizzazione CPU (%)          | 98.31              | 99.8          |
-| Utilzzazione Disco  (%)        | 1.72               | 0.35          |
+| Utilizzazione Disco  (%)        | 1.72               | 0.35          |
 
 Per la query *Disk-Intensive*:
 |                                | Modello simulativo | Sistema reale |
 | ------------------------------ | ------------------ | ------------- |
 | Throughput del sistema (req/s) | 0.3956             | 0.4119        |
 | Utilizzazione CPU (%)          | 35.7               | 37.1          |
-| Utilzzazione Disco  (%)        | 64.8               | 63.8          |
+| Utilizzazione Disco  (%)        | 64.8               | 63.8          |
 
-Possiamo dunque ritenere il modello sufficientemente accurato e rappresentativo del sistema reale considerato finora. Il file di suddetto modello è consultabile accedendo al repository del progetto: [`punto1.jmva.jsimg`](https://github.com/tontonialberto/tagd-project/models).
+Possiamo dunque ritenere il modello sufficientemente accurato e rappresentativo del sistema reale considerato finora. Il file di suddetto modello è consultabile accedendo al repository del progetto: [`punto1.jmva.jsimg`](https://github.com/tontonialberto/tagd-project/tree/main/models).
 
 ## Punto 3 - Predizione delle prestazioni tramite il modello simulativo
 
@@ -133,7 +133,7 @@ Per la query *CPU-Intensive*:
 | --------------------------------- | ------------------ | ------------- |
 | Throughput del sistema (req/s)    | 1.1865             | 1.1295        |
 | Utilizzazione CPU (%)             | 99.98              | 99            |
-| Utilzzazione Disco  (%)           | 1.76               | 0.63          |
+| Utilizzazione Disco  (%)           | 1.76               | 0.63          |
 | Tempo di risposta del sistema (s) | 1.7736             | 1.7705        |
 
 Per la query *Disk-Intensive*:
@@ -141,7 +141,7 @@ Per la query *Disk-Intensive*:
 | --------------------------------- | ------------------ | ------------- |
 | Throughput del sistema (req/s)    | 0.5152             | 0.6445        |
 | Utilizzazione CPU (%)             | 45.9               | 37            |
-| Utilzzazione Disco  (%)           | 83.85              | 62.1          |
+| Utilizzazione Disco  (%)           | 83.85              | 62.1          |
 | Tempo di risposta del sistema (s) | 2.6615             | 3.1031        |
 
 Come atteso, le previsioni del modello confermano la saturazione preannunciata per il workload CPU-Intensive (il throughput aumenta in modo trascurabile rispetto al caso con un solo job) e l'apprezzabile incremento di throughput per il carico Disk-Intensive (con il collo di bottiglia che passa da un'utilizzazione del 64.8% con un solo job all'83.85% con due job).
@@ -168,7 +168,7 @@ A seguire gli andamenti, rispetto al collo di bottiglia (Disco), nel caso della 
 ![](./images/dimage_3.png)
 ![](./images/dimage_4.png) 
 
-Il disco arriva a quasi saturazione con 3 *customers* (con utilizzazione del 97% circa) e un throughput che fino a 2 *customers* sale rapidamente fino a $X=0.56 \space req/s$ circa, per poi salire progressivamente in modo più lento, fino a raggiungere la saturazione con customers.
+Il disco arriva a quasi saturazione con 3 *customers* (con utilizzazione del 97% circa) e un throughput che fino a 2 *customers* sale rapidamente fino a $X=0.56 \space req/s$ circa, per poi salire progressivamente in modo più lento, fino a raggiungere la saturazione con 4-5 customers.
 
 A verifica della bontà delle previsioni, vengono eseguiti ulteriori benchmark (di 300 secondi ciascuno) sul sistema reale. 
 
@@ -189,16 +189,16 @@ A seguire un resoconto analogo per la query *Disk-Intensive*:
     - $X = 0.7541532588537293 \space req/s$
 
 I files delle statistiche sono consultabili ai seguenti link:
-- Benchmark CPU-Intensive con 2 job: [`pg_stat_statements_4_16_2_300s.csv`](https://github.com/tontonialberto/tagd-project/statistics), [`CPUint_summary_4_2.json`](https://github.com/tontonialberto/tagd-project/statistics)
-- Benchmark CPU-Intensive con 5 job: [`pg_stat_statements_4_16_5_300s.csv`](https://github.com/tontonialberto/tagd-project/statistics), [`CPUint_summary_4_5.json`](https://github.com/tontonialberto/tagd-project/statistics)
-- Benchmark Disk-Intensive con 2 job: [`pg_stat_statements_4_7_2_300s.csv`](https://github.com/tontonialberto/tagd-project/statistics), [`DISKint_summary_4_2.json`](https://github.com/tontonialberto/tagd-project/statistics)
-- Benchmark Disk-Intensive con 5 job: [`pg_stat_statements_4_7_5_300s.csv`](https://github.com/tontonialberto/tagd-project/statistics),[`DISKint_summary_4_5.json`](https://github.com/tontonialberto/tagd-project/statistics)
+- Benchmark CPU-Intensive con 2 job: [`pg_stat_statements_4_16_2_300s.csv`](https://github.com/tontonialberto/tagd-project/tree/main/statistics), [`CPUint_summary_4_2.json`](https://github.com/tontonialberto/tagd-project/tree/main/statistics)
+- Benchmark CPU-Intensive con 5 job: [`pg_stat_statements_4_16_5_300s.csv`](https://github.com/tontonialberto/tagd-project/tree/main/statistics), [`CPUint_summary_4_5.json`](https://github.com/tontonialberto/tagd-project/tree/main/statistics)
+- Benchmark Disk-Intensive con 2 job: [`pg_stat_statements_4_7_2_300s.csv`](https://github.com/tontonialberto/tagd-project/tree/main/statistics), [`DISKint_summary_4_2.json`](https://github.com/tontonialberto/tagd-project/tree/main/statistics)
+- Benchmark Disk-Intensive con 5 job: [`pg_stat_statements_4_7_5_300s.csv`](https://github.com/tontonialberto/tagd-project/tree/main/statistics),[`DISKint_summary_4_5.json`](https://github.com/tontonialberto/tagd-project/tree/main/statistics)
 
 Possiamo dunque concludere confermando l'accuratezza del modello nei confronti del carico CPU-Intensive, mentre per il numero di job considerati esso si discosta in maniera non trascurabile dai risultati ottenuti in via sperimentale per il carico Disk-Intensive, sebbene tale discostamento sembri diminuire nel caso di 5 job concorrenti, soprattutto in termini di utilizzazione (vi è saturazione sia nel caso predetto sia nel caso reale).
 
 ### Punto 4a - Soddisfacimento di specifiche progettuali
 
-In questa sezione viene utilizzato il modello simulativo precedentemente sviluppato per far fronte ad ulteriori requisiti porgettuali: garantire un tempo di risposta medio inferiore a 30s, prevedere un numero di query concorrenti non superiore a 20 e nel contempo mantenere l'utilizzazione dei centri nel range 60-70%, avendo cura di implementare la ridondanza dei dischi tramite RAID 5.
+In questa sezione viene utilizzato il modello simulativo precedentemente sviluppato per far fronte ad ulteriori requisiti progettuali: garantire un tempo di risposta medio inferiore a 30s, prevedere un numero di query concorrenti non superiore a 20 e nel contempo mantenere l'utilizzazione dei centri nel range 60-70%, avendo cura di implementare la ridondanza dei dischi tramite RAID 5.
 
 Si è scelto di modellare il sottosistema di storage come un RAID 0 in quanto equivalente al RAID 5 a livello di variabili operazionali, avendo cura tuttavia di aggiungere - in produzione - un ulteriore disco agli N utilizzati in fase di modellazione al fine di ottenere prestazioni analoghe.
 
@@ -230,7 +230,7 @@ Per completezza si riportano anche le statistiche per il carico Disk-Intensive c
 - $X = 15.76 \space req/s$
 - $T_r = 1.27s$
   
-Il file del modello simulativo utilizzato è consultabile al seguente link: [`punto4.jmva.jsimg`](https://github.com/tontonialberto/tagd-project/models).
+Il file del modello simulativo utilizzato è consultabile al seguente link: [`punto4.jmva.jsimg`](https://github.com/tontonialberto/tagd-project/tree/main/models).
 
 ## Punto 5 - Dimensionamento di un sistema modellato tramite reti aperte
 
@@ -254,7 +254,7 @@ Il modello del sistema con 12 CPU e 10 dischi è stato valutato con una classe d
 | Query C    | 1.64s           | 5.38s          |
 | Query D, E | 1.55s           | 4.87s          |
 
-Da tale tabella comparativa possiamo effettuare almeno le seguenti osservazioni:
+Da tale tabella comparativa possiamo effettuare almeno le seguenti considerazioni:
 - La query di nostro interesse è la Query C. Più precisamente è la più lenta a sistema scarico, in quanto caratterizzata da un tempo di risposta di 1.64s;
 - Il sistema "base", seppur sovrautilizzato ma non saturo, non è in grado di soddisfare i vincoli progettuali in termini di tempo di risposta.
 
@@ -269,4 +269,4 @@ Nella pratica, la configurazione individuata fa uso, come nel caso precedente, d
 
 Possiamo dunque concludere ammettendo che, in effetti, il disco risulta leggermente sottoutilizzato (57% contro un range richiesto del 60-70%). Tuttavia si è scelta la via del compromesso tra utilizzazione e tempi di risposta, ritenendo che in alcune casistiche (ad esempio, per sistemi informatici critici) il soddisfacimento di questi ultimi sia da ritenersi più importante.
 
-Il file del modello simulativo realizzato è consultabile al seguente link: [`punto5_RAID_soluzione.jmva.jsimg`](https://github.com/tontonialberto/tagd-project/models).
+Il file del modello simulativo realizzato è consultabile al seguente link: [`punto5_RAID_soluzione.jmva.jsimg`](https://github.com/tontonialberto/tagd-project/tree/main/models).
