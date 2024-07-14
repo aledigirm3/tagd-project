@@ -22,6 +22,7 @@ Aggiungere i Performance indices:
 !!! Verificare che anche applicando il raid 5 accade la stessa cosa.
 
 Idea: Partire con un numero molto alto di CPU e dischi e poi ridurre gradualmente. Una volta rispettato il vincolo di utilizzazione, pensiamo al vincolo sui tempi di risposta.
+Idea: Partire con un numero molto alto di CPU e dischi e poi ridurre gradualmente (sicuraente non reggerà il carico con 1 cpu e 1 disco).
 
 Con 100 cpu e 100 dischi (non raid):
 Util. cpu: 0.0918
