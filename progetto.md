@@ -157,7 +157,7 @@ Gia da qui si può notare come le previsioni effettuate per quanto riguarda il c
 Comunque si può assumere di poter mantenere una credibilità nella correlazione tra il modello e la macchina reale visti i buoni risultati ottenuti precedentemente.
 
 NOTA:
-(il calcolo dell' utilizzazione dei centri è stato effetuato utilizzanddo service demand che consideravano il tempo di esecuzione totale del server postgres, mentre per quanto riguarda i tempi utilizzati nel tempo di risposta è stato preso in considerazione il tempo totale dei *costumers* che hanno sottomesso le query).
+(il calcolo dell'utilizzazione dei centri è stato effetuato utilizzando service demand e considerando il tempo di esecuzione totale del server postgres, mentre per quanto riguarda i tempi di risposta è stato preso in considerazione il tempo totale dei *costumers* che hanno sottomesso le query).
 
 
 ## Punto 4
