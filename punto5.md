@@ -18,7 +18,7 @@ Aggiungere i Performance indices:
 
 !!! Ricorda di modificare le prob. del router.
 
-Idea: Partire con un numero molto alto di CPU e dischi e poi ridurre gradualmente.
+Idea: Partire con un numero molto alto di CPU e dischi e poi ridurre gradualmente (sicuraente non reggerà il carico con 1 cpu e 1 disco).
 
 Con 100 cpu e 100 dischi (non raid):
 Util. cpu: 0.0392

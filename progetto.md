@@ -44,7 +44,7 @@ Eseguendo ulteriori analisi è stato possibile trovare le due query:
 - **Q7 -> DISK-intensive:**
   
   - $D_c = 0.8933116159835509$
-  - $D_c = 1.630294817162791$
+  - $D_d = 1.630294817162791$
   
 Dopo aver individuato le query di nostro interesse sono stati creati 2 file, rispettivamente per la query disk-intensive e cpu-intensive, con lo scopo di poter eseguire queste query singolarmente al fine di andare ad analizzare le statistiche delle singole query, riducendo il possibile rumore della macchina (per poi analizzarle in un modello simulativo).
 
@@ -87,7 +87,7 @@ Dopo aver definito opportunamente tali grandezze è ora di andare a vedere le pr
   - File: [pg_stat_statements_1_7_300s.csv](null), [ DISKint_summary.json](null)
   - $X = 0.4119602231342898$ (goodput)
   - $D_c = 0.900671$
-  - $D_c = 1.54916$
+  - $D_d = 1.54916$
   - $U_c = 0.3710406261305839$
   - $U_d = 0.6381922992707164$
   - $T_r = 2.4274188230887095$
