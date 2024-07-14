@@ -1,5 +1,15 @@
 # Progetto di Capacity Planning - Tecnologie e Architetture per la Gestione dei Dati
 
+# Indice
+  - [Introduzione](#introduzione)
+  - [Punto 1 - Analisi delle prestazioni della macchina reale](#punto-1---analisi-delle-prestazioni-della-macchina-reale)
+  - [Punto 2 - Confronto delle prestazioni rispetto a un modello simulativo](#punto-2---confronto-delle-prestazioni-rispetto-a-un-modello-simulativo)
+  - [Punto 3 - Predizione delle prestazioni tramite il modello simulativo](#punto-3---predizione-delle-prestazioni-tramite-il-modello-simulativo)
+  - [Punto 4 - Analisi what-if e dimensionamento di un sistema modellato tramite reti chiuse](#punto-4---analisi-what-if-e-dimensionamento-di-un-sistema-modellato-tramite-reti-chiuse)
+    - [Punto 4a - Soddisfacimento di specifiche progettuali](#punto-4a---soddisfacimento-di-specifiche-progettuali)
+  - [Punto 5 - Dimensionamento di un sistema modellato tramite reti aperte](#punto-5---dimensionamento-di-un-sistema-modellato-tramite-reti-aperte)
+
+
 ## Introduzione
 
 In questo documento viene presentato il lavoro svolto in merito al progetto di capacity planning per il corso di Tecnologie e Architetture per la Gestione dei Dati, anno accademico 2023-2024.
@@ -18,7 +28,7 @@ Al fine di rendere più agevole lo sviluppo dei punti del progetto, sono stati r
 
 **Link al repository github**: https://github.com/tontonialberto/tagd-project
 
-## Punto 0
+## Punto 1 - Analisi delle prestazioni della macchina reale
 
 Dopo aver configurato il database Postgres e l'ambiente WSL come richiesto, è stato possibile lanciare l'esecuzione di un benchmark comprensivo di tutte le 22 query offerte da quest'ultimo. La configurazione utilizzata ha previsto l'esecuzione seriale per 2000 secondi (circa mezz'ora) concludendosi con una media di 43 query eseguite per ciascuna tipologia.
 
@@ -56,11 +66,9 @@ Detto ciò, vengono riportate le due query così individuate:
     - $D_c = 0.8933116159835509s$
     - $D_d = 1.630294817162791s$
 
-## Punto 1
-
 A questo punto, è stato eseguito un benchmark separato per ciascuna delle due query individuate. E' stato considerato un tempo di esecuzione di 300 secondi per ciascun benchmark e le statistiche sul throughput sono state estratte dal file JSON "summary" prodotto da Benchbase, mentre le altre statistiche sono state estratte dalla vista `pg_stat_statements`.
 
-> Nota: è stato considerato il goodput, anzichè il throughput, di suddetto file "summary".
+!!! E' stato considerato il goodput, anzichè il throughput, di suddetto file 'summary'.
 
 A partire da service demand $D$ e throughput $X$ così ottenuti, e sapendo che il numero medio di job $N$ nel sistema è pari a 1, è stato possibile derivare l'utilizzazione $U$ e il tempo di risposta $T_r$ tramite le formule seguenti:
 - Legge del service demand: $U = X \cdot D$
@@ -88,7 +96,7 @@ Query *Disk-Intensive*:
 
 E' scontato che la CPU e il disco siano il collo di bottiglia, rispettivamente, per la query CPU-Intensive e per quella Disk-Intensive. Tuttavia è possibile fare delle considerazioni più accurate: l'utilizzazione della CPU è quasi al massimo nella query CPU-Intensive, dunque il sistema è in saturazione. Cio' non si verifica per il carico Disk-Intensive, in quanto l'unità disco è utilizzata solo al 64%, un livello accettabile di utilizzazione delle risorse.
 
-## Punto 2
+## Punto 2 - Confronto delle prestazioni rispetto a un modello simulativo
 
 Tramite JMT è stato realizzato un modello simulativo concernente le due classi di workload individuate. Per la modellazione di suddetta rete chiusa sono stati utilizzati i service demand presentati al Punto 1.
 
@@ -110,7 +118,7 @@ Per la query *Disk-Intensive*:
 
 Possiamo dunque ritenere il modello sufficientemente accurato e rappresentativo del sistema reale considerato finora. Il file di suddetto modello è consultabile accedendo al repository del progetto: [`punto1.jmva.jsimg`](https://github.com/tontonialberto/tagd-project/models).
 
-## Punto 3
+## Punto 3 - Predizione delle prestazioni tramite il modello simulativo
 
 Impostando il parametro `terminals` pari a 2 nel file di configurazione di benchbase, sono stati eseguiti nuovamente, per 300 secondi ciascuno, i benchmark relativi alle due classi di workload, al fine di valutare le prestazioni con un numero di query concorrenti pari a 2.
 
@@ -140,23 +148,23 @@ Si può notare come le previsioni per il carico CPU-Intensive continuino ad esse
 
 Ad ogni modo, riteniamo che il modello simulativo sia da ritenersi affidabile per lo svolgimento dei punti successivi; cio' è principalmente motivato dall'accuratezza dei risultati ottenuti nelle sezioni precedenti.
 
-## Punto 4
+## Punto 4 - Analisi what-if e dimensionamento di un sistema modellato tramite reti chiuse
 
 Viene ora utilizzato il modello simulativo per effettuare previsioni sulle prestazioni della macchina reale qualora si utilizzino 2 CPU e al variare del numero di query concorenti da 1 a 5.
 
 A seguire una serie di schermate dell'analisi *What-If* condotta tramite JMT per la query *CPU-Intensive*. Vengono mostrati nell'ordine, unicamente per il collo di bottiglia (CPU), gli andamenti del numero medio di clienti nel centro, del throughput e dell'utilizzazione.
 
-![](./image_1.png)
-![](./image_3.png)
-![](./image_4.png) 
+![](./images/image_1.png)
+![](./images/image_3.png)
+![](./images/image_4.png) 
 
 Come atteso, superato un numero di *customers* pari a 2, la CPU va in saturazione: con 3 *customers* l'utilizzazione è circa pari al 100%. Il throughput aumenta rapidamente fino a 2 *customers* con un valore pari a $X = 2.3 \space req/s$, per poi salire di molto poco (di 0.1 circa) fino a completa saturazione all'ulteriore aumentare di job/customers nel sistema.
 
 A seguire gli andamenti, rispetto al collo di bottiglia (Disco), nel caso della query *Disk-Intensive*.
 
-![](./dimage_1.png)
-![](./dimage_3.png)
-![](./dimage_4.png) 
+![](./images/dimage_1.png)
+![](./images/dimage_3.png)
+![](./images/dimage_4.png) 
 
 Il disco arriva a quasi saturazione con 3 *customers* (con utilizzazione del 97% circa) e un throughput che fino a 2 *customers* sale rapidamente fino a $X=0.56 \space req/s$ circa, per poi salire progressivamente in modo più lento, fino a raggiungere la saturazione con customers.
 
@@ -186,7 +194,7 @@ I files delle statistiche sono consultabili ai seguenti link:
 
 Possiamo dunque concludere confermando l'accuratezza del modello nei confronti del carico CPU-Intensive, mentre per il numero di job considerati esso si discosta in maniera non trascurabile dai risultati ottenuti in via sperimentale per il carico Disk-Intensive, sebbene tale discostamento sembri diminuire nel caso di 5 job concorrenti, soprattutto in termini di utilizzazione (vi è saturazione sia nel caso predetto sia nel caso reale).
 
-### Punto 4a 
+### Punto 4a - Soddisfacimento di specifiche progettuali
 
 In questa sezione viene utilizzato il modello simulativo precedentemente sviluppato per far fronte ad ulteriori requisiti porgettuali: garantire un tempo di risposta medio inferiore a 30s, prevedere un numero di query concorrenti non superiore a 20 e nel contempo mantenere l'utilizzazione dei centri nel range 60-70%, avendo cura di implementare la ridondanza dei dischi tramite RAID 5.
 
@@ -222,37 +230,41 @@ Per completezza si riportano anche le statistiche per il carico Disk-Intensive c
   
 Il file del modello simulativo utilizzato è consultabile al seguente link: [`punto4.jmva.jsimg`](https://github.com/tontonialberto/tagd-project/models).
 
+## Punto 5 - Dimensionamento di un sistema modellato tramite reti aperte
 
-## Punto 5
+Viene ora presentato l'approccio da noi adottato per il dimensionamento di un sistema caratterizzato da differenti tipologie di workload, specificati mediante tassi di arrivo.
 
--------------------------------------------PUNTO5--------------------------------------------
+Come da specifica, per le query A,B,C,D,E sono stati utilizzati i service demand  - equivalenti ai service time poichè si ipotizza una singola visita per centro - ottenuti dal primo benchmark effettuato al Punto 1. Da tale benchmark è inoltre necessario estrapolare la query con il rapporto tra i service demand di CPU e disco più bilanciato possibile, al fine di caratterizzare la query C. La query così individuata è parametrizzata dai seguenti service demand:
+- $D_c = 1.012455s$
+- $D_d = 1.038430s$
 
-utilizzati i service time del Punto 0.
+Per quanto concerne il requisito RAID 5, si è deciso di trattarlo analogamente a quanto già svolto nel Punto 4.
 
-query bilanciata con D_CPU/D_DISCK = 0.974986 (D_CPU=1.012455; D_DISK=1.038430)
+Con lo scopo di far fronte sia ai requisiti di utilizzazione sia ai tempi di risposta rispetto alla query più lunga a sistema scarico, è stato effettuato un dimensionamento preliminare usando strumenti di scalabilità *orizzontale* per ottenere un sistema "base", da utilizzare per raggiungere le specifiche progettuali attraverso tecniche di scalabilità *verticale*.
 
-il sistema base è stato modellato con 12 cpu e 10 dischi raid, mantenendo un'utilizzazione pari al 76% per la cpu e 88% per il disco al fine di avere più "spazio" nel modellamento di tali risorse; in effetti l'idea è stata quella di aumentare la "frequenza di clock" delle cpu e aumentare la "velocità di I/O" del disco tramite la variazione dei service demand.
+Il dimensionamento del sistema "base" ha previsto l'utilizzo di 12 CPU e 10 dischi RAID 0 per ottenere un'utilizzazione del 76% per la CPU e dell'88% per il disco, al fine di avere più "spazio di manovra" per garantire il raggiungimento di entrambi i requisiti sopracitati. Il principale strumento di scalabilità verticale utilizzato in quest'ambito è la scelta di aumentare non solo il numero di CPU e dischi, ma anche la frequenza di clock delle CPU e la velocità di I/O dei dischi: in termini del nostro modello ciò si traduce nella riduzione dei service demand dei centri.
 
-lo stesso modello è stato testato come sistema scarico, ossia una query alla volta, ed ha portato i seguenti risultati riguardo i tempi di risposta:
+Il modello del sistema con 12 CPU e 10 dischi è stato valutato con una classe di workload alla volta. E' stata poi effettuata una valutazione "a pieno carico" dello stesso sistema (ossia con più classi di workload in contemporanea). Sono stati ottenuti i tempi di risposta a sistema scarico e a pieno carico, riassunti nella tabella seguente:
 
-          .query A/B -> tempo risposta = 0.8436 circa   (CPU-int)
-          .query C -> tempo risposta = 1.64         (BALANCED) -> da non superare
-          .query D/E -> tempo risposta =  1.55     (DISK-int) 
+|            | Sistema scarico | A pieno carico |
+| ---------- | --------------- | -------------- |
+| Query A, B | 0.85s           | 4.53s          |
+| Query C    | 1.64s           | 5.38s          |
+| Query D, E | 1.55s           | 4.87s          |
 
-effettivamente i tempi di risposta con tutte le query circolanti nel sistema erano eccessivamente piu alti di quelli a sistema scarico (con un massimo di 5.3820s).
+Da tale tabella comparativa possiamo effettuare almeno le seguenti osservazioni:
+- La query di nostro interesse è la Query C. Più precisamente è la più lenta a sistema scarico, in quanto caratterizzata da un tempo di risposta di 1.64s;
+- Il sistema "base", seppur sovrautilizzato ma non saturo, non è in grado di soddisfare i vincoli progettuali in termini di tempo di risposta.
 
-Dopo vari tentativi siamo riusciti a combinare opportunamente i service demand con decrementi mirati in percentuale.
+Dopo numerosi tentativi si è riusciti ad individuare una configurazione in linea con le specifiche, *a patto di avere la possibilità di modificare i service demand di CPU e disco* - che nel mondo reale si traduce con l'esistenza di processori e dischi sufficientemente performanti, condizione spesso verificata. Il dimensionamento "base" di cui sopra è stato utile proprio a consentire un aggiustamento dei service demand, nel peggiore dei casi, di poche decine di punti percentuali (e non di centinaia o migliaia), in modo da configurarsi all'interno di uno scenario realistico.
 
-Ecco qui riportate le specifiche di tale soluzione:
--  CPU 
-    - 12 cpu utilizzate, con "frequenza di clock" aumentata del 20% (moltiplicato service demand per 0.8)
-    - utilizzazione: 61% circa
+Nella pratica, la configurazione individuata fa uso, come nel caso precedente, di 12 CPU e 10 dischi organizzati in un array RAID 0. In più si è ritenuto necessario aumentare la frequenza di clock delle CPU del 20% e la velocità di I/O dei dischi del 35%. Una simulazione JMT consente di verificare la conformità di tale soluzione. A seguire riportiamo le statistiche così ottenute:
+- $U_c = 61.3\%$
+- $U_d = 57.5\%$
+- Tempo di risposta query A, B: 1.14s
+- Tempo di risposta query C: 1.63s
+- Tempo di risposta query D, E: 1.4s
 
-- DISCO (raid 0)
-    - 10 dischi utilizzati, con "velocità di operazioni I/O" aumentate del 35% (moltiplicato service demand per 0.65)
-    - utilizzazione: 57.5% circa  
+Possiamo dunque concludere ammettendo che, in effetti, il disco risulta leggermente sottoutilizzato (57% contro un range richiesto del 60-70%). Tuttavia si è scelta la via del compromesso tra utilizzazione e tempi di risposta, ritenendo che in alcune casistiche (ad esempio, per sistemi informatici critici) il soddisfacimento di questi ultimi sia da ritenersi più importante.
 
-Possiamo concludere dicendo che i requisiti temporali e di utilizzazione della cpu sono stati rispettati anche se l' utilizzazione del disco non rispetta tali specifiche di un 2.5% circa, in effetti questa soluzione è stata fondamentale per garantire un trade-off tra utilizzazione e tempi di risposta dato che la query bilanciata ha creato non pochi problemi; si è deciso di dare priorità al rispetto delle specifiche per quanto riguarda i tempi di risposta piuttosto che per l'utilizzazione (l'utente è soddisfatto, il proprietario dell'hardware un po' meno ;), resta il fatto che il discostamento tra utilizzazione del disco nei requisiti e quello nel modello creato può essere considerato trascurabile.
-
-
-
+Il file del modello simulativo realizzato è consultabile al seguente link: [`punto5_RAID_soluzione.jmva.jsimg`](https://github.com/tontonialberto/tagd-project/models).
