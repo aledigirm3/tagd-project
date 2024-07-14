@@ -5,13 +5,16 @@
 
 Il seguente progetto è finalizzato a modellare un modello simulativo (o analitico) di un dbms sulla base delle prestazioni riscontrate nell'utilizzo del benchmark tpch, fatto giare su un container docker contenente un server di postgres (cercando di rendere il meno rumorosi possibili i dati durante le esecuzioni).
 In particolare, il benchmark tpch, da la possibilità di creare un carico di lavoro con cui popolare il DB postgres al fine di poter sottomettere fino a 22 query di varia natura, le quali andranno a utilizzare disco e cpu (ognuna a modo loro)
-Dopo aver impostato tutte le configurazioni necessarie richeste dalle specifiche tecniche del progetto sono stati svolti i punti 1, 2, 3, 4 e 5, descritti in modo approfondito nella seguente relazione.
+Dopo aver creato e caricato i dati necessari all'esecuzione delle query (con fattore di scala pari a 2, quindi, in questo caso, con 4 GB di dati) e configurato il server postgres secondo le specifiche tecniche del progetto sono stati svolti i punti 0, 1, 2, 3, 4 e 5, descritti in modo approfondito nella seguente relazione.
+
+
+--> **[Link al repo github](null)** <--
  
 
 
 ## Punto 0:
 
-La fase preliminare (da cui "punto 0"),dopo limitato il numero di processori a disposizione per l'ambiente virtuale (tramite il file .wslconfig), è stata quella di effettuare un benchmark con tutte e 22 le query messe a disposizione dal benchmark, configurate per essere eseguite serialmente e ciclicamente al fine di fare un'analisi del modello reale con lo scopo di apprendere più informazioni riguardo le prestazioni del sistema.
+La fase preliminare (da cui "punto 0"), dopo aver limitato il numero di processori a disposizione per l'ambiente virtuale a 1 (tramite il file .wslconfig), è stata quella di eseguire un benchmark con tutte e 22 le query messe a disposizione dal benchmark, configurate per essere eseguite serialmente e ciclicamente al fine di fare un'analisi del modello reale con lo scopo di apprendere più informazioni riguardo le prestazioni del sistema.
 Il benchmark è stato eseguito per 2000 secondi (poco piu di mezz'ora) ed è riuscito a soddisfare una media di 43 query l'una.
 Grazie al file [pg_stat_statements_1_2000s.csv](null) siamo riusciti a estrarre i dati di nostro interesse al fine di individiare la query disk-intensive e quella cpu-intensive; più precisamente sono stati eseguiti i seguenti passi:
 
@@ -45,8 +48,7 @@ Eseguendo ulteriori analisi è stato possibile trovare le due query:
 Dopo aver individuato le query di nostro interesse sono stati creati 2 file, rispettivamente per la query disk-intensive e cpu-intensive, con lo scopo di poter eseguire queste query singolarmente al fine di andare ad analizzare le statistiche delle singole query, riducendo il possibile rumore della macchina (per poi analizzarle in un modello simulativo).
 
 NOTA:
-
-(d'ora in poi le formule e le nomenclature utilizzate in precedenza verranno prese per buone, pertanto potrebbe essere omessa la formula estesa)
+(d'ora in poi le formule e le nomenclature utilizzate in precedenza verranno prese per buone, pertanto potrebbe essere omessa la formula estesa).
 
 ## Punto 1
 
@@ -97,6 +99,8 @@ A questo punto, tramite JMT (java modelling tool), è stato creato un modello si
 
 Ecco i risultati del **modello simulativo**:
 
+File: [punto1.jmva.jsimg](null)
+
 - **Q16 -> CPU-intensive:**
   
   - $X = 1.1669$
@@ -114,71 +118,70 @@ I risultati prodotti sono stati sorprendentemente soddisfacenti, con differenze 
 
 ## Punto 3:
 
+In questo punto sono stati eseguiti nuovamente benchmark per le query disk-intensive e cpu-intensive (sempre per 5 minuti), con la differenza che nelle precedenti esecuzioni non venivano eseguite query concorrenti, mentre adesso è stato impostato a 2 il numero di query concorrenti (cambiando il valore "terminal" nel file di configurazione delle query).
+A priori ci si potrebbe aspettare che per la query cpu-intensive il throughput non può aumentare in quanto l' utilizzazione (della cpu), con un cliente in media nel sistema, è gia 98% circa, mentre per la query disk-intensive ci si può aspettare un aumento del throughput (e dell' utilizzazione).
+Dopo aver modificato il numero dei *customers* nel modelllo simulativo e dopo aver simulato le prestazioni rispettivamente per le due query i risultati del benchmark e del modello sono stati messi a confronto:
 
---- CPU INTENSIVE ---
-Ci aspettiamo che per la query CPU intensive praticamente non ci sia aumento del throughput in quanto l'util.CPU è già al 98.3%.
+- **Q16 -> CPU-intensive -> Modello simulativo:**
+  - $X = 1.1865$
+  - $U_c =  0.9998$ -> satura
+  - $U_d = 0.0176$ -> simile ai punti precedenti
+  - $N = 1.9819$ (numero medio clienti sistema)
+  - $T_r = 1.773663$
 
-Modello:
-Throughput: 1.1865
-Util. CPU: 0.9998 (saturo)
-Util. Disco: 0.0176 (quasi uguale a prima)
-Numero medio di clienti CPU: 1.9819
-Tempo di risposta (N_0 / X_0): 2 / 1.1865 = 1.6703750526759376
+- **Q16 -> CPU-intensive -> Benchmark:**
 
-Benchmark:
-file: CPUint_summary_3.json, pg_stat_statements_3_16_300s.csv
-Throughput (goodput): 1.1295683704661714 (potrebbe essere thrashing)
-Util. CPU: 100% (saturo)
-Util. Disco: 0.006344785536908484
-Tempo di risposta:  1.773663
+   - file: [CPUint_summary_3.json](null), [pg_stat_statements_3_16_300s.csv](null)
+   - $X = 1.1295683704661714$ (goodput)
+   - $U_c =  0,99$ -> satura
+   - $U_d = 0.006344785536908484$
+   - $T_r = 1.773663$
+  
+- **Q7 -> DISK-intensive -> Modello simulativo:**
 
---- DISK INTENSIVE ---
-Ci aspettiamo un aumento del throughput. Il disco andrà in saturazione? Secondo noi sì.
+   - $X = 0.5152$
+   - $U_c = 0.4590$
+   - $U_d = 0.8385$
+   - $N = 1.3712$ (numero medio clienti sistema)
+   - $T_r = 2.6614906832298137$
 
-Modello: 
-Throughput: 0.5152
-Util. CPU: 0.4590
-Util. Disco: 0.8385
-Numero medio di clienti Disco: 1.3712
-Tempo di risposta: 1.3712 / 0.5152 = 2.6614906832298137
+- **Q7 -> DISK-intensive -> Benchmark:**
 
-Benchmark:
-file: DISKint_summary_3.json, pg_stat_statements_3_7_300s.csv
-Throughput (goodput): 0.6445184367217778
-Util. CPU:
-Util. Disco:
-Tempo di risposta:
+   - file: [DISKint_summary_3.json](null), [pg_stat_statements_3_7_300s.csv](null)
+   - $X = 0.6445184367217778$ (goodput)
+   - $U_c = 0.3704563070589434 $ 
+   - $U_d = 0.621447254760885$ -> ambiguo!
+  
+Gia da qui si può notare come le previsioni effettuate per quanto riguarda il carico cpu-intensive rispecchiano abbastanza le ipotesi fatte in precedenza, mentre per quanto riguarda il carico disk-intensive qualcosa non va, in particolare l'utilizzazione del disco è molto minore di quanto ci si poteva aspettare e da quanto ha predetto il modello simulativo... Dopo vari test e varie ricerche abbiamo notato che lo storage utilizzato nel computer fisico sul quale sono stati eseguiti i benchmark sfrutta la tecnologia *NMVe* la quale prevede (ove ritenuto necessario) la parallelizzazione delle letture/scritture permettendo di mantenere un'utilizzazione del disco relativamente piu bassa e con incrementi di troughput (non siamo sicuri che sia esattamente questo il problema, la nostra è un'ipotesi fatta andando per esclusione nei vari test).
+Comunque si può assumere di poter mantenere una credibilità nella correlazione tra il modello e la macchina reale visti i buoni risultati ottenuti precedentemente.
 
-DA RICONTROLLARE
+NOTA:
+(il calcolo dell' utilizzazione dei centri è stato effetuato utilizzanddo service demand che consideravano il tempo di esecuzione totale del server postgres, mentre per quanto riguarda i tempi utilizzati nel tempo di risposta è stato preso in considerazione il tempo totale dei *costumers* che hanno sottomesso le query).
 
-NOTA: I valori dell'utilizzazione e del tempo di risposta sono ottenuti dalle statistiche di postgres, nelle quali abbiamo diviso per 2 il total_exec_time. Il throughput è invece ottenuto dal summary prodotto da benchbase.
 
-Dal benchmark risulta che la query 7 sia passata da disk intensive a cpu intensive soltanto aumentando il numero di job nel sistema.
-Mettendo i job da 2 a 3 si ha il throughput seguente: 0.8 mentre il modello predice: 0.56.
+## Punto 4
 
-? Disk intensive: il tempo totale è il doppio con 2 job.
+Questo punto del progetto prevede un'analisi più dinamica e interessante in quanto si vogliono analizzare le prestazioni del modello simulativo utilizzando un numero di CPU pari a 2 (cambiando il numero di serventi nel centro cpu del modello simulativo) e, soprattutto, variando il numero di *customers* (numero di query concorrenti) nel sistema da 1 a 5.
+Prima di eseguire il benchmark possiamo fare un paio di considerazioni: la cpu era gia satura con *customer* e 1 servente, quindi ci possiamo aspettare che con 2 serventi riuscirà a gestire fino a 2 *customers* prima di andare nuovamente in saturazione, mentre per quanto riguarda il disco molto probabilmente andrà in saturazione con 4 *customers* (forse sarà quasi saturo gia con 3 *customers*).
+Ecco qui riportati i risultati del Modello Simulativo per quanto riguarda le query disk intensive e cpu intensive, visualizzati con immagini rappresentanti grafici e statistiche ottenute tramite la funzione *what-if* di JMT: 
 
-Tentativo con max_parallel_workers_per_gather
-query 7
-jobs 2
 
-ci aspettiamo che il blk_read_time raddoppi rispetto al caso con 1 job. Non è andata così. il blk_read_time è rimasto quasi uguale al caso con 1 job. l'utilizzazione di entrambi i centri continua a discostarsi dal modello simulativo.
-(NVME)
+- **CPU-intensive -> Modello simulativo**
+  
+  - ![](./image_1.png)
+  - ![](./image_3.png)
+  - ![](./image_4.png) 
+  
+- **DISK-intensive -> Modello simulativo**
+  
+  - ![](./dimage_1.png)
+  - ![](./dimage_3.png)
+  - ![](./dimage_4.png) 
 
--------
 
-Punto 4:
+Come ci si poteva aspettare la CPU, superato un numero di *customers* pari a 2, va in saturazione (con 3 *customers* l'utilizzazione e circa 100%), analogamente anche il throughput, giustamente, aumenta rapidamente fino a 2 *customers* con un valore pari a $X = 2.3$, per poi salire di molto poco (di 0.1 circa) fino a completa saturazione del sistema (con un numero di *customers* pari a 3).
+Per quanto riguarda il disco, come da ipotesi, arriva a quasi saturazione con 3 *customers* (con utilizzazione del 97% circa) e un throughput che fino a 2 *customers* sale velocemente fino a $X=0.56$ circa, dopodiché fino a 3 *customers* sale più lentamente (fino a raggiungere $X=0.6$); con *customers* il disco è completamente saturo.
 
-MODELLO
-
-CPU Intensive 
-Già con 2 job si satura la CPU.
-
-DISK Intensive
-Il disco va in saturazione al 5o job.
-
-(Aggiungere immagini)
-![](./dimage_1.png)
 
 BENCHMARK
 
