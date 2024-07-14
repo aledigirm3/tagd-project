@@ -265,3 +265,36 @@ L'utilizzazione del disco con 20 costumers non supera il 70% (dalla sumulazione 
   File modello simulativo: [punto4.jmva.jsimg](null)
 
 
+## Punto 5
+
+-------------------------------------------PUNTO5--------------------------------------------
+
+utilizzati i service time del Punto 0.
+
+query bilanciata con D_CPU/D_DISCK = 0.974986 (D_CPU=1.012455; D_DISK=1.038430)
+
+il sistema base è stato modellato con 12 cpu e 10 dischi raid, mantenendo un'utilizzazione pari al 76% per la cpu e 88% per il disco al fine di avere più "spazio" nel modellamento di tali risorse; in effetti l'idea è stata quella di aumentare la "frequenza di clock" delle cpu e aumentare la "velocità di I/O" del disco tramite la variazione dei service demand.
+
+lo stesso modello è stato testato come sistema scarico, ossia una query alla volta, ed ha portato i seguenti risultati riguardo i tempi di risposta:
+
+          .query A/B -> tempo risposta = 0.8436 circa   (CPU-int)
+          .query C -> tempo risposta = 1.64         (BALANCED) -> da non superare
+          .query D/E -> tempo risposta =  1.55     (DISK-int) 
+
+effettivamente i tempi di risposta con tutte le query circolanti nel sistema erano eccessivamente piu alti di quelli a sistema scarico (con un massimo di 5.3820s).
+
+Dopo vari tentativi siamo riusciti a combinare opportunamente i service demand con decrementi mirati in percentuale.
+
+Ecco qui riportate le specifiche di tale soluzione:
+-  CPU 
+    - 12 cpu utilizzate, con "frequenza di clock" aumentata del 20% (moltiplicato service demand per 0.8)
+    - utilizzazione: 61% circa
+
+- DISCO (raid 0)
+    - 10 dischi utilizzati, con "velocità di operazioni I/O" aumentate del 35% (moltiplicato service demand per 0.65)
+    - utilizzazione: 57.5% circa  
+
+Possiamo concludere dicendo che i requisiti temporali e di utilizzazione della cpu sono stati rispettati anche se l' utilizzazione del disco non rispetta tali specifiche di un 2.5% circa, in effetti questa soluzione è stata fondamentale per garantire un trade-off tra utilizzazione e tempi di risposta dato che la query bilanciata ha creato non pochi problemi; si è deciso di dare priorità al rispetto delle specifiche per quanto riguarda i tempi di risposta piuttosto che per l'utilizzazione (l'utente è soddisfatto, il proprietario dell'hardware un po' meno ;), resta il fatto che il discostamento tra utilizzazione del disco nei requisiti e quello nel modello creato può essere considerato trascurabile.
+
+
+
