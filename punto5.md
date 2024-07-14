@@ -41,7 +41,11 @@ R qE: 2.9205
 Con 6 cpu e 6 dischi (non raid):
 Util. cpu: 0.6373
 Util. disco: 0.6076
-
+R qA: 1.0672
+R qB: 1.0683
+R qC: 2.4930 (non è giunto a convergenza. min: 2.3795, max: 2.6066)
+R qD: 2.5974
+R qE: 2.6003
 
 Con 6 cpu e 5 dischi (non raid):
 Util. cpu: 0.6138
@@ -51,6 +55,6 @@ Con 5 cpu e 5 dischi (non raid):
 Util. cpu: 0.7273 (non rispetta i vincoli progettuali)
 Util. disco: 0.6677
 
-Conclusioni: la configurazione che consente di rispettare i vincoli progettuali a livello di utilizzazione è quella con 6 cpu e 5 dischi. Bisogna però rispettare anche il vincolo dei tempi di risposta rispetto alla query più lunga a sistema scarico: analizzando le statistiche del file pg_stat_statements_1_2000s.csv si trova che la query più lunga impiega in media 10.9s ad essere eseguita. 
+Conclusioni: la configurazione che consente di rispettare i vincoli progettuali a livello di utilizzazione è quella con 6 cpu e 6 dischi. Bisogna però rispettare anche il vincolo dei tempi di risposta rispetto alla query più lunga a sistema scarico: analizzando le statistiche del file pg_stat_statements_1_2000s.csv si trova che la query più lunga impiega in media 10.9s ad essere eseguita. Però a noi interessa la più lunga tra le 3 query considerate, che è quella disk-intensive (2.523606 secondi).
 
 !!! Verificare che anche applicando il raid 5 accade la stessa cosa.
