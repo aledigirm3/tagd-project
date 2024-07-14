@@ -1,0 +1,9 @@
+{
+    "python.analysis.typeCheckingMode": "basic",
+    "markdownExtended.pdfDisplayHeaderFooter": false,
+    "markdownConverter.Document.HeaderFooterEnabled": true,
+    "markdownConverter.Document.HeaderTemplate": "",
+    "markdownConverter.Document.FooterContent": {
+        "Center": "<span class=\"pageNumber\"></span>"
+    }
+}
